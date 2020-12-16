@@ -1,18 +1,38 @@
+const locales = ["en", "fr", "ja"];
+
+const localeConfigs = {
+	en: {
+		label: "English",
+	},
+	fr: {
+		label: "Français",
+	},
+	ja: {
+		label: "日本語",
+	},
+};
+
 module.exports = {
-	title: "My Site",
-	tagline: "The tagline of my site",
-	url: "https://your-docusaurus-test-site.com",
+	i18n: {
+		defaultLocale: "en",
+		locales,
+		localeConfigs,
+	},
+	title: "Learn RedwoodJS",
+	tagline:
+		"Built on React, GraphQL, and Prisma, Redwood works with the components and development workflow you love, but with simple conventions and helpers to make your experience even better.",
+	url: "https://github.com/redwoodjs/learn.redwoodjs.com",
 	baseUrl: "/",
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/favicon.ico",
-	organizationName: "facebook", // Usually your GitHub org/user name.
-	projectName: "docusaurus", // Usually your repo name.
+	organizationName: "redwoodjs", // Usually your GitHub org/user name.
+	projectName: "learn.redwoodjs.com", // Usually your repo name.
 	themeConfig: {
 		navbar: {
 			title: "Learn RedwoodJS",
 			logo: {
-				alt: "My Site Logo",
+				alt: "RedwoodJS pinecone logo",
 				src: "img/logo.svg",
 			},
 			items: [
@@ -23,8 +43,9 @@ module.exports = {
 					position: "left",
 				},
 				{ to: "https://redwoodjs.com/", label: "Redwoodjs.com", position: "left" },
+				{ type: "localeDropdown", position: "right" },
 				{
-					href: "https://github.com/facebook/docusaurus",
+					href: "https://github.com/redwoodjs/learn.redwoodjs.com",
 					label: "GitHub",
 					position: "right",
 				},

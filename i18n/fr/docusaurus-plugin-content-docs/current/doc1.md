@@ -1,11 +1,11 @@
 ---
 id: doc1
-title: Style Guide
-sidebar_label: Style Guide
+title: Le Style Guide
+sidebar_label: Le Style Guide
 slug: /
 ---
 
-You can write content using [GitHub-flavored Markdown syntax](https://github.github.com/gfm/).
+Vous can write content using [GitHub-flavored Markdown syntax](https://github.github.com/gfm/).
 
 ## Markdown Syntax
 
