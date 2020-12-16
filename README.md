@@ -8,9 +8,11 @@ This WIP site will be used to present multilingual tutorial docs for RedwoodJS.
 
 ### TODO
 
-- Hook up to Crowdin l10n management
 - add EN tutorial content
+- test translation via Crowdin
+- document typical translation workflow
 - UI string translation
+- Style 💅🏽
 - SEO 🤷
 
 ### Docusaurus 2 + Crowdin
@@ -49,7 +51,7 @@ Localized docs content is placed in same structure as source content from "mount
 
 Localized content without a "counterpart" for the source content defaults to the source locale.
 
-Every doc category (ex: 'Tutorial') needs to be mapped to a Crowdin translation flow.
+Every doc category directory (ex: 'Tutorial') needs to be mapped to a Crowdin translation flow.
 
 We just have `tutorial` for now, but contact `@clairefro` to add new doc categories if needed.
 
