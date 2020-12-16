@@ -1,13 +1,17 @@
 # learn.redwoodjs.com
 
+Deployment URL: https://objective-lamarr-858e5f.netlify.app/
+
+[![Crowdin](https://badges.crowdin.net/learn-redwoodjs/localized.svg)](https://crowdin.com/project/learn-redwoodjs)
+
 This WIP site will be used to present multilingual tutorial docs for RedwoodJS.
 
 ### TODO
 
 - Hook up to Crowdin l10n management
 - add EN tutorial content
-- language switcher - doesn't actually work right now
 - UI string translation
+- SEO 🤷
 
 ### Docusaurus 2 + Crowdin
 
@@ -23,19 +27,46 @@ yarn install
 yarn start
 ```
 
-It seems that this canary release only allows viewing one additional locale at a time in dev, so if you want to see French docs start yarn with a `--locale` flag like this:
+- Only one locale can be servered in development at a time, so start yarn with the locale you want to test
 
 ```
 yarn start --locale fr
 ```
 
+No worries, things work better once the site is built and served. Try this and the locale switcher suddenly works:
+
+```
+yarn build
+
+yarn serve
+```
+
 ## Localized content
 
-Source content markdown docs are found in `/docs/`.
+Source content markdown docs are found in `/docs/..`.
 
-Localized docs content is placed in same structure as source content from "mount point" `i18n/%two_letters_code%/docusaurus-plugin-content-docs/current/`, where `%two_letters_code%` is generally a locale's [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+Localized docs content is placed in same structure as source content from "mount point" `i18n/%two_letters_code%/docusaurus-plugin-content-docs/current/..`, where `%two_letters_code%` is generally a locale's [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
 Localized content without a "counterpart" for the source content defaults to the source locale.
+
+Every doc category (ex: 'Tutorial') needs to be mapped to a Crowdin translation flow.
+
+We just have `tutorial` for now, but contact `@clairefro` to add new doc categories if needed.
+
+### crowdin.yml
+
+Configuration file for crowdin integration. Useful for seeing how source docs are mapped to i18n folder
+
+## Translation
+
+**IMPORTANT: Do not translate directly in this repo!**
+
+All content is translated via Crowdin so we can keep our docs from going stale.  
+https://crowdin.com/project/learn-redwoodjs/
+
+Translations made from the above repo are auto-PR'ed to this Github repo once approved.
+
+---
 
 # Website
 
