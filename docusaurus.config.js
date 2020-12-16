@@ -22,7 +22,7 @@ module.exports = {
 					label: "Docs",
 					position: "left",
 				},
-				{ to: "blog", label: "Blog", position: "left" },
+				{ to: "https://redwoodjs.com/", label: "Redwoodjs.com", position: "left" },
 				{
 					href: "https://github.com/facebook/docusaurus",
 					label: "GitHub",

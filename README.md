@@ -1,3 +1,18 @@
+# learn.redwoodjs.com
+
+This WIP site will be used to present multilingual tutorial docs for RedwoodJS.
+
+### TODO
+
+- Hook up to Crowdin l10n management
+- add EN tutorial content
+- language switcher
+- UI string translation
+
+### Docusaurus 2 + Crowdin
+
+We are using a yet-to-be-documented release of Docusuraus 2 that includes integration with l10n management service Crowdin. While there are no docs to work off of yet, we have [this PR](https://github.com/facebook/docusaurus/pull/3325) and [this explanatory comment](https://github.com/facebook/docusaurus/issues/3317#issuecomment-742589241) to reference
+
 # Website
 
 This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
