@@ -12,6 +12,7 @@ This WIP site will be used to present multilingual tutorial docs for RedwoodJS.
 - test translation via Crowdin
 - document typical translation workflow
 - UI string translation
+- Add term glossary template
 - Style 💅🏽
 - SEO 🤷
 
@@ -54,6 +55,14 @@ Localized content without a "counterpart" for the source content defaults to the
 Every doc category directory (ex: 'Tutorial') needs to be mapped to a Crowdin translation flow.
 
 We just have `tutorial` for now, but contact `@clairefro` to add new doc categories if needed.
+
+### Note about relative paths
+
+If a static asset or document is referenced in the source markdown with a relative path (ex: `[]!(../img/logo.svg)`), it will break in it's differently-nested i18n counterparts ("Where's that???").
+
+Solution: copy the asset to the same "relativity" within the i18n target folder.
+
+Cool thing is this also gives the opportunity to change image based on locale.
 
 ### crowdin.yml
 
