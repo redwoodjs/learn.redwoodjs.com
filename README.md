@@ -1,6 +1,6 @@
 # learn.redwoodjs.com
 
-Deployment URL: https://objective-lamarr-858e5f.netlify.app/
+Deployment URL: https://learn-redwood.netlify.app/docs/
 
 [![Crowdin](https://badges.crowdin.net/learn-redwoodjs/localized.svg)](https://crowdin.com/project/learn-redwoodjs)
 
