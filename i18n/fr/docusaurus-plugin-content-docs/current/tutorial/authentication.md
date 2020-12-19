@@ -51,7 +51,7 @@ The generator adds one file and modifies a couple others.
 
 > **Are you on the latest Redwood?**
 > 
-> For this to work you must be on version `0.7.0` or greater of Redwood. If you don't see any file changes, try [upgrading](/reference/command-line-interface#upgrade) your Redwood packages with `yarn rw upgrade`.
+> For this to work you must be on version `0.7.0` or greater of Redwood. If you don't see any file changes, try [upgrading](https://redwoodjs.com/docs/cli-commands#upgrade) your Redwood packages with `yarn rw upgrade`.
 
 Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 
