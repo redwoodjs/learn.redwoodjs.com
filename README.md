@@ -81,7 +81,7 @@ Translations made from the above repo are auto-PR'ed to this Github repo once ap
 
 When translating, keep frontmatter `id` as-is (same as English). This id is used for placing items correctly in the sidebar and must be the same for all counterpart docs.
 
-`title` and `sidebar_label` however can and should be translated!
+`title` and `sidebar_label` however can and should be translated! Use quotes `""` - it's a habit to prevent YAML breaking on special characters like `:`.
 
 example
 
@@ -89,8 +89,8 @@ example
 ---
 <!-- /docs/tutorial/welcome-to-redwood.md  -->
 id: welcome-to-redwood
-title: Welcome to Redwood
-sidebar_label: Welcome to Redwood
+title: "Welcome to Redwood"
+sidebar_label: "Welcome to Redwood"
 ---
 
 ---
@@ -98,8 +98,8 @@ sidebar_label: Welcome to Redwood
 <!-- /i18n/fr/docusaurus-plugin-content-docs/current/tutorial/welcome-to-redwood.md  -->
 
 id: welcome-to-redwood
-title: Bienvenue chez Redwood
-sidebar_label: Bienvenue chez Redwood
+title: "Bienvenue chez Redwood"
+sidebar_label: "Bienvenue chez Redwood"
 
 ---
 ```
