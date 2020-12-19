@@ -21,6 +21,6 @@ Head to http://localhost:8910/admin/posts and our generated scaffold page should
 >
 > On the last page we said we were going to set up an admin section **and** put it
 > behind a login. So far, all we've done is updated the routes. Don't worry, we
-> haven't forgotten! We will be setting up authentication in a [future step](/tutorial/authentication).
+> haven't forgotten! We will be setting up authentication in a [future step](./authentication).
 
 How about getting this thing out into the real world?
