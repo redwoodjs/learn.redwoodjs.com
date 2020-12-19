@@ -93,7 +93,7 @@ module.exports = {
 						},
 						{
 							label: "GitHub",
-							href: "https://redwoodjs.com/",
+							href: "https://github.com/redwoodjs/learn.redwoodjs.com",
 						},
 					],
 				},
