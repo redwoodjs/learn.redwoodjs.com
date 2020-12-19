@@ -1,7 +1,7 @@
 ---
 id: prerequisites
-title: Prérequis
-sidebar_label: Prérequis
+title: "Prérequis"
+sidebar_label: "Prérequis"
 ---
 
 Ce didacticiel suppose que vous soyez déjà familier avec quelques concepts fondamentaux :
