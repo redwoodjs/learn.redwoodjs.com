@@ -118,7 +118,7 @@ export const Success = ({ posts }) => {
 };
 ```
 
-However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](https://redwoodjs.com/tutorial/getting-dynamic#creating-a-post-editor) in the _Getting Dynamic_ part.)
+However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](./getting-dynamic#creating-a-post-editor) in the _Getting Dynamic_ part.)
 
 We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
@@ -163,7 +163,7 @@ const HomePage = () => {
 export default HomePage
 ```
 
-The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](/tutorial/getting-dynamic#creating-a-post-editor) from earlier). Neat!
+The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](./getting-dynamic#creating-a-post-editor) from earlier). Neat!
 
 <img src="https://user-images.githubusercontent.com/300/73210519-5380a780-40ff-11ea-8639-968507a79b1f.png" />
 
