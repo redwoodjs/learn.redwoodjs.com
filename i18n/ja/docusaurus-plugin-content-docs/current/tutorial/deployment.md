@@ -58,7 +58,7 @@ generator client {
 }
 ```
 
-If you'd like to develop locally with Postgres, see the [Local Postgres Setup](/docs/local-postgres-setup) guide.
+If you'd like to develop locally with Postgres, see the [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide.
 
 > For now, you need to set up your own database, but we are working with various infrastructure providers to make this process simpler and more Jamstacky. Stay tuned for improvements in that regard!
 
@@ -138,6 +138,6 @@ Another neat feature of Netlify is _Branch Deploys_. When you create a branch an
 
 ### A Note About DB Connections
 
-In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](/docs/connection-pooling) guide.
+In this tutorial, your lambda functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale very well. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](https://redwoodjs.com/docs/connection-pooling) guide.
 
 We are working on making this process much easier, but keep it in mind before you deploy a Redwood app to production and announce it to the world.
