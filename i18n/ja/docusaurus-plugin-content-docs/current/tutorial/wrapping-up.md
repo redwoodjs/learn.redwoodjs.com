@@ -12,7 +12,7 @@ As an anonymous Twitter user once mused: "If you enjoy feeling like both the sma
 
 ### What's Next?
 
-Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](/cookbook/using-a-third-party-api) and [deploying an app without an API at all](/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](/docs/local-postgres-setup)? We've also got lots of [guides](/docs/introduction) for more info on Redwood's internals.
+Want to add some more features to your app? Check out some of our Cookbook recipies like [calling to a third party API](https://redwoodjs.com/cookbook/using-a-third-party-api) and [deploying an app without an API at all](https://redwoodjs.com/cookbook/disable-api-database). Have you grown out of SQLite and want to [install Postgres locally](https://redwoodjs.com/docs/local-postgres-setup)? We've also got lots of [guides](https://redwoodjs.com/docs/introduction) for more info on Redwood's internals.
 
 ### Roadmap
 
@@ -23,7 +23,7 @@ Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed
 What did you think of Redwood? Is it the Next Step for JS frameworks? What can it do better? We've got a lot more planned. Want to help us build these upcoming features?
 
 - [Open a PR](https://github.com/redwoodjs/redwood/pulls)
-- [Write some docs](/docs/introduction)
+- [Write some docs](https://redwoodjs.com/docs/introduction)
 - [Join the community](https://community.redwoodjs.com)
 
 Thanks for following along. Now go out and build something amazing!
