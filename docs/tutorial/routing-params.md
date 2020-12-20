@@ -12,26 +12,26 @@ Now that we have our homepage listing all the posts, let's build the "detail" pa
 
 Now let's link the title of the post on the homepage to the detail page (and include the `import` for `Link` and `routes`):
 
-```javascript{3,12}
+```javascript {3,12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 // QUERY, Loading, Empty and Failure definitions...
 
 export const Success = ({ posts }) => {
-  return posts.map((post) => (
-    <article key={post.id}>
-      <header>
-        <h2>
-          <Link to={routes.blogPost()}>{post.title}</Link>
-        </h2>
-      </header>
-      <p>{post.body}</p>
-      <div>Posted at: {post.createdAt}</div>
-    </article>
-  ))
-}
+	return posts.map((post) => (
+		<article key={post.id}>
+			<header>
+				<h2>
+					<Link to={routes.blogPost()}>{post.title}</Link>
+				</h2>
+			</header>
+			<p>{post.body}</p>
+			<div>Posted at: {post.createdAt}</div>
+		</article>
+	));
+};
 ```
 
 If you click the link on the title of the blog post you should see the boilerplate text on `BlogPostPage`. But what we really need is to specify _which_ post we want to view on this page. It would be nice to be able to specify the ID of the post in the URL with something like `/blog-post/1`. Let's tell the `<Route>` to expect another part of the URL, and when it does, give that part a name that we can reference later:
@@ -81,43 +81,43 @@ export default BlogPostPage;
 
 Now over to the cell, we need access to that `{id}` route param so we can look up the ID of the post in the database. Let's update the query to accept a variable (and again change the query name from `blogPost` to just `post`)
 
-```javascript{4,5,7-9,20,21}
+```javascript {4,5,7-9,20,21}
 // web/src/components/BlogPostCell/BlogPostCell.js
 
 export const QUERY = gql`
-  query BlogPostQuery($id: Int!) {
-    post(id: $id) {
-      id
-      title
-      body
-      createdAt
-    }
-  }
-`
+	query BlogPostQuery($id: Int!) {
+		post(id: $id) {
+			id
+			title
+			body
+			createdAt
+		}
+	}
+`;
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div>Loading...</div>;
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => <div>Empty</div>;
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => <div>Error: {error.message}</div>;
 
 export const Success = ({ post }) => {
-  return JSON.stringify(post)
-}
+	return JSON.stringify(post);
+};
 ```
 
 Okay, we're getting closer. Still, where will that `$id` come from? Redwood has another trick up its sleeve. Whenever you put a route param in a route, that param is automatically made available to the page that route renders. Which means we can update `BlogPostPage` to look like this:
 
-```javascript{3,6}
+```javascript {3,6}
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
 const BlogPostPage = ({ id }) => {
-  return (
-    <BlogLayout>
-      <BlogPostCell id={id} />
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<BlogPostCell id={id} />
+		</BlogLayout>
+	);
+};
 ```
 
 `id` already exists since we named our route param `{id}`. Thanks Redwood! But how does that `id` end up as the `$id` GraphQL parameter? If you've learned anything about Redwood by now, you should know it's going to take care of that for you! By default, any props you give to a cell will automatically be turned into variables and given to the query. "Say what!" you're saying. It's true!
@@ -193,51 +193,51 @@ export default BlogPost;
 
 Let's take the post display code out of `BlogPostsCell` and put it here instead, taking the `post` in as a prop:
 
-```javascript{3,5,7-14}
+```javascript {3,5,7-14}
 // web/src/components/BlogPost/BlogPost.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 const BlogPost = ({ post }) => {
-  return (
-    <article>
-      <header>
-        <h2>
-          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
-        </h2>
-      </header>
-      <div>{post.body}</div>
-    </article>
-  )
-}
+	return (
+		<article>
+			<header>
+				<h2>
+					<Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+				</h2>
+			</header>
+			<div>{post.body}</div>
+		</article>
+	);
+};
 
-export default BlogPost
+export default BlogPost;
 ```
 
 And update `BlogPostsCell` and `BlogPostCell` to use this new component instead:
 
-```javascript{3,8}
+```javascript {3,8}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
-import BlogPost from 'src/components/BlogPost'
+import BlogPost from "src/components/BlogPost";
 
 // Loading, Empty, Failure...
 
 export const Success = ({ posts }) => {
-  return posts.map((post) => <BlogPost key={post.id} post={post} />)
-}
+	return posts.map((post) => <BlogPost key={post.id} post={post} />);
+};
 ```
 
-```javascript{3,8}
+```javascript {3,8}
 // web/src/components/BlogPostCell/BlogPostCell.js
 
-import BlogPost from 'src/components/BlogPost'
+import BlogPost from "src/components/BlogPost";
 
 // Loading, Empty, Failure...
 
 export const Success = ({ post }) => {
-  return <BlogPost post={post} />
-}
+	return <BlogPost post={post} />;
+};
 ```
 
 And there we go! We should be able to move back and forth between the homepage and the detail page.
