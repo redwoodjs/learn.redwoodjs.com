@@ -16,30 +16,30 @@ Notice that we didn't specify a route path this time. If you leave it off the `r
 
 http://localhost:8910/about should show our new page. But no one's going to find it by manually changing the URL so let's add a link from our homepage to the About page and vice versa. We'll start creating a simple header and nav bar at the same time on the HomePage:
 
-```javascript{3,7-19}
+```javascript {3,7-19}
 // web/src/pages/HomePage/HomePage.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 const HomePage = () => {
-  return (
-    <>
-      <header>
-        <h1>Redwood Blog</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>Home</main>
-    </>
-  )
-}
+	return (
+		<>
+			<header>
+				<h1>Redwood Blog</h1>
+				<nav>
+					<ul>
+						<li>
+							<Link to={routes.about()}>About</Link>
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<main>Home</main>
+		</>
+	);
+};
 
-export default HomePage
+export default HomePage;
 ```
 
 Let's point out a few things here:
@@ -55,36 +55,33 @@ Let's point out a few things here:
 
 Once we get to the About page we don't have any way to get back so let's add a link there as well:
 
-```javascript{3,7-25}
+```javascript {3,7-25}
 // web/src/pages/AboutPage/AboutPage.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 const AboutPage = () => {
-  return (
-    <>
-      <header>
-        <h1>Redwood Blog</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <p>
-          This site was created to demonstrate my mastery of Redwood: Look on my
-          works, ye mighty, and despair!
-        </p>
-        <Link to={routes.home()}>Return home</Link>
-      </main>
-    </>
-  )
-}
+	return (
+		<>
+			<header>
+				<h1>Redwood Blog</h1>
+				<nav>
+					<ul>
+						<li>
+							<Link to={routes.about()}>About</Link>
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<main>
+				<p>This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and despair!</p>
+				<Link to={routes.home()}>Return home</Link>
+			</main>
+		</>
+	);
+};
 
-export default AboutPage
+export default AboutPage;
 ```
 
 Great! Try that out in the browser and verify you can get back and forth.

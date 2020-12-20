@@ -4,7 +4,7 @@ title: "Enregistrer les Données"
 sidebar_label: "Enregistrer les Données"
 ---
 
-Ajoutons une nouvelle table à notre base de données. Ouvrez `api/prisma/schema.prisma` et ajoutez un nouveau modèle "Contact" à la suite du premier modèle "Post": 
+Ajoutons une nouvelle table à notre base de données. Ouvrez `api/prisma/schema.prisma` et ajoutez un nouveau modèle "Contact" à la suite du premier modèle "Post":
 
 ```javascript
 // api/prisma/schema.prisma
@@ -18,7 +18,7 @@ model Contact {
 }
 ```
 
-> Pour définir une colonne comme optionnelle (c'est à dire permettre que sa valeur soit `NULL`), il suffit de suffixer le type de la donnée avec un point d'interrogation: `name String?` 
+> Pour définir une colonne comme optionnelle (c'est à dire permettre que sa valeur soit `NULL`), il suffit de suffixer le type de la donnée avec un point d'interrogation: `name String?`
 
 Nous créons ensuite notre nouvelle migration:
 
@@ -43,43 +43,43 @@ Ouvrez `api/src/graphql/contacts.sdl.js` et vous verrez les types `Contact`, `Cr
 // api/src/graphql/contacts.sdl.js
 
 export const schema = gql`
-  type Contact {
-    id: Int!
-    name: String!
-    email: String!
-    message: String!
-    createdAt: DateTime!
-  }
+	type Contact {
+		id: Int!
+		name: String!
+		email: String!
+		message: String!
+		createdAt: DateTime!
+	}
 
-  type Query {
-    contacts: [Contact!]!
-  }
+	type Query {
+		contacts: [Contact!]!
+	}
 
-  input CreateContactInput {
-    name: String!
-    email: String!
-    message: String!
-  }
+	input CreateContactInput {
+		name: String!
+		email: String!
+		message: String!
+	}
 
-  input UpdateContactInput {
-    name: String
-    email: String
-    message: String
-  }
-`
+	input UpdateContactInput {
+		name: String
+		email: String
+		message: String
+	}
+`;
 ```
 
 Que sont les "input" `CreateContactInput` et `UpdateContactInput`? Redwood suit la recommandation de GraphQL d'utiliser les [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) dans les mutations plutôt que de lister tous les champs qui peuvent être définis. Tous les champs requis dans `schema.prisma` sont également requis dans `CreateContactInput` (vous ne pouvez pas créer un enregistrement valide sans eux) mais rien n'est explicitement requis dans `UpdateContactInput`. En effet, vous pouvez souhaiter mettre à jour un seul champ, deux champs ou tous les champs. L'alternative serait de créer des types d'entrée séparés pour chaque permutation de champs que vous souhaitez mettre à jour. Nous avons estimé que le fait de n'avoir qu'une seule entrée de mise à jour, bien que ce ne soit peut-être pas la manière absolument correcte de créer une API GraphQL, était un bon compromis pour faciliter le développement.
 
-> Redwood suppose que votre code n'essaiera pas de définir une valeur sur un champ nommé `id` ou `createdAt` donc il les a laissés en dehors des types d'entrée, mais si votre base de données autorise l'un ou l'autre de ceux à définir manuellement, vous pouvez mettre à jour` CreateContactInput `ou `UpdateContactInput` et les ajouter.
+> Redwood suppose que votre code n'essaiera pas de définir une valeur sur un champ nommé `id` ou `createdAt` donc il les a laissés en dehors des types d'entrée, mais si votre base de données autorise l'un ou l'autre de ceux à définir manuellement, vous pouvez mettre à jour`CreateContactInput`ou `UpdateContactInput` et les ajouter.
 
 Puisque toutes les colonnes de la table étaient définies comme requises dans `schema.prisma`, elles sont également définies comme requises ici (notez le suffixe `!` sur les types de données)
 
 > **important:** la syntaxe de `schema.prisma` requiert l'ajout d'un caractère `?` lorsqu'un champ _n'est pas_ requis, tandis que la syntaxe GraphQL requiert l'ajout d'un caractère `!` lorsqu'un champ _est_ requis.
 
-Comme décrit dans [Quête secondaire: Fonctionnement de Redwood avec les Données](qu-te-secondaire-fonctionnement-de-redwood-avec-les-donn-es), il n'y a pas de "resolver" définit explicitement dans le fichier SDL. Redwood suit une convention de nommage simple: chaque champ listé dans les types `Query` et `Mutation` correspondent à une fonction avec un nom identique dans les fichiers `service` et `sdl` associés (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`) 
+Comme décrit dans [Quête secondaire: Fonctionnement de Redwood avec les Données](qu-te-secondaire-fonctionnement-de-redwood-avec-les-donn-es), il n'y a pas de "resolver" définit explicitement dans le fichier SDL. Redwood suit une convention de nommage simple: chaque champ listé dans les types `Query` et `Mutation` correspondent à une fonction avec un nom identique dans les fichiers `service` et `sdl` associés (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
 
-Dans le cas présent, nous créeons une unique `Mutation` que nous appelons `createContact`. Nous l'ajoutons à la fin de notre fichier SDL (avant le caractère 'backtick'): 
+Dans le cas présent, nous créeons une unique `Mutation` que nous appelons `createContact`. Nous l'ajoutons à la fin de notre fichier SDL (avant le caractère 'backtick'):
 
 ```javascript
 // api/src/graphql/contacts.sdl.js
@@ -93,18 +93,18 @@ La mutation `createContact` accepte une variable unique, `input`, qui est un obj
 
 C'est terminé pour le fichier SDL, définissons maintenant le service qui va réellement enregistrer les données en base. Le service inclut une fonction `contacts` permettant de récupérer l'ensemble des contacts depuis la base. Ajoutons-y une mutation pour pouvoir créer un nouveau contact:
 
-```javascript{9-11}
+```javascript {9-11}
 // api/src/services/contacts/contacts.js
 
-import { db } from 'src/lib/db'
+import { db } from "src/lib/db";
 
 export const contacts = () => {
-  return db.contact.findMany()
-}
+	return db.contact.findMany();
+};
 
 export const createContact = ({ input }) => {
-  return db.contact.create({ data: input })
-}
+	return db.contact.create({ data: input });
+};
 ```
 
 Grâce au client Prisma, il faut peu de code pour enregistrer nos données en base! Il s'agit d'un appel asynchrone, mais nous n'avons pas à nous soucier de manipuler un objet Promise ou s'arranger avec `async/await`. La librairie Apollo le fait pour nous!
@@ -115,7 +115,7 @@ Avant d'insérer tout ceci dans notre interface utilisateur, prennons un peu de 
 
 Souvent, il est utile d'expérimenter notre API dans une forme un peu "brute" avant de poursuivre plus avant le développement de l'interface et s'apercevoir que l'on a oublié quelque chose.
 
-Lorsque vous avez exécuté la commande `yarn redwood dev` au début de ce didacticiel, vous avez en réalité démarré un second processus en arrière-plan. Ouvrez donc une nouvelle page de votre navigateur à cette adresse: http://localhost:8911/graphql . Il s'agit du [Bac à Sable GraphQL](https://github.com/prisma-labs/graphql-playground) fournit par la librairie Prisma, une application web permettant d'interagir avec une API GraphQL: 
+Lorsque vous avez exécuté la commande `yarn redwood dev` au début de ce didacticiel, vous avez en réalité démarré un second processus en arrière-plan. Ouvrez donc une nouvelle page de votre navigateur à cette adresse: http://localhost:8911/graphql . Il s'agit du [Bac à Sable GraphQL](https://github.com/prisma-labs/graphql-playground) fournit par la librairie Prisma, une application web permettant d'interagir avec une API GraphQL:
 
 <img src="https://user-images.githubusercontent.com/300/70950852-9b97af00-2016-11ea-9550-b6983ce664e2.png" />
 
@@ -137,19 +137,19 @@ Notre mutation GraphQL est prête pour la partie backend, tout ce qu'il reste à
 // web/src/pages/ContactPage/ContactPage.js
 
 const CREATE_CONTACT = gql`
-  mutation CreateContactMutation($input: CreateContactInput!) {
-    createContact(input: $input) {
-      id
-    }
-  }
-`
+	mutation CreateContactMutation($input: CreateContactInput!) {
+		createContact(input: $input) {
+			id
+		}
+	}
+`;
 ```
 
 Nous référençons ainsi la mutation `createContact` définie auparavant dans le fichier SDL des contacts, tout en lui passant en argument un objet `input` contenant la valeur des champs `name`, `email` et `message`.
 
 Après quoi, nous appelons le 'hook' `useMutation` fourni par Appolo, ce qui nous permet d'exécuter la mutation lorsque le moment est venu (n'oubliez pas les imports comme à chaque fois):
 
-```javascript{11,15}
+```javascript {11,15}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -173,25 +173,26 @@ const ContactPage = () => {
   return (...)
 }
 ```
+
 `create` est une fonction qui invoque la mutation et prend en paramètre un objet contenant un clef `variables`. Cette dernière contient à son tour une clef `input`. Par exemple, nous pourrions l'appeler également de cette manière:
 
 ```javascript
 create({
-  variables: {
-    input: {
-      name: 'Rob',
-      email: 'rob@redwoodjs.com',
-      message: 'I love Redwood!',
-    },
-  },
-})
+	variables: {
+		input: {
+			name: "Rob",
+			email: "rob@redwoodjs.com",
+			message: "I love Redwood!",
+		},
+	},
+});
 ```
 
-Si votre méémoire est bonne, vous vous souvenez sans doute que la balise `<Form>` nous donne accès à l'ensemble des champs du formulaire avec un objet bien pratique dans lequel chaque clef se trouve être le nom du champ. Celà signifie donc que l'objet `data`que nous recevons dans `onSubmit` est déjà dans le format adapté pour `input`!  
+Si votre méémoire est bonne, vous vous souvenez sans doute que la balise `<Form>` nous donne accès à l'ensemble des champs du formulaire avec un objet bien pratique dans lequel chaque clef se trouve être le nom du champ. Celà signifie donc que l'objet `data`que nous recevons dans `onSubmit` est déjà dans le format adapté pour `input`!
 
 Maintenant nous pouvons mettre à jour la fonction `onSubmit` pour invoquer la mutation avec les données qu'elle reçoit:
 
-```javascript{7}
+```javascript {7}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -222,7 +223,7 @@ Essayons d'y apporter une solution.
 
 Le 'hook' `useMutation` retourne quelques autres éléments en plus de la fonction permettant de l'invoquer. Nous pouvons déstructurer ceux-ci (`loading` et `error`) de la façon suivante:
 
-```javascript{4}
+```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -257,7 +258,7 @@ Vous verrez alors que le bouton "Save" devient inactif pendant une seconde ou de
 
 Maintenant, utilisons le système dit de `Flash` proposé par Redwood afin d'informer l'utilisateur que son envoi à bien été traité. `useMutation` accepte un second paramètre optionnel contenant des options. Une de ces options est une fonction callback appelée `onCompleted` qui sera invoquée lorsque la mutation sera achevée avec succès. Nous allons donc utiliser cette fonction pour ajouter un message qui sera affiché par un composant `Flash`. Ajoutez donc le composant `Flash` a votre page et utilisez sa propriété `timeout` pour définir le temps d'affichage. (Vous pouvez lire la documentation à propos du système de Flash proposé par Redwood [ici](https://redwoodjs.com/docs/flash-messaging-bus))
 
-```javascript{4,10,13-17,24}
+```javascript {4,10,13-17,24}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
@@ -291,44 +292,44 @@ Nous allons maintenant informer l'utilisateur des éventuelles erreurs côté se
 
 Ainsi, nous avons une validateur de l'email côté client, mais tout bon développeur web sait qu'il ne faut [_jamais faire confiance au client_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Ajoutons une validation de l'email côté serveur de façon à être certain qu'aucune donnée erronée ne soit ajoutée dans la base, et ce même si un utilisateur parvenait à contourner le fonctionnement de l'application côté client.
 
-> Pourquoi n'avons-nous pas besoin de validation côté serveur pour s'assurer que les champs name, email et message sont bien remplis? Car la base de données le fait pour nous. Vous rappellez-vous `String!` dans notre fichier SDL? Celà ajoute une contrainte en base de données de telle façon que ce champ ne puisse être `null`. Une valeur `null` serait rejetée par la base et GraphQL renverrait une erreur à la partie client. 
+> Pourquoi n'avons-nous pas besoin de validation côté serveur pour s'assurer que les champs name, email et message sont bien remplis? Car la base de données le fait pour nous. Vous rappellez-vous `String!` dans notre fichier SDL? Celà ajoute une contrainte en base de données de telle façon que ce champ ne puisse être `null`. Une valeur `null` serait rejetée par la base et GraphQL renverrait une erreur à la partie client.
 >
-> Cependant, il n'existe pas de type `Email!`, raison pour laquelle nous devons assurer la validation nous même 
+> Cependant, il n'existe pas de type `Email!`, raison pour laquelle nous devons assurer la validation nous même
 
 Nous avons déjà parlé de code métier et du fait que ce type de code a vocation à se trouver dans nos fichiers services. Ceci en est un exemple parfait. Ajoutons une fonction `validate` à notre service `contacts`:
 
-```javascript{3,7-15,22}
+```javascript {3,7-15,22}
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from '@redwoodjs/api'
+import { UserInputError } from "@redwoodjs/api";
 
-import { db } from 'src/lib/db'
+import { db } from "src/lib/db";
 
 const validate = (input) => {
-  if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
-    throw new UserInputError("Can't create new contact", {
-      messages: {
-        email: ['is not formatted like an email address'],
-      },
-    })
-  }
-}
+	if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
+		throw new UserInputError("Can't create new contact", {
+			messages: {
+				email: ["is not formatted like an email address"],
+			},
+		});
+	}
+};
 
 export const contacts = () => {
-  return db.contact.findMany()
-}
+	return db.contact.findMany();
+};
 
 export const createContact = ({ input }) => {
-  validate(input)
-  return db.contact.create({ data: input })
-}
+	validate(input);
+	return db.contact.create({ data: input });
+};
 ```
 
 Ainsi, lorsque `createContact` est invoquée, la fonction commence par valider le contenu des champs du formulaire. Puis, et seulement s'il n'y a aucune erreur, l'enregistrement sera créé en base de données.
 
 Nous capturons déjà toutes les erreurs dans la constante `error` que nous obtenons grâce au 'hook' `useMutation`. C'est pourquoi nous avons la possibilité d'afficher ces erreurs sur la page, par exemple au dessus du formulaire:
 
-```html{4-9}
+```html {4-9}
 // web/src/pages/ContactPage/ContactPage.js
 
 <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
@@ -358,15 +359,8 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js
-
-<TextField
-  name="email"
-  validation={{
-    required: true,
-  }}
-  errorClassName="error"
-/>
+// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, }}
+errorClassName="error" />
 ```
 
 Maintenant, essayons de remplir le formulaire avec un adresse invalide:
@@ -379,7 +373,7 @@ Vous rapellez-vous lorsque nous avons dit que `<Form>` avait plus d'un tour dans
 
 Supprimez l'affichage de l'erreur tel que nous venons de l'ajouter (`{ error && ...}`) , et remplacez-le avec `<FormError>` tout en passant en argument la constante `error` que nous récupérons depuis `useMutation`. Ajoutez également quelques ééléments de style à `wrapperStyle`, sans oublier les `import` associés.
 
-```javascript{10,18-22}
+```javascript {10,18-22}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -431,12 +425,12 @@ Commençons par importer `useForm`:
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { useForm } from 'react-hook-form'
+import { useForm } from "react-hook-form";
 ```
 
 Puis invoquons ce 'hook' dans notre composant:
 
-```javascript{4}
+```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -446,7 +440,7 @@ const ContactPage = () => {
 
 Enfin, donnons pour instruction explicite à `<Form>` d'utiliser `formMethods`, au lieu de le laisser le faire lui-même:
 
-```javascript{10}
+```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
@@ -467,119 +461,95 @@ Maintenant nous pouvons invoquer manuellement `reset()` depuis `formMethods()` j
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-  onCompleted: () => {
-    // addMessage...
-    formMethods.reset()
-  },
-})
+	onCompleted: () => {
+		// addMessage...
+		formMethods.reset();
+	},
+});
 ```
 
 <img alt="Capture écran du formulaire de Contact avec message de confirmation Flash" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png" />
 
 > Vous pouvez maintenant réactiver la validation email côté client sur le `<TextField>`, tout en conservant la validation côté serveur.
 
-Voici le contenu final de la page `ContactPage.js`: 
+Voici le contenu final de la page `ContactPage.js`:
 
 ```javascript
-import {
-  Form,
-  TextField,
-  TextAreaField,
-  Submit,
-  FieldError,
-  Label,
-  FormError,
-} from '@redwoodjs/forms'
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
-import { useForm } from 'react-hook-form'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form, TextField, TextAreaField, Submit, FieldError, Label, FormError } from "@redwoodjs/forms";
+import { Flash, useFlash, useMutation } from "@redwoodjs/web";
+import { useForm } from "react-hook-form";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const CREATE_CONTACT = gql`
-  mutation CreateContactMutation($input: CreateContactInput!) {
-    createContact(input: $input) {
-      id
-    }
-  }
-`
+	mutation CreateContactMutation($input: CreateContactInput!) {
+		createContact(input: $input) {
+			id
+		}
+	}
+`;
 
 const ContactPage = () => {
-  const formMethods = useForm()
-  const { addMessage } = useFlash()
+	const formMethods = useForm();
+	const { addMessage } = useFlash();
 
-  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-    onCompleted: () => {
-      addMessage('Thank you for your submission!', {
-        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
-      })
-      formMethods.reset()
-    },
-  })
+	const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+		onCompleted: () => {
+			addMessage("Thank you for your submission!", {
+				style: { backgroundColor: "green", color: "white", padding: "1rem" },
+			});
+			formMethods.reset();
+		},
+	});
 
-  const onSubmit = (data) => {
-    create({ variables: { input: data } })
-    console.log(data)
-  }
+	const onSubmit = (data) => {
+		create({ variables: { input: data } });
+		console.log(data);
+	};
 
-  return (
-    <BlogLayout>
-      <Flash timeout={1000} />
-      <Form
-        onSubmit={onSubmit}
-        validation={{ mode: 'onBlur' }}
-        error={error}
-        formMethods={formMethods}
-      >
-        <FormError
-          error={error}
-          wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
-        />
-        <Label name="name" errorClassName="error">
-          Name
-        </Label>
-        <TextField
-          name="name"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="name" className="error" />
+	return (
+		<BlogLayout>
+			<Flash timeout={1000} />
+			<Form onSubmit={onSubmit} validation={{ mode: "onBlur" }} error={error} formMethods={formMethods}>
+				<FormError error={error} wrapperStyle={{ color: "red", backgroundColor: "lavenderblush" }} />
+				<Label name="name" errorClassName="error">
+					Name
+				</Label>
+				<TextField name="name" validation={{ required: true }} errorClassName="error" />
+				<FieldError name="name" className="error" />
 
-        <Label name="name" errorClassName="error">
-          Email
-        </Label>
-        <TextField
-          name="email"
-          validation={{
-            required: true,
-          }}
-          errorClassName="error"
-        />
-        <FieldError name="email" className="error" />
+				<Label name="name" errorClassName="error">
+					Email
+				</Label>
+				<TextField
+					name="email"
+					validation={{
+						required: true,
+					}}
+					errorClassName="error"
+				/>
+				<FieldError name="email" className="error" />
 
-        <Label name="name" errorClassName="error">
-          Message
-        </Label>
-        <TextAreaField
-          name="message"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="message" className="error" />
+				<Label name="name" errorClassName="error">
+					Message
+				</Label>
+				<TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
+				<FieldError name="message" className="error" />
 
-        <Submit disabled={loading}>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
-}
+				<Submit disabled={loading}>Save</Submit>
+			</Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
-C'est terminé! [React Hook Form](https://react-hook-form.com/) propose pas mal de fonctionalités que `<Form>` n'expose pas. Lorsque vous souhaitez les utiliser, appelez juste le 'hook' `useForm()` vous-même, en vous assurant de bien passer en argument l'objet retourné (`formMethods`) comme propriété de `<Form>` de façon à ce que la validation et les autres fonctionalités puissent continuer à fonctionner. 
+C'est terminé! [React Hook Form](https://react-hook-form.com/) propose pas mal de fonctionalités que `<Form>` n'expose pas. Lorsque vous souhaitez les utiliser, appelez juste le 'hook' `useForm()` vous-même, en vous assurant de bien passer en argument l'objet retourné (`formMethods`) comme propriété de `<Form>` de façon à ce que la validation et les autres fonctionalités puissent continuer à fonctionner.
 
 > Vous avez peut-être remarqué que la validation onBlur a cessé de fonctionner lorsque vous avez commencé à appeler `userForm()` par vous-même. Ceci s'explique car Redwood invoque `userForm()` et lui passe automatiquement en argument ce que vous avez passé à `<Form>`. Puisque Redwood n'appelle plus automatiquement `useForm()` à votre place, vous devez de faire manuellement:
 >
 > ```javascript
-> const formMethods = useForm({ mode: 'onBlur' })
+> const formMethods = useForm({ mode: "onBlur" });
 > ```
 
 La partie publique du site a bon aspect. Que faire maintenant de la partie administration qui nous permet de créer et éditer les articles? Nous devrions la déplacer dans une partie réservée et la placer derrière un login, de façon à ce des utilisateurs mal intentionnés ne puissent pas créer en chaîne, par exemple, des publicités pour l'achat de médicaments en ligne...

@@ -10,32 +10,30 @@ Lorsque vous créez une nouvelle Cell, vous exportez quelques constantes, toujou
 
 ```javascript
 export const QUERY = gql`
-  query {
-    posts {
-      id
-      title
-      body
-      createdAt
-    }
-  }
-`
+	query {
+		posts {
+			id
+			title
+			body
+			createdAt
+		}
+	}
+`;
 
-export const Loading = () => <div>Chargement...</div>
+export const Loading = () => <div>Chargement...</div>;
 
-export const Empty = () => <div>Aucun article disponible!</div>
+export const Empty = () => <div>Aucun article disponible!</div>;
 
-export const Failure = ({ error }) => (
-  <div>Erreur lors du chargement des articles: {error.message}</div>
-)
+export const Failure = ({ error }) => <div>Erreur lors du chargement des articles: {error.message}</div>;
 
 export const Success = ({ posts }) => {
-  return posts.map((post) => (
-    <article>
-      <h2>{post.title}</h2>
-      <div>{post.body}</div>
-    </article>
-  ))
-}
+	return posts.map((post) => (
+		<article>
+			<h2>{post.title}</h2>
+			<div>{post.body}</div>
+		</article>
+	));
+};
 ```
 
 Lorsque React affiche ce composant, Redwood va:
@@ -64,23 +62,24 @@ L'exécution de cette commande provoque la création d'un nouveau fichier `/web/
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query BlogPostsQuery {
-    blogPosts {
-      id
-    }
-  }
-`
+	query BlogPostsQuery {
+		blogPosts {
+			id
+		}
+	}
+`;
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div>Loading...</div>;
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => <div>Empty</div>;
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => <div>Error: {error.message}</div>;
 
 export const Success = ({ blogPosts }) => {
-  return JSON.stringify(blogPosts)
-}
+	return JSON.stringify(blogPosts);
+};
 ```
+
 > Lorsque vous utilisez le générateur, vous pouvez employer le type de casse qui vous plaît. Redwood fera en sorte de s'adapter pour créer une cellule avec un nom de fichier correct. Ainsi toutes les commandes ci-dessous aboutissent à créer un fichier avec le même nom:
 >
 >     yarn rw g cell blog_posts
@@ -88,49 +87,49 @@ export const Success = ({ blogPosts }) => {
 >     yarn rw g cell blogPosts
 >     yarn rw g cell BlogPosts
 >
-> Vous devez juste pensez à indiquer d'une façon ou d'une autre que vous utilisez plusieurs mots. Appeler `yarn redwood g cell blogposts` sans utiliser aucune casse pour séparer "blog" et "posts" va générer un fichier `web/src/components/BlogpostsCell/BlogpostsCell.js`.  
+> Vous devez juste pensez à indiquer d'une façon ou d'une autre que vous utilisez plusieurs mots. Appeler `yarn redwood g cell blogposts` sans utiliser aucune casse pour séparer "blog" et "posts" va générer un fichier `web/src/components/BlogpostsCell/BlogpostsCell.js`.
 
-Pour vous aider à être efficace, le générateur suppose que vous utiliserez une requête racine GraphQL nommées de la même façon que votre Cell et écrit pour vous une requête minimale pour récupérer des données depuis la base. Dans le cas présent, la requête a donc été nommée `blogPosts`. Cependant, ce nom de requête n'est pas valide par rapport à ce qui a déjà été créé dans nos fichiers SDL et Service. Nous devons donc renommer `blogPosts` en `posts` à la fois dans le nom de la requête GraphQL et dans la propriété passée à `Success`: 
+Pour vous aider à être efficace, le générateur suppose que vous utiliserez une requête racine GraphQL nommées de la même façon que votre Cell et écrit pour vous une requête minimale pour récupérer des données depuis la base. Dans le cas présent, la requête a donc été nommée `blogPosts`. Cependant, ce nom de requête n'est pas valide par rapport à ce qui a déjà été créé dans nos fichiers SDL et Service. Nous devons donc renommer `blogPosts` en `posts` à la fois dans le nom de la requête GraphQL et dans la propriété passée à `Success`:
 
-```javascript{5,17,18}
+```javascript {5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query BlogPostsQuery {
-    posts {
-      id
-    }
-  }
-`
+	query BlogPostsQuery {
+		posts {
+			id
+		}
+	}
+`;
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div>Loading...</div>;
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => <div>Empty</div>;
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => <div>Error: {error.message}</div>;
 
 export const Success = ({ posts }) => {
-  return JSON.stringify(posts)
-}
+	return JSON.stringify(posts);
+};
 ```
 
 Insérons cette Cell dans notre `HomePage` et voyons ce qui se passe:
 
-```javascript{4,9}
+```javascript {4,9}
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from 'src/layouts/BlogLayout'
-import BlogPostsCell from 'src/components/BlogPostsCell'
+import BlogLayout from "src/layouts/BlogLayout";
+import BlogPostsCell from "src/components/BlogPostsCell";
 
 const HomePage = () => {
-  return (
-    <BlogLayout>
-      <BlogPostsCell />
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<BlogPostsCell />
+		</BlogLayout>
+	);
+};
 
-export default HomePage
+export default HomePage;
 ```
 
 Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en supposant que vous ayez créé un article à l'étape du [scaffolding](/tutorial/getting-dynamic#creating-a-post-editor) un peu plus tôt). Impeccable!
@@ -139,35 +138,35 @@ Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en 
 
 > **Dans le composant `Success`, d'où vient donc `posts`?**
 >
-> Remarquez que dans le composant `QUERY`, nous avons nommée notre requête `posts`. Quelque soit le nom de la requête, ce sera le nom de la propriété qui sera transmise au composant `Success` et qui  contiendra vos données. Vous pouvez toutefois créer un alias de la façon suivante:  
+> Remarquez que dans le composant `QUERY`, nous avons nommée notre requête `posts`. Quelque soit le nom de la requête, ce sera le nom de la propriété qui sera transmise au composant `Success` et qui contiendra vos données. Vous pouvez toutefois créer un alias de la façon suivante:
 >
 > ```javascript
 > export const QUERY = gql`
->   query BlogPostsQuery {
->     postIds: posts {
->       id
->     }
->   }
-> `
+> 	query BlogPostsQuery {
+> 		postIds: posts {
+> 			id
+> 		}
+> 	}
+> `;
 > ```
 >
 > De cette manière la propriété `postIds` sera transmise à `Success` au lieu de `posts`
 
 En plus de l'identifiant `id` qui a été ajouté dans `QUERY` par le générateur, récupérons également le titre, le contenu et la date de création de l'article:
 
-```javascript{7-9}
+```javascript {7-9}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query BlogPostsQuery {
-    posts {
-      id
-      title
-      body
-      createdAt
-    }
-  }
-`
+	query BlogPostsQuery {
+		posts {
+			id
+			title
+			body
+			createdAt
+		}
+	}
+`;
 ```
 
 La page devrait désormais afficher un dump de l'ensemble des données pour tous les articles enregistrés:
@@ -176,20 +175,20 @@ La page devrait désormais afficher un dump de l'ensemble des données pour tous
 
 `Success` est ni plus ni moins qu'un bon vieux composant React, vous pouvez donc le modifier simplement pour afficher chaque article dans un format un peu plus sympa et lisible:
 
-```javascript{4-12}
+```javascript {4-12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const Success = ({ posts }) => {
-  return posts.map((post) => (
-    <article key={post.id}>
-      <header>
-        <h2>{post.title}</h2>
-      </header>
-      <p>{post.body}</p>
-      <div>Créé le: {post.createdAt}</div>
-    </article>
-  ))
-}
+	return posts.map((post) => (
+		<article key={post.id}>
+			<header>
+				<h2>{post.title}</h2>
+			</header>
+			<p>{post.body}</p>
+			<div>Créé le: {post.createdAt}</div>
+		</article>
+	));
+};
 ```
 
 Et ce faisant, nous avons maintenant notre blog! Ok, à ce stade c'est encore le plus basique et hideux blog jamais vu sur Internet.. mais c'est déjà quelque chose! (Pas d'inquiétude, nous avons encore un tas de fonctionnalités à ajouter)
@@ -205,7 +204,7 @@ Pour résumer, qu'avons nous réalisé jusqu'ici ?
 3. Définition du schéma de la base de données
 4. Application d'une migrations pour mettre à jour la base de données et créer une table
 5. Réalisation d'un Scaffold pour créer une interface CRUD sur la table
-6. Création d'une Cell pour charger les donner et gérer les états "loading", "empty", "failure" et enfin "success". 
+6. Création d'une Cell pour charger les donner et gérer les états "loading", "empty", "failure" et enfin "success".
 7. Ajout de la Cell à notre page d'accueil
 
 En réalité, cette différentes étapes sont ni plus ni moins ce qui deviendra votre façon habituelle d'ajouter de nouvelles fonctionnalités dans une application Redwood.

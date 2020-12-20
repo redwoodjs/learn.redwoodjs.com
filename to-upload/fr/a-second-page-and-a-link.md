@@ -8,7 +8,7 @@ Ajoutons donc une page "About" à notre blog de manière à ce que personne n'ig
 
     yarn redwood generate page about
 
-Remarquez que nous n'avons pas spécifié de chemin cette fois-ci, uniquement le nom de la page. En effet, si vous ne le précisez pas, la commande `redwood generate page` créera une `Route` en lui donnant pour chemin le nom de la page préfixé par un slash `/`. Dans le cas présent, ce sera donc `/about`. 
+Remarquez que nous n'avons pas spécifié de chemin cette fois-ci, uniquement le nom de la page. En effet, si vous ne le précisez pas, la commande `redwood generate page` créera une `Route` en lui donnant pour chemin le nom de la page préfixé par un slash `/`. Dans le cas présent, ce sera donc `/about`.
 
 > **Fragmenter le code pour chaque page**
 >
@@ -16,30 +16,30 @@ Remarquez que nous n'avons pas spécifié de chemin cette fois-ci, uniquement le
 
 `http://localhost:8910/about` devrait maintenant pointer sur votre nouvelle page. Bien entendu, absolument personne ne va trouver cette page de votre blog en modifiant manuellement l'URL! Ajoutons donc un lien depuis la page d'accueil vers la page About, et vice-versa. Nous commencerons par créer un simple header et une barre de navigation dans `HomePage.js`:
 
-```javascript{3,7-19}
+```javascript {3,7-19}
 // web/src/pages/HomePage/HomePage.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 const HomePage = () => {
-  return (
-    <>
-      <header>
-        <h1>Redwood Blog</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>A Propos</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>Home</main>
-    </>
-  )
-}
+	return (
+		<>
+			<header>
+				<h1>Redwood Blog</h1>
+				<nav>
+					<ul>
+						<li>
+							<Link to={routes.about()}>A Propos</Link>
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<main>Home</main>
+		</>
+	);
+};
 
-export default HomePage
+export default HomePage;
 ```
 
 Remarquons ici plusieurs points :
@@ -49,45 +49,44 @@ Remarquons ici plusieurs points :
 
   `<Route path="/about" page={AboutPage} name="about" />`
 
-  Si vous n'aimez pas le nom que la commande `redwood generate` utilise pour votre route, vous pouvez parfaitement le changer dans le fichier `Routes.js`! Les routes nommées sont extrêmement utiles car, si vous désirez modifiez le chemin associé avec une route, il vous suffit de le modifier dans le fichier `Routes.js` et immédiatement tous les liens qui utilisent cette route pointerons au bon endroit. Vous pouvez également passer directement une chaîne de caractères à l'attribut `to`, mais alors vous ne bénéficiez plus de ce mécanisme bien utile. 
+  Si vous n'aimez pas le nom que la commande `redwood generate` utilise pour votre route, vous pouvez parfaitement le changer dans le fichier `Routes.js`! Les routes nommées sont extrêmement utiles car, si vous désirez modifiez le chemin associé avec une route, il vous suffit de le modifier dans le fichier `Routes.js` et immédiatement tous les liens qui utilisent cette route pointerons au bon endroit. Vous pouvez également passer directement une chaîne de caractères à l'attribut `to`, mais alors vous ne bénéficiez plus de ce mécanisme bien utile.
 
 ### Retour à la maison
 
 Une fois sur la page "About", nous n'avons aucun moyen de revenir en arrière. Pour y remédier, ajoutons également un lien à cet endroit:
 
-```javascript{3,7-25}
+```javascript {3,7-25}
 // web/src/pages/AboutPage/AboutPage.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 const AboutPage = () => {
-  return (
-    <>
-      <header>
-        <h1>Redwood Blog</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <p>
-          Ce site est créé avec pour seule intention de démontrer la puissance créative de Redwood! Oui, c'est très 
-          impressionant :D
-        </p>
-        <Link to={routes.home()}>Retour à la page d'accueil</Link>
-      </main>
-    </>
-  )
-}
+	return (
+		<>
+			<header>
+				<h1>Redwood Blog</h1>
+				<nav>
+					<ul>
+						<li>
+							<Link to={routes.about()}>About</Link>
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<main>
+				<p>
+					Ce site est créé avec pour seule intention de démontrer la puissance créative de Redwood! Oui, c'est très
+					impressionant :D
+				</p>
+				<Link to={routes.home()}>Retour à la page d'accueil</Link>
+			</main>
+		</>
+	);
+};
 
-export default AboutPage
+export default AboutPage;
 ```
 
 Bien! Affichons cette page dans le navigateur and vérifions que nous pouvons aller et venir entre les différentes pages.
 
 En tant que développeur de classe cosmique, vous avez probablement repéré ce copier-coller un peu lourd du `<header>`. Nous aussi. C'est la raison pour laquelle Redwood dispose d'un petite chose bien pratique appelé "_Layout_"."
-

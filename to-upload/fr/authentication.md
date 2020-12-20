@@ -4,7 +4,7 @@ title: "Authentification"
 sidebar_label: "Authentification"
 ---
 
-"Authentification" est un mot-valise pour tout ce qui se rapporte au fait de s'assurer que l'utilisateur, souvent identifié à l'aide d'un couple email/mot de passe, est autorisé à accéder à quelque chose. L'authentification peut être parfois [délicate à mettre en oeuvre](https://www.rdegges.com/2017/authentication-still-sucks/) techniquement et vous causer de sérieux maux de tête. 
+"Authentification" est un mot-valise pour tout ce qui se rapporte au fait de s'assurer que l'utilisateur, souvent identifié à l'aide d'un couple email/mot de passe, est autorisé à accéder à quelque chose. L'authentification peut être parfois [délicate à mettre en oeuvre](https://www.rdegges.com/2017/authentication-still-sucks/) techniquement et vous causer de sérieux maux de tête.
 
 Heureusement, Redwood est là pour vous! L'authentification n'est pas une chose qu'il vous faut écrire en partant de zero, c'est un problème identifié et résolu qui ne devrait au contraire vous causer que peu de soucis. A ce jour, Redwood s'intégre avec :
 
@@ -15,15 +15,15 @@ Puisque nous avons déjà commecé à déployer notre application sur Netlify, n
 
 > Il existe deux termes contenant beaucoup de lettres, commençant par "A" et finissant par "ation" qu'il bien faut distinguer:
 >
-> * Authentification (__Authentication__ en anglais)
-> * Autorisation (__Authorization__ en anglais)
+> - Authentification (**Authentication** en anglais)
+> - Autorisation (**Authorization** en anglais)
 >
 > Voici comment Redwood utilise ces termes:
 >
-> * **Authentification** se rapporte au fait de savoir dans quelle mesure une personne est bien celle qu'elle prétend être. Celà prend généralement la forme d'un formulaire de Login avec un email et un mot de passe, ou un fournisseurs OAuth tiers comme Google.
-> * **Autorisation** se rapporte au fait de savoir si un utilisateur (qui en général s'est déjà authentifié) est autorisé à effectuer ou non une action. Celà recouvre en général une combinaison de roles et de permissions qui sont évaluées avant de donner ou refuser l'accès à une URL du site.
+> - **Authentification** se rapporte au fait de savoir dans quelle mesure une personne est bien celle qu'elle prétend être. Celà prend généralement la forme d'un formulaire de Login avec un email et un mot de passe, ou un fournisseurs OAuth tiers comme Google.
+> - **Autorisation** se rapporte au fait de savoir si un utilisateur (qui en général s'est déjà authentifié) est autorisé à effectuer ou non une action. Celà recouvre en général une combinaison de roles et de permissions qui sont évaluées avant de donner ou refuser l'accès à une URL du site.
 >
-> Cette section du didacticiel se concentre en particulier sur l'**authentification**. Nous travaillons actuellement à inclure un système simple et flexible de rôles. Une fois ceci réalisé, nous mettrons à jour ce didacticiel! 
+> Cette section du didacticiel se concentre en particulier sur l'**authentification**. Nous travaillons actuellement à inclure un système simple et flexible de rôles. Une fois ceci réalisé, nous mettrons à jour ce didacticiel!
 
 ### Netlify Identity Setup
 
@@ -44,11 +44,12 @@ Quelques modifications doivent être effectuées sur le code pour mettre en plac
 ```terminal
 yarn rw g auth netlify
 ```
+
 Cette commande permet d'ajouter un fichier et d'en modifier quelques autres.
 
 > Vous ne remarquez aucun changement?
 >
-> Afin que celà fonctionne, vous devez utiliser au minimum la version `0.7.0` de Redwood. 
+> Afin que celà fonctionne, vous devez utiliser au minimum la version `0.7.0` de Redwood.
 > Le cas échéant, [mettez à jour Redwood](https://redwoodjs.com/docs/cli-commands#upgrade) avec `yarn rw upgrade`.
 
 Observez le contenu du fichier `api/src/lib/auth.js` qui vient d'être créé (les commentaires ont été supprimé pour plus de clarté):
@@ -75,8 +76,8 @@ Par défaut, le système d'authentification va retourner uniquement les données
 
 Les fichiers qui ont été modifés par le générateur sont les suivants:
 
-* `web/src/index.js`— Entoure le routeur au sein du composant `<AuthProvider>`, ce qui fait que les routes elle-mêmes sont soumises à authentification. Cela donne également accès au "hook" `useAuth()` qui expose quelques fonctions permettant à l'utilisateur de se connecter, se déconnecter, verifier le statut courant, etc.. 
-* `api/src/functions/graphql.js`— Rend disponible `currentUser` pour la partie API de l'application, de telle façon que vous puissez verifier si un utilisateur est autorisé ou non à faire quelque chose. Si vous ajoutez une implémentation à `getCurrentUser()` dans `api/src/lib/auth.js`, alors ce sera ce qui sera retourné par `currentUser`, dans le cas contraire `currentUser` contiendra `null`.
+- `web/src/index.js`— Entoure le routeur au sein du composant `<AuthProvider>`, ce qui fait que les routes elle-mêmes sont soumises à authentification. Cela donne également accès au "hook" `useAuth()` qui expose quelques fonctions permettant à l'utilisateur de se connecter, se déconnecter, verifier le statut courant, etc..
+- `api/src/functions/graphql.js`— Rend disponible `currentUser` pour la partie API de l'application, de telle façon que vous puissez verifier si un utilisateur est autorisé ou non à faire quelque chose. Si vous ajoutez une implémentation à `getCurrentUser()` dans `api/src/lib/auth.js`, alors ce sera ce qui sera retourné par `currentUser`, dans le cas contraire `currentUser` contiendra `null`.
 
 Nous allons connecter les côtés Web et API ci-dessous pour nous assurer qu'un utilisateur ne fait que les choses qu'il est autorisé à faire.
 
@@ -84,47 +85,47 @@ Nous allons connecter les côtés Web et API ci-dessous pour nous assurer qu'un 
 
 Commençons par verrouiller l'API afin que nous puissions être sûrs que seuls les utilisateurs autorisés peuvent créer, mettre à jour et supprimer une publication. Ouvrez le service Post et ajoutons une vérification:
 
-```javascript{4,17,24,32}
+```javascript {4,17,24,32}
 // api/src/services/posts/posts.js
 
-import { db } from 'src/lib/db'
-import { requireAuth } from 'src/lib/auth'
+import { db } from "src/lib/db";
+import { requireAuth } from "src/lib/auth";
 
 export const posts = () => {
-  return db.post.findMany()
-}
+	return db.post.findMany();
+};
 
 export const post = ({ id }) => {
-  return db.post.findOne({
-    where: { id },
-  })
-}
+	return db.post.findOne({
+		where: { id },
+	});
+};
 
 export const createPost = ({ input }) => {
-  requireAuth()
-  return db.post.create({
-    data: input,
-  })
-}
+	requireAuth();
+	return db.post.create({
+		data: input,
+	});
+};
 
 export const updatePost = ({ id, input }) => {
-  requireAuth()
-  return db.post.update({
-    data: input,
-    where: { id },
-  })
-}
+	requireAuth();
+	return db.post.update({
+		data: input,
+		where: { id },
+	});
+};
 
 export const deletePost = ({ id }) => {
-  requireAuth()
-  return db.post.delete({
-    where: { id },
-  })
-}
+	requireAuth();
+	return db.post.delete({
+		where: { id },
+	});
+};
 
 export const Post = {
-  user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
-}
+	user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
+};
 ```
 
 Essayez maintenant de créer, de modifier ou de supprimer un article de nos pages d'administration. Il ne se passe rien! Devrions-nous afficher une sorte de message d'erreur convivial? Dans ce cas, probablement pas - nous allons verrouiller complètement les pages d'administration afin qu'elles ne soient pas accessibles par un navigateur. La seule façon pour quelqu'un de déclencher ces erreurs dans l'API est de tenter d'accéder directement au point de terminaison GraphQL, sans passer par notre interface utilisateur. L'API renvoie déjà un message d'erreur (ouvrez l'inspecteur Web dans votre navigateur et essayez à nouveau de créer / modifier / supprimer), nous sommes donc couverts.
@@ -137,30 +138,30 @@ Essayez maintenant de créer, de modifier ou de supprimer un article de nos page
 
 Nous allons maintenant restreindre complètement l'accès aux pages d'administration, sauf si vous êtes connecté. La première étape consistera à indiquer les itinéraires qui nécessiteront que vous soyez connecté. Pour ce faire, ajouter la balise `<Private>`:
 
-```javascript{3,12,16}
+```javascript {3,12,16}
 // web/src/Routes.js
 
-import { Router, Route, Private } from '@redwoodjs/router'
+import { Router, Route, Private } from "@redwoodjs/router";
 
 const Routes = () => {
-  return (
-    <Router>
-      <Route path="/contact" page={ContactPage} name="contact" />
-      <Route path="/about" page={AboutPage} name="about" />
-      <Route path="/" page={HomePage} name="home" />
-      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
-      <Private unauthenticated="home">
-        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
-        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
-        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
-        <Route path="/admin/posts" page={PostsPage} name="posts" />
-      </Private>
-      <Route notfound page={NotFoundPage} />
-    </Router>
-  )
-}
+	return (
+		<Router>
+			<Route path="/contact" page={ContactPage} name="contact" />
+			<Route path="/about" page={AboutPage} name="about" />
+			<Route path="/" page={HomePage} name="home" />
+			<Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+			<Private unauthenticated="home">
+				<Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+				<Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+				<Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+				<Route path="/admin/posts" page={PostsPage} name="posts" />
+			</Private>
+			<Route notfound page={NotFoundPage} />
+		</Router>
+	);
+};
 
-export default Routes
+export default Routes;
 ```
 
 Entourez les routes que vous voulez protéger par l'authentification, et ajoutez éventuellement l'attribut `unauthenticated` qui répertorie le nom d'une autre route vers laquelle rediriger si l'utilisateur n'est pas connecté. Dans ce cas, nous reviendrons à la page d'accueil.
@@ -169,41 +170,41 @@ Essayez cela dans votre navigateur. Si vous cliquez sur http://localhost:8910/ad
 
 Il ne reste plus qu'à laisser l'utilisateur se connecter! Si vous avez déjà créé une authentification, vous savez que cette partie est généralement un frein, mais Redwood en fait une gentille promenade au parc. La majeure partie de la plomberie a été gérée par le générateur d'authentification, nous pouvons donc nous concentrer sur les parties que l'utilisateur voit réellement. Tout d'abord, ajoutons un lien **Login** qui déclenchera une fenêtre modale à partir du [widget Netlify Identity](https://github.com/netlify/netlify-identity-widget). Supposons que nous souhaitons obtenir cela sur toutes les pages publiques, nous allons donc le mettre dans le `BlogLayout`:
 
-```javascript{4,7,22-26}
+```javascript {4,7,22-26}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
 
 const BlogLayout = ({ children }) => {
-  const { logIn } = useAuth()
+	const { logIn } = useAuth();
 
-  return (
-    <div>
-      <h1>
-        <Link to={routes.home()}>Redwood Blog</Link>
-      </h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={routes.about()}>About</Link>
-          </li>
-          <li>
-            <Link to={routes.contact()}>Contact</Link>
-          </li>
-          <li>
-            <a href="#" onClick={logIn}>
-              Log In
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <main>{children}</main>
-    </div>
-  )
-}
+	return (
+		<div>
+			<h1>
+				<Link to={routes.home()}>Redwood Blog</Link>
+			</h1>
+			<nav>
+				<ul>
+					<li>
+						<Link to={routes.about()}>About</Link>
+					</li>
+					<li>
+						<Link to={routes.contact()}>Contact</Link>
+					</li>
+					<li>
+						<a href="#" onClick={logIn}>
+							Log In
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<main>{children}</main>
+		</div>
+	);
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
 Essayez de cliquer sur le lien Login:
@@ -228,87 +229,87 @@ Une fois que vous faites cela, la fenêtre modale devrait se mettre à jour et d
 
 Cependant, nous n'avons actuellement aucune indication sur notre site que nous sommes connectés. Pourquoi ne pas changer le bouton **Log In** en **Log Out** lorsque vous êtes authentifié:
 
-```javascript{7,23-24}
+```javascript {7,23-24}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
 
 const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated } = useAuth()
+	const { logIn, logOut, isAuthenticated } = useAuth();
 
-  return (
-    <div>
-      <h1>
-        <Link to={routes.home()}>Redwood Blog</Link>
-      </h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={routes.about()}>About</Link>
-          </li>
-          <li>
-            <Link to={routes.contact()}>Contact</Link>
-          </li>
-          <li>
-            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              {isAuthenticated ? 'Log Out' : 'Log In'}
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <main>{children}</main>
-    </div>
-  )
-}
+	return (
+		<div>
+			<h1>
+				<Link to={routes.home()}>Redwood Blog</Link>
+			</h1>
+			<nav>
+				<ul>
+					<li>
+						<Link to={routes.about()}>About</Link>
+					</li>
+					<li>
+						<Link to={routes.contact()}>Contact</Link>
+					</li>
+					<li>
+						<a href="#" onClick={isAuthenticated ? logOut : logIn}>
+							{isAuthenticated ? "Log Out" : "Log In"}
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<main>{children}</main>
+		</div>
+	);
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
-`useAuth ()` nous apporte quelques aides supplémentaires, dans le cas présent `isAuthenticated` retournera` true` ou `false` en fonction de votre statut de connexion, et` logOut ()` déconnectera l'utilisateur. Cliquez maintenant sur **Log Out**  pour vous déconnecter et changer le lien en **Log In** sur lequel vous pouvez cliquer pour ouvrir la fenêtre modale et vous reconnecter.
+`useAuth ()` nous apporte quelques aides supplémentaires, dans le cas présent `isAuthenticated` retournera` true` ou `false` en fonction de votre statut de connexion, et` logOut ()` déconnectera l'utilisateur. Cliquez maintenant sur **Log Out** pour vous déconnecter et changer le lien en **Log In** sur lequel vous pouvez cliquer pour ouvrir la fenêtre modale et vous reconnecter.
 
-Lorsque vous *êtes* connecté, vous devriez pouvoir accéder à nouveau aux pages d'administration: http://localhost:8910/admin/posts
+Lorsque vous _êtes_ connecté, vous devriez pouvoir accéder à nouveau aux pages d'administration: http://localhost:8910/admin/posts
 
 > Si vous commencez à travailler sur une autre application Redwood qui utilise Netlify Identity, vous devrez effacer manuellement votre stockage local, où est stockée l'URL du site que vous avez entrée la première fois que vous avez vu la fenêtre modale. Le stockage local est lié à votre domaine et à votre port, qui par défaut seront les mêmes pour toute application Redwood lors du développement local. Vous pouvez effacer votre stockage local dans Chrome en allant dans l'inspecteur Web, puis dans l'onglet **Application**, puis à gauche, ouvrez **Local Storage** et cliquez sur http://localhost:8910. Vous verrez les clés stockées sur la droite et pourrez toutes les supprimer.
 
 Encore un détail: montrons l'adresse e-mail de l'utilisateur connecté. Nous pouvons obtenir le `currentUser` par le "hook" `useAuth()`. Il contiendra les données que notre bibliothèque d'authentification tierce stocke pour l'utilisateur actuellement connecté:
 
-```javascript{7,27}
+```javascript {7,27}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
 
 const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+	const { logIn, logOut, isAuthenticated, currentUser } = useAuth();
 
-  return (
-    <div>
-      <h1>
-        <Link to={routes.home()}>Redwood Blog</Link>
-      </h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={routes.about()}>About</Link>
-          </li>
-          <li>
-            <Link to={routes.contact()}>Contact</Link>
-          </li>
-          <li>
-            <a href="#" onClick={isAuthenticated ? logOut : logIn}>
-              {isAuthenticated ? 'Log Out' : 'Log In'}
-            </a>
-          </li>
-          {isAuthenticated && <li>{currentUser.email}</li>}
-        </ul>
-      </nav>
-      <main>{children}</main>
-    </div>
-  )
-}
+	return (
+		<div>
+			<h1>
+				<Link to={routes.home()}>Redwood Blog</Link>
+			</h1>
+			<nav>
+				<ul>
+					<li>
+						<Link to={routes.about()}>About</Link>
+					</li>
+					<li>
+						<Link to={routes.contact()}>Contact</Link>
+					</li>
+					<li>
+						<a href="#" onClick={isAuthenticated ? logOut : logIn}>
+							{isAuthenticated ? "Log Out" : "Log In"}
+						</a>
+					</li>
+					{isAuthenticated && <li>{currentUser.email}</li>}
+				</ul>
+			</nav>
+			<main>{children}</main>
+		</div>
+	);
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
 ![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
@@ -317,5 +318,4 @@ export default BlogLayout
 
 Croyez-le ou non, c'est tout! L'authentification avec Redwood est un jeu d'enfant et nous ne faisons que commencer. Attendez-vous à plus de magie bientôt!
 
-> Si vous inspectez le contenu de `currentUser`, vous verrez qu'il contient un tableau appelé `roles`. Sur le tableau de bord Netlify Identity, vous pouvez attribuer à votre utilisateur une collection de rôles, qui ne sont que des chaînes de caractères telles que «admin» ou «guest». En utilisant cette gamme de rôles, vous *pourriez* créer un système d'authentification basé sur les rôles très rudimentaire. À moins que vous n'ayez un besoin urgent de cette simple vérification de rôle, nous vous recommandons d'attendre la solution Redwood, à venir bientôt!
-
+> Si vous inspectez le contenu de `currentUser`, vous verrez qu'il contient un tableau appelé `roles`. Sur le tableau de bord Netlify Identity, vous pouvez attribuer à votre utilisateur une collection de rôles, qui ne sont que des chaînes de caractères telles que «admin» ou «guest». En utilisant cette gamme de rôles, vous _pourriez_ créer un système d'authentification basé sur les rôles très rudimentaire. À moins que vous n'ayez un besoin urgent de cette simple vérification de rôle, nous vous recommandons d'attendre la solution Redwood, à venir bientôt!
