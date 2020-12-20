@@ -28,7 +28,7 @@ module.exports = {
 	favicon: "img/favicon.ico",
 	organizationName: "redwoodjs", // Usually your GitHub org/user name.
 	projectName: "learn.redwoodjs.com", // Usually your repo name.
-	plugins: ["my-loaders"],
+	plugins: ["docusaurus-tailwindcss-loader"],
 	themeConfig: {
 		navbar: {
 			title: "Learn RedwoodJS",
