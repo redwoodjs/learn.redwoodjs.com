@@ -84,47 +84,47 @@ We'll hook up both the web and api sides below to make sure a user is only doing
 
 First let's lock down the API so we can be sure that only authorized users can create, update and delete a Post. Open up the Post service and let's add a check:
 
-```javascript{4,17,24,32}
+```javascript {4,17,24,32}
 // api/src/services/posts/posts.js
 
-import { db } from 'src/lib/db'
-import { requireAuth } from 'src/lib/auth'
+import { db } from "src/lib/db";
+import { requireAuth } from "src/lib/auth";
 
 export const posts = () => {
-  return db.post.findMany()
-}
+    return db.post.findMany();
+};
 
 export const post = ({ id }) => {
-  return db.post.findOne({
-    where: { id },
-  })
-}
+    return db.post.findOne({
+        where: { id },
+    });
+};
 
 export const createPost = ({ input }) => {
-  requireAuth()
-  return db.post.create({
-    data: input,
-  })
-}
+    requireAuth();
+    return db.post.create({
+        data: input,
+    });
+};
 
 export const updatePost = ({ id, input }) => {
-  requireAuth()
-  return db.post.update({
-    data: input,
-    where: { id },
-  })
-}
+    requireAuth();
+    return db.post.update({
+        data: input,
+        where: { id },
+    });
+};
 
 export const deletePost = ({ id }) => {
-  requireAuth()
-  return db.post.delete({
-    where: { id },
-  })
-}
+    requireAuth();
+    return db.post.delete({
+        where: { id },
+    });
+};
 
 export const Post = {
-  user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
-}
+    user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
+};
 ```
 
 Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lock down the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
@@ -139,30 +139,30 @@ Now try creating, editing or deleting a post from our admin pages. Nothing happe
 
 Now we'll restrict access to the admin pages completely unless you're logged in. The first step will be to denote which routes will require that you be logged in. Enter the `<Private>` tag:
 
-```javascript{3,12,16}
+```javascript {3,12,16}
 // web/src/Routes.js
 
-import { Router, Route, Private } from '@redwoodjs/router'
+import { Router, Route, Private } from "@redwoodjs/router";
 
 const Routes = () => {
-  return (
-    <Router>
-      <Route path="/contact" page={ContactPage} name="contact" />
-      <Route path="/about" page={AboutPage} name="about" />
-      <Route path="/" page={HomePage} name="home" />
-      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
-      <Private unauthenticated="home">
-        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
-        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
-        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
-        <Route path="/admin/posts" page={PostsPage} name="posts" />
-      </Private>
-      <Route notfound page={NotFoundPage} />
-    </Router>
-  )
-}
+    return (
+        <Router>
+            <Route path="/contact" page={ContactPage} name="contact" />
+            <Route path="/about" page={AboutPage} name="about" />
+            <Route path="/" page={HomePage} name="home" />
+            <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+            <Private unauthenticated="home">
+                <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+                <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+                <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+                <Route path="/admin/posts" page={PostsPage} name="posts" />
+            </Private>
+            <Route notfound page={NotFoundPage} />
+        </Router>
+    );
+};
 
-export default Routes
+export default Routes;
 ```
 
 Surround the routes you want to be behind authentication and optionally add the `unauthenticated` attribute that lists the name of another route to redirect to if the user is not logged in. In this case we'll go back to the homepage.
@@ -171,41 +171,39 @@ Try that in your browser. If you hit http://localhost:8910/admin/posts you shoul
 
 Now all that's left to do is let the user actually log in! If you've built authentication before then you know this part is usually a drag, but Redwood makes it a walk in the park. Most of the plumbing was handled by the auth generator, so we get to focus on the parts the user actually sees. First, let's add a **Login** link that will trigger a modal from the [Netlify Identity widget](https://github.com/netlify/netlify-identity-widget). Let's assume we want this on all of the public pages, so we'll put it in the `BlogLayout`:
 
-```javascript{4,7,22-26}
+```javascript {4,7,22-26}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
 
 const BlogLayout = ({ children }) => {
-  const { logIn } = useAuth()
+    const { logIn } = useAuth();
 
-  return (
-    <div>
-      <h1>
-        <Link to={routes.home()}>Redwood Blog</Link>
-      </h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={routes.about()}>About</Link>
-          </li>
-          <li>
-            <Link to={routes.contact()}>Contact</Link>
-          </li>
-          <li>
-            <button onClick={logIn}>
-              Log In
-            </button>
-          </li>
-        </ul>
-      </nav>
-      <main>{children}</main>
-    </div>
-  )
-}
+    return (
+        <div>
+            <h1>
+                <Link to={routes.home()}>Redwood Blog</Link>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to={routes.about()}>About</Link>
+                    </li>
+                    <li>
+                        <Link to={routes.contact()}>Contact</Link>
+                    </li>
+                    <li>
+                        <button onClick={logIn}>Log In</button>
+                    </li>
+                </ul>
+            </nav>
+            <main>{children}</main>
+        </div>
+    );
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
 Try clicking the login link:
@@ -232,41 +230,39 @@ Once you do that the modal should update and say that you're logged in! It worke
 
 We've got no indication on our actual site that we're logged in, however. How about changing the **Log In** button to be **Log Out** when you're authenticated:
 
-```javascript{7,23-24}
+```javascript {7,23-24}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
 
 const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated } = useAuth()
+    const { logIn, logOut, isAuthenticated } = useAuth();
 
-  return (
-    <div>
-      <h1>
-        <Link to={routes.home()}>Redwood Blog</Link>
-      </h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={routes.about()}>About</Link>
-          </li>
-          <li>
-            <Link to={routes.contact()}>Contact</Link>
-          </li>
-          <li>
-            <button onClick={isAuthenticated ? logOut : logIn}>
-              {isAuthenticated ? 'Log Out' : 'Log In'}
-            </button>
-          </li>
-        </ul>
-      </nav>
-      <main>{children}</main>
-    </div>
-  )
-}
+    return (
+        <div>
+            <h1>
+                <Link to={routes.home()}>Redwood Blog</Link>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to={routes.about()}>About</Link>
+                    </li>
+                    <li>
+                        <Link to={routes.contact()}>Contact</Link>
+                    </li>
+                    <li>
+                        <button onClick={isAuthenticated ? logOut : logIn}>{isAuthenticated ? "Log Out" : "Log In"}</button>
+                    </li>
+                </ul>
+            </nav>
+            <main>{children}</main>
+        </div>
+    );
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
 `useAuth()` provides a couple more helpers for us, in this case `isAuthenticated` which will return `true` or `false` based on your login status, and `logOut()` which will log the user out. Now clicking **Log Out** should log you out and change the link to **Log In** which you can click to open the modal and log back in again.
@@ -277,42 +273,40 @@ When you _are_ logged in, you should be able to access the admin pages again: ht
 
 One more touch: let's show the email address of the user that's logged in. We can get the `currentUser` from `useAuth()` and it will contain the data that our third party authentication library is storing about the currently logged in user:
 
-```javascript{7,27}
+```javascript {7,27}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
 
 const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+    const { logIn, logOut, isAuthenticated, currentUser } = useAuth();
 
-  return (
-    <div>
-      <h1>
-        <Link to={routes.home()}>Redwood Blog</Link>
-      </h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={routes.about()}>About</Link>
-          </li>
-          <li>
-            <Link to={routes.contact()}>Contact</Link>
-          </li>
-          <li>
-            <button onClick={isAuthenticated ? logOut : logIn}>
-              {isAuthenticated ? 'Log Out' : 'Log In'}
-            </button>
-          </li>
-          {isAuthenticated && <li>{currentUser.email}</li>}
-        </ul>
-      </nav>
-      <main>{children}</main>
-    </div>
-  )
-}
+    return (
+        <div>
+            <h1>
+                <Link to={routes.home()}>Redwood Blog</Link>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to={routes.about()}>About</Link>
+                    </li>
+                    <li>
+                        <Link to={routes.contact()}>Contact</Link>
+                    </li>
+                    <li>
+                        <button onClick={isAuthenticated ? logOut : logIn}>{isAuthenticated ? "Log Out" : "Log In"}</button>
+                    </li>
+                    {isAuthenticated && <li>{currentUser.email}</li>}
+                </ul>
+            </nav>
+            <main>{children}</main>
+        </div>
+    );
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
 ![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
