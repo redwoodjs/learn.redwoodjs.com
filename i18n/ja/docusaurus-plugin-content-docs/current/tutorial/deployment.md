@@ -24,7 +24,7 @@ Before we continue, make sure your app is fully committed and pushed to GitHub, 
 
 > **NOTE:** Git initializes with `master`. Don't know how to rename `master` to `main`? If you're pushing to GitHub, you can follow these steps:
 > 
-> ```plaintext{4,6}
+> ```plaintext {4,6}
 git init
 git add .
 git commit -m 'First commit'
