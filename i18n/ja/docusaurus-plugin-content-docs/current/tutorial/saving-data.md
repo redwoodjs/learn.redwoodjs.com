@@ -85,56 +85,56 @@ As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood
 
 In this case we're creating a single `Mutation` that we'll call `createContact`. Add that to the end of the SDL file (before the closing backtick):
 
-```javascript{28-30}
+```javascript {28-30}
 // api/src/graphql/contacts.sdl.js
 
 export const schema = gql`
-  type Contact {
-    id: Int!
-    name: String!
-    email: String!
-    message: String!
-    createdAt: DateTime!
-  }
+    type Contact {
+        id: Int!
+        name: String!
+        email: String!
+        message: String!
+        createdAt: DateTime!
+    }
 
-  type Query {
-    contacts: [Contact!]!
-  }
+    type Query {
+        contacts: [Contact!]!
+    }
 
-  input CreateContactInput {
-    name: String!
-    email: String!
-    message: String!
-  }
+    input CreateContactInput {
+        name: String!
+        email: String!
+        message: String!
+    }
 
-  input UpdateContactInput {
-    name: String
-    email: String
-    message: String
-  }
+    input UpdateContactInput {
+        name: String
+        email: String
+        message: String
+    }
 
-  type Mutation {
-    createContact(input: CreateContactInput!): Contact
-  }
-`
+    type Mutation {
+        createContact(input: CreateContactInput!): Contact
+    }
+`;
 ```
 
 The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
 
 That's it for the SDL file, let's define the service that will actually save the data to the database. The service includes a default `contacts` function for getting all contacts from the database. Let's add our mutation to create a new contact:
 
-```javascript{9-11}
+```javascript {9-11}
 // api/src/services/contacts/contacts.js
 
-import { db } from 'src/lib/db'
+import { db } from "src/lib/db";
 
 export const contacts = () => {
-  return db.contact.findMany()
-}
+    return db.contact.findMany();
+};
 
 export const createContact = ({ input }) => {
-  return db.contact.create({ data: input })
-}
+    return db.contact.create({ data: input });
+};
 ```
 
 Thanks to Prisma Client JS it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
@@ -179,7 +179,7 @@ We reference the `createContact` mutation we defined in the Contacts SDL passing
 
 Next we'll call the `useMutation` hook provided by Apollo which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
-```javascript{11,15}
+```javascript {11,15}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -222,7 +222,7 @@ If you'll recall `<Form>` gives us all of the fields in a nice object where the 
 
 Now we can update the `onSubmit` function to invoke the mutation with the data it receives:
 
-```javascript{7}
+```javascript {7}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -253,7 +253,7 @@ Let's address these issues.
 
 The `useMutation` hook returns a couple more elements along with the function to invoke it. We can destructure these as the second element in the array that's returned. The two we care about are `loading` and `error`:
 
-```javascript{4}
+```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -270,14 +270,14 @@ const ContactPage = () => {
 
 Now we know if the database call is still in progress by looking at `loading`. An easy fix for our multiple submit issue would be to disable the submit button if the response is still in progress. We can set the `disabled` attribute on the "Save" button to the value of `loading`:
 
-```javascript{5}
+```javascript {5}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  // ...
-  <Submit disabled={loading}>Save</Submit>
-  // ...
-)
+    // ...
+    <Submit disabled={loading}>Save</Submit>
+    // ...
+);
 ```
 
 It may be hard to see a difference in development because the submit is so fast, but you could enable network throttling via the Network tab Chrome's Web Inspector to simulate a slow connection:
@@ -288,7 +288,7 @@ You'll see that the "Save" button become disabled for a second or two while wait
 
 Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. ([Read the full documentation about Redwood's Flash system](https://redwoodjs.com/docs/flash-messaging-bus).)
 
-```javascript{4,10,13-17,24}
+```javascript {4,10,13-17,24}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
@@ -330,38 +330,38 @@ We have email validation on the client, but any good developer knows [_never tru
 
 We talked about business logic belonging in our services files and this is a perfect example. Let's add a `validate` function to our `contacts` service:
 
-```javascript{3,7-15,22}
+```javascript {3,7-15,22}
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from '@redwoodjs/api'
+import { UserInputError } from "@redwoodjs/api";
 
-import { db } from 'src/lib/db'
+import { db } from "src/lib/db";
 
 const validate = (input) => {
-  if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
-    throw new UserInputError("Can't create new contact", {
-      messages: {
-        email: ['is not formatted like an email address'],
-      },
-    })
-  }
-}
+    if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
+        throw new UserInputError("Can't create new contact", {
+            messages: {
+                email: ["is not formatted like an email address"],
+            },
+        });
+    }
+};
 
 export const contacts = () => {
-  return db.contact.findMany()
-}
+    return db.contact.findMany();
+};
 
 export const createContact = ({ input }) => {
-  validate(input)
-  return db.contact.create({ data: input })
-}
+    validate(input);
+    return db.contact.create({ data: input });
+};
 ```
 
 So when `createContact` is called it will first validate the inputs and only if no errors are thrown will it continue to actually create the record in the database.
 
 We already capture any existing error in the `error` constant that we got from `useMutation`, so we _could_ manually display an error box on the page somewhere containing those errors, maybe at the top of the form:
 
-```html{4-9}
+```html {4-9}
 // web/src/pages/ContactPage/ContactPage.js
 
 <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
@@ -376,16 +376,16 @@ We already capture any existing error in the `error` constant that we got from `
 
 > If you need to handle your errors manually, you can do this:
 > 
-> ```javascript{3-8}
+> ```javascript {3-8}
 // web/src/pages/ContactPage/ContactPage.js
 const onSubmit = async (data) => {
   try {
-    await create({ variables: { input: data } })
-    console.log(data)
+      await create({ variables: { input: data } });
+      console.log(data);
   } catch (error) {
-    console.log(error)
+      console.log(error);
   }
-}
+};
 ```
 
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
@@ -405,7 +405,7 @@ Remember when we said that `<Form>` had one more trick up its sleeve? Here it co
 
 Remove the inline error display we just added (`{ error && ...}`) and replace it with `<FormError>`, passing the `error` constant we got from `useMutation` and a little bit of styling to `wrapperStyle` (don't forget the `import`). We'll also pass `error` to `<Form>` so it can setup a context:
 
-```javascript{10,18-22}
+```javascript {10,18-22}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -464,7 +464,7 @@ import { useForm } from "react-hook-form";
 
 And now call it inside of our component:
 
-```javascript{4}
+```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -474,7 +474,7 @@ const ContactPage = () => {
 
 Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instead of doing it itself:
 
-```javascript{10}
+```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
