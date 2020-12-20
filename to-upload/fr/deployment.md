@@ -6,8 +6,8 @@ sidebar_label: "Déploiement"
 
 La partie 4 de ce didacticiel en vidéo se trouve ici:
 
-<div class="relative pb-9/16">
-  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
 
 La raison principale pour laquelle nous avons mis au point Redwood était de permettre aux développeurs de construire des applications web _full-stack_ plus facilement tout en adhérant à la philosophie Jamstack. Vous avez pu voir à quoi ressemble l'élaboration d'une application Redwood. Que pensez-vous de voir comment on la déploit?
