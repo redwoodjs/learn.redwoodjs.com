@@ -1,26 +1,26 @@
 ---
 id: everyones-favorite-thing-to-build-forms
-title: "Everyone's Favorite Thing to Build: Forms"
-sidebar_label: "Everyone's Favorite Thing to Build: Forms"
+title: "Votre partie préférée: Les Formulaires"
+sidebar_label: "Votre partie préférée: Les Formulaires"
 ---
 
-Wait, don't close your browser! You had to know this was coming eventually, didn't you? And you've probably realized by now we wouldn't even have this section in the tutorial unless Redwood had figured out a way to make forms less soul-sucking than usual. In fact Redwood might even make you _love_ building forms. Well, love is a strong word. _Like_ building forms. _Tolerate_ building them?
+Attendez! Ne partez pas! Vous deviez bien vous douter que ça allait venir, non? Rassurez-vous, pour les formulaires aussi, Redwood a trouvé une façon de faire qui les rend moins pénible que d'habitude. En fait, Redwood pourrait même vous faire _aimer_ les formulaires. Bon, aimer est peut-être un peu fort. Disons _apprécier_ travailler avec les formulaires, ou à tout le moins les _tolérer_?   
 
-Part 3 of the video tutorial picks up here:
+La troisième partie du didacticiel en video commence ici:
 
 <div class="relative pb-9/16">
   <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/eT7iIy0F8Tk?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
 
-We already have a form or two in our app; remember our posts scaffold? And those work pretty well! How hard can it be? (Hopefully you haven't sneaked a peek at that code—what's coming next will be much more impressive if you haven't.)
+Nous avons déjà un formulaire ou deux dans notre application; vous rappellez-vous notre _scaffolding_ avec les articles? Ils fonctionnaient plus bien, non? Alors, a quel point est-ce difficile de reproduire ces formulaires? (Si vous n'avez pas encore eu la curiosité d'aller voir le code généré, ce qui va suivre va vous surprendre)
 
-Let's build the simplest form that still makes sense for our blog, a "contact us" form.
+Construisons donc le formulaire le plus élémentaire qui soit pour notre blog, et utile de surcroît, celui qui permettra à vos lecteurs de vous contacter. 
 
-### The Page
+### La Page
 
     yarn rw g page contact
 
-We can put a link to Contact in our layout's header:
+Après avoir exécuté cette commande, nous pouvons ajouter un lien vers Contact dans notre Layout:
 
 ```javascript{17-19}
 // web/src/layouts/BlogLayout/BlogLayout.js
@@ -67,42 +67,38 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-Double check that everything looks good and then let's get to the good stuff.
+Vérifiez que tout fonctionne correctement, puis passons aux réjouïssances.
 
-### Introducing Form Helpers
+### Présentation des Form Helpers
 
-Forms in React are infamously annoying to work with. There are [Controlled Components](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled Components](https://reactjs.org/docs/uncontrolled-components.html) and [third party libraries](https://jaredpalmer.com/formik/) and many more workarounds to try and make forms in React as simple as they were originally intended to be in the HTML spec: an `<input>` field with a `name` attribute that gets submitted somewhere when you click a button.
+Les formulaires avec React sont surtout connus pour être particulièrement agaçants à construire. Il existes les [Controlled Components](https://reactjs.org/docs/forms.html#controlled-components), les [Uncontrolled Components](https://reactjs.org/docs/uncontrolled-components.html), diverses [librairies tierces](https://jaredpalmer.com/formik/) et enfin pas mal d'astuces diverses pour essayer de les rendre aussi simples qu'ils sont sensés être selon les spécifications HTML: un champ `<input>` avec un attribut `name` qui sera envoyé quelque part lorsque l'utilisateur clique sur un bouton.  
 
-We think Redwood is a step or two in the right direction by not only freeing you from writing controlled component plumbing, but also dealing with validation and errors automatically. Let's see how it works.
+Nous pensons que Redwood fait quelques pas dans la bonne direction, non seulement en vous libérant d'avoir à écrire un tans de code relatif aux composants controllés (controlled components), mais aussi en s'occupant de gérer automatiquement les validations et éventuelles erreurs. Regardons ensemble comment tout celà fonctionne.
 
-Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attributes that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
+Avant de commencer, ajoutons quelques classes CSS pour que les formulaires par défaut s'affichent correctement sans que nous ayons à alourdir notre code avec des attributs `style` un peu partout. Pour le moment nous écrirons ces règles dans le fichier `index.css` situé dans le répertoire `web/src`:
 
 ```css
 /* web/src/index.css */
 
-button,
-input,
-label,
-textarea {
-	display: block;
-	outline: none;
+button, input, label, textarea {
+  display: block;
+  outline: none;
 }
 
 label {
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .error {
-	color: red;
+  color: red;
 }
 
-input.error,
-textarea.error {
-	border: 1px solid red;
+input.error, textarea.error {
+  border: 1px solid red;
 }
 ```
 
-For now we won't be talking to the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
+Pour l'instant nous n'allons pas faire dialoguer notre formulaire de contact avec la base de données, raison pour laquelle nous ne générons pas une Cell. Nous allons simplement ajouter le formulaire à notre page. Dans Redwood, la création d'un formulaire débute par... attention à la surprise...une balise `<Form>`:
 
 ```javascript{3,9}
 // web/src/pages/ContactPage/ContactPage.js
@@ -121,7 +117,7 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-Well that was anticlimactic. You can't even see it in the browser. Let's add a form field so we can at least see something. Redwood ships with several inputs and a plain text input box is `<TextField>`. We'll also give the field a `name` attribute so that once there are multiple inputs on this page we'll know which contains which data:
+Humm, OK... pour le moment rien d'incroyable. Ajoutons un premier champ que l'on puisse au moins afficher quelque chose. Redwood propose une variété de type de champs parmi lesquels se trouve `<TextField>`. Ce dernier correspond à un champ text tout ce qu'il y a de plus basique. Il possède un attribut `name` de telle façon que lorsqu'un formulaire contient de multiples champs, il soit possible de savoir lequel contient telle ou telle donnée.
 
 ```javascript{3,10}
 // web/src/pages/ContactPage/ContactPage.js
@@ -144,7 +140,7 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80258121-4f4d2300-8637-11ea-83f5-c667e05aaf74.png" />
 
-Something is showing! Still, pretty boring. How about adding a submit button?
+Enfin quelque chose s'affiche! Pas encore très intéressant toutefois. Ajoutons un bouton "envoyer".
 
 ```javascript{3,11}
 // web/src/pages/ContactPage/ContactPage.js
@@ -168,11 +164,11 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80258188-7572c300-8637-11ea-9583-1b7636f93be0.png" />
 
-We have what might actually be considered a real, bonafide form here. Try typing something in and clicking "Save". Nothing blew up on the page but we have no indication that the form submitted or what happened to the data (although you may have noticed an error in the Web Inspector). Next we'll get the data in our fields.
+Nous obtenons ce qu'on peut considérer comme un véritable et authentique formulaire! Essayez de saisir quelque chose et cliquez sur le bouton. Rien n'explose, mais nous n'avons aucune indication que le formulaire à bien été envoyé (et vous aurez noté l'apparition d'une erreur dans la console). Voyons à présent comment récupérer les données depuis nos champs de formulaire.
 
 ### onSubmit
 
-Similar to a plain HTML form we'll give `<Form>` an `onSubmit` handler. That handler will be called with a single argument—an object containing all of the submitted form fields:
+De façon similaire à un formulaire HTML, une balise `<Form>` possède un "_handler_" `onSubmit`. Ce handler sera appelé avec un seul argument: un unique objet contenant l'ensemble des champs du formulaire.
 
 ```javascript{4-6,10}
 // web/src/pages/ContactPage/ContactPage.js
@@ -193,11 +189,11 @@ const ContactPage = () => {
 }
 ```
 
-Now try filling in some data and submitting:
+Essayons maintenant de saisir quelques mots puis soumettre ce formulaire:
 
 <img src="https://user-images.githubusercontent.com/300/80258293-c08cd600-8637-11ea-92fb-93d3ca1db3cf.png" />
 
-Great! Let's turn this into a more useful form by adding a couple fields. We'll rename the existing one to "name" and add "email" and "message":
+Extra! Rendons le formulaire un peu plus utile en ajoutant quelques champs supplémentaires. Nous renommons ainsi notre premier champ en `name` puis ajoutons les champs `email` et `message`:
 
 ```javascript{3,15,16}
 // web/src/pages/ContactPage/ContactPage.js
@@ -225,11 +221,11 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-See the new `<TextAreaField>` component here which generates an HTML `<textarea>` but that contains Redwood's form goodness:
+Remarquez le nouveau composant `<TextAreaField>` qui génère une balise HTML `<textarea>` contenant quelques spécificités utiles propres à Redwood:
 
 <img src="https://user-images.githubusercontent.com/300/80258346-e4e8b280-8637-11ea-908b-06a1160b932b.png" />
 
-Let's add some labels:
+Ajoutons également quelques étiquettes en face des champs:
 
 ```javascript{6,9,12}
 // web/src/pages/ContactPage/ContactPage.js
@@ -254,13 +250,13 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/80258431-15c8e780-8638-11ea-8eca-0bd222b51d8a.png" />
 
-Try filling out the form and submitting and you should get a console message with all three fields now.
+Essayez donc de soumettre à nouveau le formulaire, vous devriez obtenir dans la console un message avec le contenu des trois champs.
 
 ### Validation
 
-"Okay, Redwood tutorial author," you're saying, "what's the big deal? You built up Redwood's form helpers as The Next Big Thing but there are plenty of libraries that will let me skip creating controlled inputs manually. So what?" And you're right! Anyone can fill out a form _correctly_ (although there are plenty of QA folks who would challenge that statement), but what happens when someone leaves something out, or makes a mistake, or tries to haxorz our form? Now who's going to be there to help? Redwood, that's who!
+"Humm... cher auteur de ce didacticiel, qui a-t-il d'incroyable jusqu'ici?". C'est sans doute votre état d'esprit à ce stade. En effet, il existe déjà un nombre conséquent de librairies permettant d'obtenir un résultat similaire.. Vous avez raison! N'importe qui peut remblir un formulaire _correctement_, mais que se passe-t-il lorsqu'un utilisateur fait une erreur, oubli un champ, voire tente de jouer les hackers? Qui va vous aider à gérer cette situation? Redwood va le faire. 
 
-All three of these fields should be required in order for someone to send a message to us. Let's enforce that with the standard HTML `required` attribute:
+Tout d'abord, ce trois champs devraient être obligatoirement remplis pour pouvoir soumettre le formulaire. Rendons cette règle obligatoire en utilisant l'attribut HTML standard `required`:
 
 ```javascript{7,10,13}
 // web/src/pages/ContactPage/ContactPage.js
@@ -285,9 +281,9 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/80258542-5163b180-8638-11ea-8450-8a727de177ad.png" />
 
-Now when trying to submit there'll be message from the browser noting that a field must be filled in. This is better than nothing, but these messages can't be styled. Can we do better?
+Désormais, lorsque vous essayez de soumettre le formulaire, un message s'affiche dans votre navigateur. C'est mieux que rien, mais l'apparence de ce message ne peut être modifiée. Peut-on faire mieux?
 
-Yes! Let's update that `required` call to instead be an object we pass to a custom attribute on Redwood form helpers called `validation`:
+Oui! Remplaçons cet attribut `required` par un object que nous passons à un attribut nommé `validation`, spécifique à Redwood:
 
 ```javascript{7,10,13}
 // web/src/pages/ContactPage/ContactPage.js
@@ -310,11 +306,12 @@ return (
 )
 ```
 
-And now when we submit the form with blank fields...the Name field gets focus. Boring. But this is just a stepping stone to our amazing reveal! We have one more form helper component to add—the one that displays errors on a field. Oh, it just so happens that it's plain HTML so we can style it however we want!
+Maintenant lorsqu'un champ reste vide, le formulaire n'est pas envoyé et le champ en question prend le focus de telle manière que l'utilisateur puisse saisir une valeur. Pas encore stupéfiant, mais c'est une première étape. Redwood a d'autres fonctions sympatiques pour les formulaires, dont la possibilité d'afficher les erreurs à côté des champs.  
+
 
 ### `<FieldError>`
 
-Introducing `<FieldError>` (don't forget to include it in the `import` statement at the top):
+Pour celà, voici le composant `<FieldError>` (n'oubliez pas d'inclure l'`import` associé en haut du fichier):
 
 ```javascript{8,22,26,30}
 // web/src/pages/ContactPage/ContactPage.js
@@ -357,11 +354,11 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-Note that the `name` attribute matches the `name` of the input field above it. That's so it knows which field to display errors for. Try submitting that form now.
+Observez que l'attribut `name` correspond à celui du champ au dessus. De cette manière, Redwood sait où afficher le message d'erreur d'un champ.
 
 <img src="https://user-images.githubusercontent.com/300/80258694-ac95a400-8638-11ea-904c-dc034f07b12a.png" />
 
-But this is just the beginning. Let's make sure folks realize this is an error message. Remember the `.error` class we defined in `index.css`? Check out the `className` attribute on `<FieldError>`:
+Mais c'est juste le début. Maintenant faisons en sorte que nos utilisateurs sachent qu'il s'agisse bien d'un message d'erreur. Vous rappellez-vous la classe CSS `.error` que nous avions définie dans `index.css`? Indiquons-la à l'attribut `className` de nos composants `<FieldError>`:
 
 ```javascript{8,12,16}
 // web/src/pages/ContactPage/ContactPage.js
@@ -389,7 +386,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/73306040-3cf65100-41d0-11ea-99a9-9468bba82da7.png" />
 
-You know what would be nice? If the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
+Vous savez ce qui serez bien? Que le champ lui-même indique qu'il y a eu une erreur. Remarquez ici l'utilisation de l'attribut `errorClassName`:
 
 ```javascript{10,18,26}
 // web/src/pages/ContactPage/ContactPage.js
@@ -429,7 +426,7 @@ return (
 
 <img src="https://user-images.githubusercontent.com/300/80258907-39d8f880-8639-11ea-8816-03a11c69e8ac.png" />
 
-Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `for` attribute of `<label>` becomes the `name` prop on `<Label>`, just like with the other Redwood form components. And don't forget the import:
+Bravo! Et maintenant, appliquons ce principe à l'étiquette elle-même. Pour celà utilisons le composant `<Label>` fourni par Redwood. Notez comme l'attribut `for` correspond à la valeur de l'attribut `name` du composant associé. N'oubliez pas également d'importer le composant:
 
 ```javascript{9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
@@ -493,13 +490,11 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
 
-> **Error styling**
->
-> In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`. Check out the [Form docs](https://redwoodjs.com/docs/form) for more details on error styling.
+> En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle`
 
-### Validating Input Format
+### Validation du Format des Champs
 
-We should make sure the email field actually contains an email:
+Nous devrions nous assurer que le champ email contient bien... un email!
 
 ```html{7-9}
 // web/src/pages/ContactPage/ContactPage.js
@@ -516,7 +511,7 @@ We should make sure the email field actually contains an email:
 />
 ```
 
-That is definitely not the end-all-be-all for email address validation, but pretend it's bulletproof. Let's also change the message on the email validation to be a little more friendly:
+OK, ça n'est pas la validation ultime pour un champ email, mais pour le moment faisons comme si. Modifions également le message affiché en cas d'échec de la validation:
 
 ```html{9}
 // web/src/pages/ContactPage/ContactPage.js
@@ -536,24 +531,23 @@ That is definitely not the end-all-be-all for email address validation, but pret
 
 <img src="https://user-images.githubusercontent.com/300/80259139-bd92e500-8639-11ea-99d5-be278dc67afc.png" />
 
-You may have noticed that trying to submit a form with validation errors outputs nothing to the console—it's not actually submitting. That's a good thing! Fix the errors and all is well.
+Vous avez peut-être remarqué qu'essayer d'envoyer le formulaire alors que sont présentes des erreurs de validation n'affiche rien dans la console. C'est en réalité une bonne chose car celà vous indique que le formulaire n'a pas été envoyé. Corrigez la valeur des champs concernés, et tout fonctionne correctement.
 
-> **Instant client-side field validation**
->
-> When a validation error appears it will _disappear_ as soon as you fix the content of the field. You don't have to click "Submit" again to remove the error messages.
+> Lorsqu'un message lié à une erreur lors de la validation d'un champ s'affiche, il disparaît dès que la valeur est corrigée. Ainsi l'utilisateur n'a pas à devoir envoyer de nouveau le formulaire pour vérifier la validité de la saisie.
 
-Finally, you know what would _really_ be nice? If the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
+Finalement, savez-vous ce qui serait _vraiment_ sympa? Ce serait de faire en sorte que les champs soient validés dès que l'utilisateur quitte un champ. De cette manière l'utilisateur n'a pas besoin de remplir l'ensemble des champs et envoyer le formulaire pour voir toutes les erreurs s'afficher. Voyons comment faire:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+// web/src/pages/ContactPage/ContactPage.js
+
+<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
 ```
 
-Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
+Alors, qu'en pensez-vous? Quelques composants, un ou deux attributs, et vous avez devant vous un formulaire qui gère les erreurs, valide les champs et vous envoie le contenu sous la forme d'un bel objet javascript. Merci Redwood!
 
-> **Learn more about Redwood Forms**
->
-> Redwood's forms are built on top of [React Hook Form](https://react-hook-form.com/) so there is even more functionality available than we've documented here. Visit the [Form docs](https://redwoodjs.com/docs/form) to learn more about all form functionalities.
+> Les formulaires de Redwood sont construits à partir de la librairie [React Hook Form](https://react-hook-form.com/). Celle-ci contient d'autres fonctionalités très utiles que nous n'avons pas documenté ici.  
 
-Redwood has one more trick up its sleeve when it comes to forms but we'll save that for when we're actually submitting one to the server.
+Redwood a encore plus d'un tour dans son sac pour ce qui concerne les formulaires, mais nous allons garder ça pour une étape ultérieure.
 
-Having a contact form is great, but only if you actually get the contact somehow. Let's create a database table to hold the submitted data and create our first GraphQL mutation.
+Avoir un formulaire de contact, c'est bien. Mais conserver les message qu'on vous envoie, c'est mieux! Procédons maintenant à la création de la table en base de données pour y enregistrer ces informations. Ce faisant nous allons créer notre première mutation GraphQL!
+
