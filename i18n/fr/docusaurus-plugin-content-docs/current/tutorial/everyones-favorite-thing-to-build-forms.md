@@ -557,7 +557,3 @@ Well, what do you think? Was it worth the hype? A couple of new components and y
 Redwood has one more trick up its sleeve when it comes to forms but we'll save that for when we're actually submitting one to the server.
 
 Having a contact form is great, but only if you actually get the contact somehow. Let's create a database table to hold the submitted data and create our first GraphQL mutation.
-
-## Saving Data
-
-Let's add a new database table. Open up `api/db/schema.prisma` and add a Contact model after the Post model that's there now:
