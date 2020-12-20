@@ -4,7 +4,7 @@ title: "Votre partie préférée: Les Formulaires"
 sidebar_label: "Votre partie préférée: Les Formulaires"
 ---
 
-Attendez! Ne partez pas! Vous deviez bien vous douter que ça allait venir, non? Rassurez-vous, pour les formulaires aussi, Redwood a trouvé une façon de faire qui les rend moins pénible que d'habitude. En fait, Redwood pourrait même vous faire _aimer_ les formulaires. Bon, aimer est peut-être un peu fort. Disons _apprécier_ travailler avec les formulaires, ou à tout le moins les _tolérer_?   
+Attendez! Ne partez pas! Vous deviez bien vous douter que ça allait venir, non? Rassurez-vous, pour les formulaires aussi, Redwood a trouvé une façon de faire qui les rend moins pénible que d'habitude. En fait, Redwood pourrait même vous faire _aimer_ les formulaires. Bon, aimer est peut-être un peu fort. Disons _apprécier_ travailler avec les formulaires, ou à tout le moins les _tolérer_?
 
 La troisième partie du didacticiel en video commence ici:
 
@@ -14,7 +14,7 @@ La troisième partie du didacticiel en video commence ici:
 
 Nous avons déjà un formulaire ou deux dans notre application; vous rappellez-vous notre _scaffolding_ avec les articles? Ils fonctionnaient plus bien, non? Alors, a quel point est-ce difficile de reproduire ces formulaires? (Si vous n'avez pas encore eu la curiosité d'aller voir le code généré, ce qui va suivre va vous surprendre)
 
-Construisons donc le formulaire le plus élémentaire qui soit pour notre blog, et utile de surcroît, celui qui permettra à vos lecteurs de vous contacter. 
+Construisons donc le formulaire le plus élémentaire qui soit pour notre blog, et utile de surcroît, celui qui permettra à vos lecteurs de vous contacter.
 
 ### La Page
 
@@ -22,56 +22,56 @@ Construisons donc le formulaire le plus élémentaire qui soit pour notre blog, 
 
 Après avoir exécuté cette commande, nous pouvons ajouter un lien vers Contact dans notre Layout:
 
-```javascript{17-19}
+```javascript {17-19}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes } from "@redwoodjs/router";
 
 const BlogLayout = ({ children }) => {
-  return (
-    <>
-      <header>
-        <h1>
-          <Link to={routes.home()}>Redwood Blog</Link>
-        </h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to={routes.about()}>About</Link>
-            </li>
-            <li>
-              <Link to={routes.contact()}>Contact</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>{children}</main>
-    </>
-  )
-}
+	return (
+		<>
+			<header>
+				<h1>
+					<Link to={routes.home()}>Redwood Blog</Link>
+				</h1>
+				<nav>
+					<ul>
+						<li>
+							<Link to={routes.about()}>About</Link>
+						</li>
+						<li>
+							<Link to={routes.contact()}>Contact</Link>
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<main>{children}</main>
+		</>
+	);
+};
 
-export default BlogLayout
+export default BlogLayout;
 ```
 
 And then use the `BlogLayout` in the `ContactPage`:
 
-```javascript{3,6}
+```javascript {3,6}
 // web/src/pages/ContactPage/ContactPage.js
 
-import BlogLayout from 'src/layouts/BlogLayout'
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  return <BlogLayout></BlogLayout>
-}
+	return <BlogLayout></BlogLayout>;
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 Vérifiez que tout fonctionne correctement, puis passons aux réjouïssances.
 
 ### Présentation des Form Helpers
 
-Les formulaires avec React sont surtout connus pour être particulièrement agaçants à construire. Il existes les [Controlled Components](https://reactjs.org/docs/forms.html#controlled-components), les [Uncontrolled Components](https://reactjs.org/docs/uncontrolled-components.html), diverses [librairies tierces](https://jaredpalmer.com/formik/) et enfin pas mal d'astuces diverses pour essayer de les rendre aussi simples qu'ils sont sensés être selon les spécifications HTML: un champ `<input>` avec un attribut `name` qui sera envoyé quelque part lorsque l'utilisateur clique sur un bouton.  
+Les formulaires avec React sont surtout connus pour être particulièrement agaçants à construire. Il existes les [Controlled Components](https://reactjs.org/docs/forms.html#controlled-components), les [Uncontrolled Components](https://reactjs.org/docs/uncontrolled-components.html), diverses [librairies tierces](https://jaredpalmer.com/formik/) et enfin pas mal d'astuces diverses pour essayer de les rendre aussi simples qu'ils sont sensés être selon les spécifications HTML: un champ `<input>` avec un attribut `name` qui sera envoyé quelque part lorsque l'utilisateur clique sur un bouton.
 
 Nous pensons que Redwood fait quelques pas dans la bonne direction, non seulement en vous libérant d'avoir à écrire un tans de code relatif aux composants controllés (controlled components), mais aussi en s'occupant de gérer automatiquement les validations et éventuelles erreurs. Regardons ensemble comment tout celà fonctionne.
 
@@ -80,86 +80,90 @@ Avant de commencer, ajoutons quelques classes CSS pour que les formulaires par d
 ```css
 /* web/src/index.css */
 
-button, input, label, textarea {
-  display: block;
-  outline: none;
+button,
+input,
+label,
+textarea {
+	display: block;
+	outline: none;
 }
 
 label {
-  margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 .error {
-  color: red;
+	color: red;
 }
 
-input.error, textarea.error {
-  border: 1px solid red;
+input.error,
+textarea.error {
+	border: 1px solid red;
 }
 ```
 
 Pour l'instant nous n'allons pas faire dialoguer notre formulaire de contact avec la base de données, raison pour laquelle nous ne générons pas une Cell. Nous allons simplement ajouter le formulaire à notre page. Dans Redwood, la création d'un formulaire débute par... attention à la surprise...une balise `<Form>`:
 
-```javascript{3,9}
+```javascript {3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form } from "@redwoodjs/forms";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  return (
-    <BlogLayout>
-      <Form></Form>
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<Form></Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 Humm, OK... pour le moment rien d'incroyable. Ajoutons un premier champ que l'on puisse au moins afficher quelque chose. Redwood propose une variété de type de champs parmi lesquels se trouve `<TextField>`. Ce dernier correspond à un champ text tout ce qu'il y a de plus basique. Il possède un attribut `name` de telle façon que lorsqu'un formulaire contient de multiples champs, il soit possible de savoir lequel contient telle ou telle donnée.
 
-```javascript{3,10}
+```javascript {3,10}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form, TextField } from "@redwoodjs/forms";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  return (
-    <BlogLayout>
-      <Form>
-        <TextField name="input" />
-      </Form>
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<Form>
+				<TextField name="input" />
+			</Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80258121-4f4d2300-8637-11ea-83f5-c667e05aaf74.png" />
 
 Enfin quelque chose s'affiche! Pas encore très intéressant toutefois. Ajoutons un bouton "envoyer".
 
-```javascript{3,11}
+```javascript {3,11}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, Submit } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form, TextField, Submit } from "@redwoodjs/forms";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  return (
-    <BlogLayout>
-      <Form>
-        <TextField name="input" />
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<Form>
+				<TextField name="input" />
+				<Submit>Save</Submit>
+			</Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80258188-7572c300-8637-11ea-9583-1b7636f93be0.png" />
@@ -170,23 +174,23 @@ Nous obtenons ce qu'on peut considérer comme un véritable et authentique formu
 
 De façon similaire à un formulaire HTML, une balise `<Form>` possède un "_handler_" `onSubmit`. Ce handler sera appelé avec un seul argument: un unique objet contenant l'ensemble des champs du formulaire.
 
-```javascript{4-6,10}
+```javascript {4-6,10}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
-  const onSubmit = (data) => {
-    console.log(data)
-  }
+	const onSubmit = (data) => {
+		console.log(data);
+	};
 
-  return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <TextField name="input" />
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<Form onSubmit={onSubmit}>
+				<TextField name="input" />
+				<Submit>Save</Submit>
+			</Form>
+		</BlogLayout>
+	);
+};
 ```
 
 Essayons maintenant de saisir quelques mots puis soumettre ce formulaire:
@@ -195,30 +199,30 @@ Essayons maintenant de saisir quelques mots puis soumettre ce formulaire:
 
 Extra! Rendons le formulaire un peu plus utile en ajoutant quelques champs supplémentaires. Nous renommons ainsi notre premier champ en `name` puis ajoutons les champs `email` et `message`:
 
-```javascript{3,15,16}
+```javascript {3,15,16}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form, TextField, TextAreaField, Submit } from "@redwoodjs/forms";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  const onSubmit = (data) => {
-    console.log(data)
-  }
+	const onSubmit = (data) => {
+		console.log(data);
+	};
 
-  return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <TextField name="name" />
-        <TextField name="email" />
-        <TextAreaField name="message" />
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
-}
+	return (
+		<BlogLayout>
+			<Form onSubmit={onSubmit}>
+				<TextField name="name" />
+				<TextField name="email" />
+				<TextAreaField name="message" />
+				<Submit>Save</Submit>
+			</Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 Remarquez le nouveau composant `<TextAreaField>` qui génère une balise HTML `<textarea>` contenant quelques spécificités utiles propres à Redwood:
@@ -227,25 +231,25 @@ Remarquez le nouveau composant `<TextAreaField>` qui génère une balise HTML `<
 
 Ajoutons également quelques étiquettes en face des champs:
 
-```javascript{6,9,12}
+```javascript {6,9,12}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" />
+	<BlogLayout>
+		<Form onSubmit={onSubmit}>
+			<label htmlFor="name">Name</label>
+			<TextField name="name" />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" />
+			<label htmlFor="email">Email</label>
+			<TextField name="email" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" />
+			<label htmlFor="message">Message</label>
+			<TextAreaField name="message" />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
-)
+			<Submit>Save</Submit>
+		</Form>
+	</BlogLayout>
+);
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80258431-15c8e780-8638-11ea-8eca-0bd222b51d8a.png" />
@@ -254,29 +258,29 @@ Essayez donc de soumettre à nouveau le formulaire, vous devriez obtenir dans la
 
 ### Validation
 
-"Humm... cher auteur de ce didacticiel, qui a-t-il d'incroyable jusqu'ici?". C'est sans doute votre état d'esprit à ce stade. En effet, il existe déjà un nombre conséquent de librairies permettant d'obtenir un résultat similaire.. Vous avez raison! N'importe qui peut remblir un formulaire _correctement_, mais que se passe-t-il lorsqu'un utilisateur fait une erreur, oubli un champ, voire tente de jouer les hackers? Qui va vous aider à gérer cette situation? Redwood va le faire. 
+"Humm... cher auteur de ce didacticiel, qui a-t-il d'incroyable jusqu'ici?". C'est sans doute votre état d'esprit à ce stade. En effet, il existe déjà un nombre conséquent de librairies permettant d'obtenir un résultat similaire.. Vous avez raison! N'importe qui peut remblir un formulaire _correctement_, mais que se passe-t-il lorsqu'un utilisateur fait une erreur, oubli un champ, voire tente de jouer les hackers? Qui va vous aider à gérer cette situation? Redwood va le faire.
 
 Tout d'abord, ce trois champs devraient être obligatoirement remplis pour pouvoir soumettre le formulaire. Rendons cette règle obligatoire en utilisant l'attribut HTML standard `required`:
 
-```javascript{7,10,13}
+```javascript {7,10,13}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" required />
+	<BlogLayout>
+		<Form onSubmit={onSubmit}>
+			<label htmlFor="name">Name</label>
+			<TextField name="name" required />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" required />
+			<label htmlFor="email">Email</label>
+			<TextField name="email" required />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" required />
+			<label htmlFor="message">Message</label>
+			<TextAreaField name="message" required />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
-)
+			<Submit>Save</Submit>
+		</Form>
+	</BlogLayout>
+);
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80258542-5163b180-8638-11ea-8450-8a727de177ad.png" />
@@ -285,73 +289,66 @@ Désormais, lorsque vous essayez de soumettre le formulaire, un message s'affich
 
 Oui! Remplaçons cet attribut `required` par un object que nous passons à un attribut nommé `validation`, spécifique à Redwood:
 
-```javascript{7,10,13}
+```javascript {7,10,13}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" validation={{ required: true }} />
+	<BlogLayout>
+		<Form onSubmit={onSubmit}>
+			<label htmlFor="name">Name</label>
+			<TextField name="name" validation={{ required: true }} />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" validation={{ required: true }} />
+			<label htmlFor="email">Email</label>
+			<TextField name="email" validation={{ required: true }} />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" validation={{ required: true }} />
+			<label htmlFor="message">Message</label>
+			<TextAreaField name="message" validation={{ required: true }} />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
-)
+			<Submit>Save</Submit>
+		</Form>
+	</BlogLayout>
+);
 ```
 
-Maintenant lorsqu'un champ reste vide, le formulaire n'est pas envoyé et le champ en question prend le focus de telle manière que l'utilisateur puisse saisir une valeur. Pas encore stupéfiant, mais c'est une première étape. Redwood a d'autres fonctions sympatiques pour les formulaires, dont la possibilité d'afficher les erreurs à côté des champs.  
-
+Maintenant lorsqu'un champ reste vide, le formulaire n'est pas envoyé et le champ en question prend le focus de telle manière que l'utilisateur puisse saisir une valeur. Pas encore stupéfiant, mais c'est une première étape. Redwood a d'autres fonctions sympatiques pour les formulaires, dont la possibilité d'afficher les erreurs à côté des champs.
 
 ### `<FieldError>`
 
 Pour celà, voici le composant `<FieldError>` (n'oubliez pas d'inclure l'`import` associé en haut du fichier):
 
-```javascript{8,22,26,30}
+```javascript {8,22,26,30}
 // web/src/pages/ContactPage/ContactPage.js
 
-import {
-  Form,
-  TextField,
-  TextAreaField,
-  Submit,
-  FieldError,
-} from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form, TextField, TextAreaField, Submit, FieldError } from "@redwoodjs/forms";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  const onSubmit = (data) => {
-    console.log(data)
-  }
+	const onSubmit = (data) => {
+		console.log(data);
+	};
 
-  return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <label htmlFor="name">Name</label>
-        <TextField name="name" validation={{ required: true }} />
-        <FieldError name="name" />
+	return (
+		<BlogLayout>
+			<Form onSubmit={onSubmit}>
+				<label htmlFor="name">Name</label>
+				<TextField name="name" validation={{ required: true }} />
+				<FieldError name="name" />
 
-        <label htmlFor="email">Email</label>
-        <TextField name="email" validation={{ required: true }} />
-        <FieldError name="email" />
+				<label htmlFor="email">Email</label>
+				<TextField name="email" validation={{ required: true }} />
+				<FieldError name="email" />
 
-        <label htmlFor="message">Message</label>
-        <TextAreaField name="message" validation={{ required: true }} />
-        <FieldError name="message" />
+				<label htmlFor="message">Message</label>
+				<TextAreaField name="message" validation={{ required: true }} />
+				<FieldError name="message" />
 
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
-}
+				<Submit>Save</Submit>
+			</Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 Observez que l'attribut `name` correspond à celui du champ au dessus. De cette manière, Redwood sait où afficher le message d'erreur d'un champ.
@@ -360,132 +357,101 @@ Observez que l'attribut `name` correspond à celui du champ au dessus. De cette 
 
 Mais c'est juste le début. Maintenant faisons en sorte que nos utilisateurs sachent qu'il s'agisse bien d'un message d'erreur. Vous rappellez-vous la classe CSS `.error` que nous avions définie dans `index.css`? Indiquons-la à l'attribut `className` de nos composants `<FieldError>`:
 
-```javascript{8,12,16}
+```javascript {8,12,16}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" validation={{ required: true }} />
-      <FieldError name="name" className="error" />
+	<BlogLayout>
+		<Form onSubmit={onSubmit}>
+			<label htmlFor="name">Name</label>
+			<TextField name="name" validation={{ required: true }} />
+			<FieldError name="name" className="error" />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" validation={{ required: true }} />
-      <FieldError name="email" className="error" />
+			<label htmlFor="email">Email</label>
+			<TextField name="email" validation={{ required: true }} />
+			<FieldError name="email" className="error" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" validation={{ required: true }} />
-      <FieldError name="message" className="error" />
+			<label htmlFor="message">Message</label>
+			<TextAreaField name="message" validation={{ required: true }} />
+			<FieldError name="message" className="error" />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
-)
+			<Submit>Save</Submit>
+		</Form>
+	</BlogLayout>
+);
 ```
 
 <img src="https://user-images.githubusercontent.com/300/73306040-3cf65100-41d0-11ea-99a9-9468bba82da7.png" />
 
 Vous savez ce qui serez bien? Que le champ lui-même indique qu'il y a eu une erreur. Remarquez ici l'utilisation de l'attribut `errorClassName`:
 
-```javascript{10,18,26}
+```javascript {10,18,26}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField
-        name="name"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="name" className="error" />
+	<BlogLayout>
+		<Form onSubmit={onSubmit}>
+			<label htmlFor="name">Name</label>
+			<TextField name="name" validation={{ required: true }} errorClassName="error" />
+			<FieldError name="name" className="error" />
 
-      <label htmlFor="email">Email</label>
-      <TextField
-        name="email"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="email" className="error" />
+			<label htmlFor="email">Email</label>
+			<TextField name="email" validation={{ required: true }} errorClassName="error" />
+			<FieldError name="email" className="error" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField
-        name="message"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="message" className="error" />
+			<label htmlFor="message">Message</label>
+			<TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
+			<FieldError name="message" className="error" />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
-)
+			<Submit>Save</Submit>
+		</Form>
+	</BlogLayout>
+);
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80258907-39d8f880-8639-11ea-8816-03a11c69e8ac.png" />
 
 Bravo! Et maintenant, appliquons ce principe à l'étiquette elle-même. Pour celà utilisons le composant `<Label>` fourni par Redwood. Notez comme l'attribut `for` correspond à la valeur de l'attribut `name` du composant associé. N'oubliez pas également d'importer le composant:
 
-```javascript{9,21-23,31-33,41-43}
+```javascript {9,21-23,31-33,41-43}
 // web/src/pages/ContactPage/ContactPage.js
 
-import {
-  Form,
-  TextField,
-  TextAreaField,
-  Submit,
-  FieldError,
-  Label,
-} from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { Form, TextField, TextAreaField, Submit, FieldError, Label } from "@redwoodjs/forms";
+import BlogLayout from "src/layouts/BlogLayout";
 
 const ContactPage = () => {
-  const onSubmit = (data) => {
-    console.log(data)
-  }
+	const onSubmit = (data) => {
+		console.log(data);
+	};
 
-  return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <Label name="name" errorClassName="error">
-          Name
-        </Label>
-        <TextField
-          name="name"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="name" className="error" />
+	return (
+		<BlogLayout>
+			<Form onSubmit={onSubmit}>
+				<Label name="name" errorClassName="error">
+					Name
+				</Label>
+				<TextField name="name" validation={{ required: true }} errorClassName="error" />
+				<FieldError name="name" className="error" />
 
-        <Label name="email" errorClassName="error">
-          Email
-        </Label>
-        <TextField
-          name="email"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="email" className="error" />
+				<Label name="email" errorClassName="error">
+					Email
+				</Label>
+				<TextField name="email" validation={{ required: true }} errorClassName="error" />
+				<FieldError name="email" className="error" />
 
-        <Label name="message" errorClassName="error">
-          Message
-        </Label>
-        <TextAreaField
-          name="message"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="message" className="error" />
+				<Label name="message" errorClassName="error">
+					Message
+				</Label>
+				<TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
+				<FieldError name="message" className="error" />
 
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
-  )
-}
+				<Submit>Save</Submit>
+			</Form>
+		</BlogLayout>
+	);
+};
 
-export default ContactPage
+export default ContactPage;
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
@@ -496,37 +462,16 @@ export default ContactPage
 
 Nous devrions nous assurer que le champ email contient bien... un email!
 
-```html{7-9}
-// web/src/pages/ContactPage/ContactPage.js
-
-<TextField
-  name="email"
-  validation={{
-    required: true,
-    pattern: {
-      value: /[^@]+@[^.]+\..+/,
-    },
-  }}
-  errorClassName="error"
-/>
+```html {7-9}
+// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, pattern: { value:
+/[^@]+@[^.]+\..+/, }, }} errorClassName="error" />
 ```
 
 OK, ça n'est pas la validation ultime pour un champ email, mais pour le moment faisons comme si. Modifions également le message affiché en cas d'échec de la validation:
 
-```html{9}
-// web/src/pages/ContactPage/ContactPage.js
-
-<TextField
-  name="email"
-  validation={{
-    required: true,
-    pattern: {
-      value: /[^@]+@[^.]+\..+/,
-      message: 'Please enter a valid email address',
-    },
-  }}
-  errorClassName="error"
-/>
+```html {9}
+// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, pattern: { value:
+/[^@]+@[^.]+\..+/, message: 'Please enter a valid email address', }, }} errorClassName="error" />
 ```
 
 <img src="https://user-images.githubusercontent.com/300/80259139-bd92e500-8639-11ea-99d5-be278dc67afc.png" />
@@ -538,16 +483,13 @@ Vous avez peut-être remarqué qu'essayer d'envoyer le formulaire alors que sont
 Finalement, savez-vous ce qui serait _vraiment_ sympa? Ce serait de faire en sorte que les champs soient validés dès que l'utilisateur quitte un champ. De cette manière l'utilisateur n'a pas besoin de remplir l'ensemble des champs et envoyer le formulaire pour voir toutes les erreurs s'afficher. Voyons comment faire:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js
-
-<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+// web/src/pages/ContactPage/ContactPage.js <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
 ```
 
 Alors, qu'en pensez-vous? Quelques composants, un ou deux attributs, et vous avez devant vous un formulaire qui gère les erreurs, valide les champs et vous envoie le contenu sous la forme d'un bel objet javascript. Merci Redwood!
 
-> Les formulaires de Redwood sont construits à partir de la librairie [React Hook Form](https://react-hook-form.com/). Celle-ci contient d'autres fonctionalités très utiles que nous n'avons pas documenté ici.  
+> Les formulaires de Redwood sont construits à partir de la librairie [React Hook Form](https://react-hook-form.com/). Celle-ci contient d'autres fonctionalités très utiles que nous n'avons pas documenté ici.
 
 Redwood a encore plus d'un tour dans son sac pour ce qui concerne les formulaires, mais nous allons garder ça pour une étape ultérieure.
 
 Avoir un formulaire de contact, c'est bien. Mais conserver les message qu'on vous envoie, c'est mieux! Procédons maintenant à la création de la table en base de données pour y enregistrer ces informations. Ce faisant nous allons créer notre première mutation GraphQL!
-
