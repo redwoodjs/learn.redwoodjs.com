@@ -122,45 +122,45 @@ However, this is not a valid query name for our existing Posts SDL (`src/graphql
 
 We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
-```javascript{5,17,18}
+```javascript {5,17,18}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query BlogPostsQuery {
-    posts {
-      id
+    query BlogPostsQuery {
+        posts {
+            id
+        }
     }
-  }
-`
+`;
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <div>Loading...</div>;
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => <div>Empty</div>;
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => <div>Error: {error.message}</div>;
 
 export const Success = ({ posts }) => {
-  return JSON.stringify(posts)
-}
+    return JSON.stringify(posts);
+};
 ```
 
 Let's plug this cell into our `HomePage` and see what happens:
 
-```javascript{4,9}
+```javascript {4,9}
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from 'src/layouts/BlogLayout'
-import BlogPostsCell from 'src/components/BlogPostsCell'
+import BlogLayout from "src/layouts/BlogLayout";
+import BlogPostsCell from "src/components/BlogPostsCell";
 
 const HomePage = () => {
-  return (
-    <BlogLayout>
-      <BlogPostsCell />
-    </BlogLayout>
-  )
-}
+    return (
+        <BlogLayout>
+            <BlogPostsCell />
+        </BlogLayout>
+    );
+};
 
-export default HomePage
+export default HomePage;
 ```
 
 The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](./getting-dynamic#creating-a-post-editor) from earlier). Neat!
@@ -185,19 +185,19 @@ Now `postIds` will be available in `Success` instead of `posts`
 
 In addition to the `id` that was added to the `query` by the generator, let's get the title, body, and createdAt too:
 
-```javascript{7-9}
+```javascript {7-9}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-  query BlogPostsQuery {
-    posts {
-      id
-      title
-      body
-      createdAt
+    query BlogPostsQuery {
+        posts {
+            id
+            title
+            body
+            createdAt
+        }
     }
-  }
-`
+`;
 ```
 
 The page should now show a dump of all the data you created for any blog posts you scaffolded:
@@ -206,20 +206,20 @@ The page should now show a dump of all the data you created for any blog posts y
 
 Now we're in the realm of good ol' React components, so just build out the `Success` component to display the blog post in a nicer format:
 
-```javascript{4-12}
+```javascript {4-12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const Success = ({ posts }) => {
-  return posts.map((post) => (
-    <article key={post.id}>
-      <header>
-        <h2>{post.title}</h2>
-      </header>
-      <p>{post.body}</p>
-      <div>Posted at: {post.createdAt}</div>
-    </article>
-  ))
-}
+    return posts.map((post) => (
+        <article key={post.id}>
+            <header>
+                <h2>{post.title}</h2>
+            </header>
+            <p>{post.body}</p>
+            <div>Posted at: {post.createdAt}</div>
+        </article>
+    ));
+};
 ```
 
 And just like that we have a blog! It may be the most basic, ugly blog that ever graced the internet, but it's something! (Don't worry, we've got more features to add.)
