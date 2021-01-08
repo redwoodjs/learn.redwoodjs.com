@@ -15,6 +15,14 @@
 	--ifm-color-primary-lighter: #EBA48E;
 	--ifm-color-primary-lightest: #F3C7BA;
 	--ifm-code-font-size: 95%;
+	--ifm-menu-color-background-active:#FAEAE5;
+	--ifm-code-background:#FAEAE5;
+}
+
+.navbar {
+	background-color: #fdf8f6;
+	color: var(--ifm-color-primary-dark);
+	box-shadow: none;
 }
 
 .footer {
