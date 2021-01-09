@@ -8,11 +8,10 @@ This WIP site will be used to present multilingual tutorial docs for RedwoodJS.
 
 ### TODO
 
-- add EN tutorial content
-- test translation via Crowdin
-- document typical translation workflow
+- Establish and document a translation workflow
 - UI string translation
 - Add term glossary template
+- Edit homepage content
 - Style 💅🏽
 - SEO 🤷
 
@@ -27,16 +26,16 @@ Also learning from reading source code for [jest website migration on `docusauru
 ```
 yarn install
 
-yarn start
+yarn start  # defaults to serving English locale
 ```
 
-- Only one locale can be servered in development at a time, so start yarn with the locale you want to test
+- **NOTE** Only one locale can be served in development at a time, so start yarn with the locale you want to test
 
 ```
 yarn start --locale fr
 ```
 
-No worries, things work better once the site is built and served. Try this and the locale switcher suddenly works:
+P.S., the language switcher doesn't really work in development. No worries, things work better once the site is built and served. Try this and the locale switcher suddenly works:
 
 ```
 yarn build
