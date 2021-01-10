@@ -55,61 +55,9 @@ module.exports = {
 					title: "Docs",
 					items: [
 						{
-							label: "Style Guide",
-							to: "docs/",
-						},
-						{
-							label: "Second Doc",
-							to: "docs/doc2/",
-						},
-					],
-				},
-				{
-					title: "Community",
-					items: [
-						{
-							label: "Discord",
-							href: "https://discord.com/invite/redwoodjs",
-						},
-						{
-							label: "Discourse",
-							href: "https://community.redwoodjs.com/",
-						},
-						{
-							label: "Twitter",
-							href: "https://twitter.com/redwoodjs",
-						},
-					],
-				},
-				{
-					title: "More",
-					items: [
-						{
-							label: "redwoodjs.com",
-							to: "https://redwoodjs.com/",
-						},
-						{
-							label: "GitHub",
-							href: "https://github.com/redwoodjs/learn.redwoodjs.com",
-						},
-					],
-				},
-			],
-			copyright: `Copyright © ${new Date().getFullYear()} RedwoodJS. Built with Docusaurus.`,
-		},
-	},
-	presets: [
-		[
-			"@docusaurus/preset-classic",
-			{
-				docs: {
-					sidebarPath: require.resolve("./sidebars.js"),
-					// Please change this to your repo.
-					editUrl: "https://github.com/redwoodjs/learn.redwoodjs.com",
-				},
-				blog: {
-					showReadingTime: true,
-					// Please change this to your repo.
+              label: "Tutorial",
+              to: "docs/tutorial/welcome-to-redwood",
+            },
 					editUrl: "https://github.com/facebook/docusaurus/edit/master/website/blog/",
 				},
 				theme: {
