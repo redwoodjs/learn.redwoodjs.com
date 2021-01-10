@@ -37,11 +37,8 @@ module.exports = {
 			},
 			items: [
 				{
-					to: "docs/",
-					activeBasePath: "docs",
-					label: "Docs",
-					position: "left",
-				},
+          to: "docs/tutorial/welcome-to-redwood",
+          activeBasePath: "docs",
 				{ to: "https://redwoodjs.com/", label: "Redwoodjs.com", position: "left" },
 				{ type: "localeDropdown", position: "right" },
 				{
