@@ -37,7 +37,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
+          to: 'docs/tutorial/welcome-to-redwood',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
@@ -62,12 +62,8 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Style Guide',
-              to: 'docs/',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
+              label: 'Tutorial',
+              to: 'docs/tutorial/welcome-to-redwood',
             },
           ],
         },
