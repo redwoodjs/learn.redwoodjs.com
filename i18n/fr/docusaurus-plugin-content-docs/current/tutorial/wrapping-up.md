@@ -12,7 +12,7 @@ Comme l'a dit un utilisateur anonyme de Twitter: "Si vous aimez vous sentir à l
 
 ### Et maintenant?
 
-Vous souhaitez ajouter d'autres fonctionnalités à votre application? Découvrez quelques-un de nos "Cookbook" (livres de recettes) comme [appeler une API tierce](/cookbook/using-a-third-party-api), ou encore [déployer une application sans API du tout](https://redwoodjs.com/cookbook/disable-api-database). Vous en avez assez de SQLite et souhaitez [installer Postgres localement](https://redwoodjs.com/docs/local-postgres-setup)? Nous avons également de nombreux [guides](https://redwoodjs.com/docs/introduction) pour plus d'informations sur les composants internes de Redwood.
+Vous souhaitez ajouter d'autres fonctionnalités à votre application? Découvrez quelques-un de nos "Cookbook" (livres de recettes) comme [appeler une API tierce](https://redwoodjs.com/cookbook/using-a-third-party-api), ou encore [déployer une application sans API du tout](https://redwoodjs.com/cookbook/disable-api-database). Vous en avez assez de SQLite et souhaitez [installer Postgres localement](https://redwoodjs.com/docs/local-postgres-setup)? Nous avons également de nombreux [guides](https://redwoodjs.com/docs/introduction) pour plus d'informations sur les composants internes de Redwood.
 
 ### Feuille de route
 
