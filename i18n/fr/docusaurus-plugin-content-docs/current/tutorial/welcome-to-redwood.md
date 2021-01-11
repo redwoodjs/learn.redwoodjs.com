@@ -8,7 +8,7 @@ Bienvenue chez Redwood! Si vous ne l’avez pas encore fait, prenez le temps de 
 
 Dans ce didacticiel, nous allons construire un moteur de blog. En réalité, un blog n’est probablement pas le candidat idéal pour une application construite avec Redwood: les articles peuvent être enregistrés dans un CMS et générées statiquement sous la forme de fichiers HTML servis par un CDN. Ceci étant, la plupart des développeurs comprennent intuitivement ce que recouvre ce type d’application, et un blog présente toutes les caractéristiques que nous souhaitons mettre en lumière.
 
-Peut-être souhaitez-vous voir ce didacticiel en vidéo? Start out here:
+Peut-être souhaitez-vous voir ce didacticiel en vidéo? C’est ici :
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tiF9SdM1i7M?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
