@@ -19,6 +19,6 @@ Allez à http://localhost:8910/admin/posts et notre page générée par scaffold
 
 > **Et l'authentification ?**
 > 
-> Sur la dernière page nous avons mentionné que nous allions créer une section admin **et** la mettre derrière un login. Jusqu'à maintenant nous n'avons fait que modifier les routes. Ne vous inquiétez pas, nous n'avons pas oublié! Nous allons mettre en place l'authentification dans une [prochaine étape](./tutorial/authentication).
+> Sur la dernière page nous avons mentionné que nous allions créer une section admin **et** la mettre derrière un login. Jusqu'à maintenant nous n'avons fait que modifier les routes. Ne vous inquiétez pas, nous n'avons pas oublié! Nous allons mettre en place l'authentification dans une [prochaine étape](./authentication).
 
 Que pensez-vous de mettre enfin en ligne tout ce que nous avons réalisé ?
