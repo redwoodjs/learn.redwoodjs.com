@@ -17,7 +17,7 @@ This WIP site will be used to present multilingual tutorial docs for RedwoodJS.
 
 ### Docusaurus 2 + Crowdin
 
-We are using a late stage Aplpha release of Docusuraus 2 that includes integration with l10n management service Crowdin. The docs for V2 of Docusaurus can be found [here](https://v2.docusaurus.io/docs/next/), we also have [this PR](https://github.com/facebook/docusaurus/pull/3325) and [this explanatory comment](https://github.com/facebook/docusaurus/issues/3317#issuecomment-742589241) to reference
+We are using a late stage Alpha release of Docusuraus 2 that includes experimental integration with l10n management service Crowdin. The docs for V2 of Docusaurus can be found [here](https://v2.docusaurus.io/docs/next/), we also have [this PR](https://github.com/facebook/docusaurus/pull/3325) and [this explanatory comment](https://github.com/facebook/docusaurus/issues/3317#issuecomment-742589241) to reference
 
 Also learning from reading source code for [jest website migration on `docusaurus-2` branch](https://github.com/jest-website-migration/jest/tree/docusaurus-2/website-v2), which is using this same undocumented setup for thier localized docs. See their test site here: https://jest-v2.netlify.app/
 
