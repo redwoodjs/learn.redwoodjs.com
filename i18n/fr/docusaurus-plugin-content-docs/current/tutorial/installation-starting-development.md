@@ -1,28 +1,28 @@
 ---
 id: installation-starting-development
-title: "Installation & Starting Development"
-sidebar_label: "Installation & Starting Development"
+title: "Installation & Démarrage du développement"
+sidebar_label: "Installation & Démarrage du développement"
 ---
 
-We'll use yarn ([yarn](https://yarnpkg.com/en/docs/install) is a requirement) to create the basic structure of our app:
+Nous utiliserons yarn ([yarn](https://yarnpkg.com/en/docs/install) est un pré-requis) pour créer la structure de base pour notre application :
 
     yarn create redwood-app ./redwoodblog
 
-You'll have a new directory `redwoodblog` containing several directories and files. Change to that directory and let's create the database, and then start the development server:
+Vous obtenez ainsi un nouveau répertoire `redwoodblog` contenant plusieurs sous-répertoires et fichiers. Déplacez-vous dans ce répertoire, puis lancez le serveur de développement :
 
     cd redwoodblog
     yarn redwood dev
 
-A browser should automatically open to http://localhost:8910 and you will see the Redwood welcome page:
+Votre navigateur web devrait se lancer automatiquement et ouvrir `http://localhost:8910` laissant apparaître la page d’accueil de Redwood.
 
 ![Redwood Welcome Page](https://user-images.githubusercontent.com/300/73012647-97a43d00-3dcb-11ea-8554-42df29c36e4a.png)
 
-> Remembering the port number is as easy as counting: 8-9-10!
+> Mémoriser le numéro de port est très simple, comptez simplement: 8-9-10!
 
-### First Commit
+### Premier Commit
 
-Now that we have the skeleton of our Redwood app in place, it's a good idea to save the current state of the app as your first commit...just in case.
+Maintenant que nous avons le squelette de notre application Redwood, c'est le bon moment pour enregistrer notre travail avec un premier commit... au cas où.
 
     git init
     git add .
-    git commit -m 'First commit'
+    git commit -m 'Premier commit'
