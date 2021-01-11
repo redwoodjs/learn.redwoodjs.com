@@ -19,6 +19,10 @@
 	--ifm-code-background:#FAEAE5;
 }
 
+code {
+	color: #682712;
+}
+
 .navbar {
 	background-color: #fdf8f6;
 	color: var(--ifm-color-primary-dark);
