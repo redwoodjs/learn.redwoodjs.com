@@ -17,6 +17,18 @@
 	--ifm-code-font-size: 95%;
 	--ifm-menu-color-background-active:#FAEAE5;
 	--ifm-code-background:#FAEAE5;
+	--ifm-background-surface-color: #FAEAE5;
+}
+
+html[data-theme='dark'] {
+	--ifm-background-color: #120502;
+	--ifm-background-surface-color: #341309;
+	--ifm-menu-color-background-active: #1f0a04;
+}
+
+html[data-theme='dark'] code {
+	color: #E38163;
+	background-color: #341309;
 }
 
 code {
@@ -24,8 +36,6 @@ code {
 }
 
 .navbar {
-	background-color: #fdf8f6;
-	color: var(--ifm-color-primary-dark);
 	box-shadow: none;
 }
 
