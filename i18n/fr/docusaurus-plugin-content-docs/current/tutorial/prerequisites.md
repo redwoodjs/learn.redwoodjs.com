@@ -1,46 +1,46 @@
 ---
 id: prerequisites
-title: Prerequisites
-sidebar_label: Prerequisites
+title: "Prérequis"
+sidebar_label: "Prérequis"
 ---
 
-This tutorial assumes you are already familiar with a few core concepts:
+Ce didacticiel suppose que vous soyez déjà familier avec quelques concepts fondamentaux :
 
 - [React](https://reactjs.org/)
 - [GraphQL](https://graphql.org/)
 - [The Jamstack](https://jamstack.org/)
 
-You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
+Vous pouvez tout à fait compléter ce didacticiel sans savoir quoique ce soit sur ces technologies, mais il est possible que vous soyez un peu perdu par certains termes que nous utiliserons sans forcément les expliquer au préalable. D'une façon générale, il est toujours utile de savoir où se situe les frontières et pouvoir distinguer par exemple ce qui provient de React de ce qui est ajouté par Redwood.
 
-### Node.js and Yarn Versions
+### Node.js et Yarn
 
-During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
+Pendant l’installation, RedwoodJS commence par verifier si votre système possède les versions requises de Node et Yarn :
 
 - node: ">=12"
 - yarn: ">=1.15"
 
-👉 **Heads Up:** If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
+👉 **Important:** Si votre système ne repond pas à ces prérequis, _l’installation se soldera par une ERREUR._ Vérifiez en exécutant les commandes suivantes dans un terminal:
 
 ```
 node --version
 yarn --version
 ```
 
-Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
+Procédez aux mises à jour le cas échéant, puis relancez l’installation de RedwoodJS lorsque vous êtes prêt !
 
-> **Installing Node and Yarn**
+> **Installer Node et Yarn**
 > 
-> There are many ways to install and manage both Node.js and Yarn. If you're installing for the first time, we recommend the following:
+> Il y a différentes façons d’installer Node.js et Yarn. Si vous procédez à leur installation pour la première fois, nous vous recommandons de suivre les points suivants :
 > 
 > **Yarn**
 > 
-> - We recommend following the [instructions via Yarnpkg.com](https://classic.yarnpkg.com/en/docs/install/).
+> - Nous recommandons de suivre les instructions fournies sur [Yarnpkg.com](https://classic.yarnpkg.com/en/docs/install/).
 > 
 > **Node.js**
 > 
-> - For **Linux** and **Mac** users, `nvm` is a great tool for managing multiple versions of Node on one system. It takes a bit more effort to set up and learn, however, in which case getting the latest [installation from Nodejs.org](https://nodejs.org/en/) works just fine. 
->     - For **Mac** users, if you already have Homebrew installed, you can use it to [install `nvm`](https://formulae.brew.sh/formula/nvm) as well. Otherwise, follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
->     - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
-> - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
+> - Pour les utilisateurs de **Mac**, si vous avez dejà installé Homebrew, vous pouvez l’utiliser pour [installer `nvm`](https://formulae.brew.sh/formula/nvm). Dans le cas contraire, suivez les [instructions d'installation pour `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating). 
+>     - Pour les utilisateurs de **Linux** et **Mac**, `nvm` est un excellent outil pour gérer plusieurs versions de Node sur un même système. Il demande un petit effort à mettre en place. Dans les deux cas, utiliser la version la plus récente de [Nodejs.org](https://nodejs.org/en/) fonctionne très bien. Dans le cas contraire, suivez les [instructions d'installation pour `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
+>     - Pour les utilisateurs de **Linux**, vous pouvez suivre les [instructions d'installation pour `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
+> - Nous recommandons aux utilisateurs de **Windows** de visiter [Nodejs.org](https://nodejs.org/en/) pour savoir comment procéder.
 > 
-> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v14.
+> Si vous êtes un peu perdu au moment de choisir quelle version de Node utiliser, nous vous recommandons la plus récente LTS avec un numéro de version pair, actuellement il s'agit de la v12.
