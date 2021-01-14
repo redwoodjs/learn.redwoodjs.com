@@ -4,7 +4,7 @@ title: "Cells"
 sidebar_label: "Cells"
 ---
 
-Ces fonctionnalités sont courantes dans la plupart des applications web. Nous voulions voir s'il était possible de faciliter la vie aux développeurs. Nous pensons être arrivé à réaliser quelque chose d'utile. Nous appelons ça les _Cells_ (ou _cellules_ en français). Les Cells proposent une approche simple et déclarative pour récupérer des données au sein de vos composants. You can read the full documentation about Cells [ici](https://redwoodjs.com/docs/cells).
+Ces fonctionnalités sont courantes dans la plupart des applications web. Nous voulions voir s'il était possible de faciliter la vie aux développeurs. Nous pensons être arrivé à réaliser quelque chose d'utile. Nous appelons ça les _Cells_ (ou _cellules_ en français). Les Cells proposent une approche simple et déclarative pour récupérer des données au sein de vos composants. ([Lisez la documentation complète sur Cells](https://redwoodjs.com/docs/cells).)
 
 Lorsque vous créez une nouvelle Cell, vous exportez quelques constantes, toujours nommées de façon identique, et Redwood s'appuie dessus pour mettre en place la mécanique. Une Cell ressemble typiquement à ceci:
 
@@ -157,7 +157,7 @@ const HomePage = () => {
 export default HomePage;
 ```
 
-Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en supposant que vous ayez créé un article à l'étape du [scaffolding](/tutorial/getting-dynamic#creating-a-post-editor) un peu plus tôt). Extra!
+Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en supposant que vous ayez créé un article à l'étape du [scaffolding](./getting-dynamic) un peu plus tôt). Extra!
 
 <img src="https://user-images.githubusercontent.com/300/73210519-5380a780-40ff-11ea-8639-968507a79b1f.png" />
 
