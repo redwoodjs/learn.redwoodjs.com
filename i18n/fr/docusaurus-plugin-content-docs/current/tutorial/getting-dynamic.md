@@ -19,7 +19,7 @@ Pour les besoins de ce didacticiel, nous allons récupérer nos articles depuis 
 Nous devons identifier quelles données seront nécessaires pour un article. Plus tard nous ajouterons d'autres éléments, mais pour commencer nous avons besoin de ceci:
 
 - `ìd` l'identifiant unique pour un article (chaque table de notre base de données aura également un identifiant tel que celui-ci)
-- `<code>title` le titre de l'article</code>
+- `title le titre de l'article`
 - `body` le contenu de l'article
 - `createdAt` un 'timestamp' correspondant au moment où l'article est enregistré dans la base de données
 
