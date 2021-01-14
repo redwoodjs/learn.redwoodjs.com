@@ -81,7 +81,7 @@ Puisque toutes les colonnes de la table étaient définies comme requises dans `
 > 
 > La syntaxe SDL de GraphQL nécessite un `supplémentaire !` lorsqu'un champ _est_ requis. **important:** la syntaxe de `schema.prisma` requiert l'ajout d'un caractère `?` lorsqu'un champ _n'est pas_ requis, tandis que la syntaxe GraphQL requiert l'ajout d'un caractère `!` lorsqu'un champ _est_ requis.
 
-Comme décrit dans [Quête secondaire: Fonctionnement de Redwood avec les Données](qu-te-secondaire-fonctionnement-de-redwood-avec-les-donn-es), il n'y a pas de "resolver" définit explicitement dans le fichier SDL. Redwood suit une convention de nommage simple: chaque champ listé dans les types `Query` et `Mutation` correspondent à une fonction avec un nom identique dans les fichiers `service` et `sdl` associés (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
+Comme décrit dans [Quête secondaire: Fonctionnement de Redwood avec les Données](./side-quest-how-redwood-works-with-data), il n'y a pas de "resolver" définit explicitement dans le fichier SDL. Redwood suit une convention de nommage simple: chaque champ listé dans les types `Query` et `Mutation` correspondent à une fonction avec un nom identique dans les fichiers `service` et `sdl` associés (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
 
 Dans le cas présent, nous créeons une unique `Mutation` que nous appelons `createContact`. Nous l'ajoutons à la fin de notre fichier SDL (avant le caractère 'backtick'):
 
