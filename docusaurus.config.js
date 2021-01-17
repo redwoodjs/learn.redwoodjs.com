@@ -1,4 +1,4 @@
-const locales = ['en', 'fr', 'ja'];
+const locales = ['en', 'fr'];
 
 const localeConfigs = {
   en: {
@@ -6,9 +6,6 @@ const localeConfigs = {
   },
   fr: {
     label: 'Français',
-  },
-  ja: {
-    label: '日本語',
   },
 };
 
