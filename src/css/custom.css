@@ -17,6 +17,7 @@
 	--ifm-code-font-size: 95%;
 	--ifm-menu-color-background-active:#FAEAE5;
 	--ifm-code-background:#FAEAE5;
+	--ifm-code-background:#FAEAE5;
 	--ifm-background-surface-color: #FAEAE5;
 }
 
@@ -31,6 +32,10 @@ html[data-theme='dark'] code {
 	background-color: #341309;
 }
 
+html[data-theme='dark'] .footer--dark {
+	--ifm-footer-background-color: #1f0a04;
+}
+
 code {
 	color: #682712;
 }
@@ -40,7 +45,7 @@ code {
 }
 
 .footer {
-	background-color: #fdf8f6;
+	--ifm-footer-background-color: #fdf8f6;
 	color: var(--ifm-color-primary-dark);
 }
 
