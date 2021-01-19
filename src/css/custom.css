@@ -17,16 +17,88 @@
 	--ifm-code-font-size: 95%;
 	--ifm-menu-color-background-active:#FAEAE5;
 	--ifm-code-background:#FAEAE5;
+	--ifm-background-surface-color: #FAEAE5;
+	--ifm-blockquote-color: #E38163;
+	--ifm-color-emphasis-300: #EBA48E;
+	--ifm-code-border-radius: 0.25rem;
+	--ifm-code-font-size: 90%;
+	--ifm-font-family-base: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, sans-serif;
+	--ifm-font-family-monospace: "Fira Code", "Fira Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Page titles, h1 */
+.docTitle_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocItem- {
+	font-size: 2rem !important;
+}
+
+html[data-theme='dark'] {
+	--ifm-background-color: #120502;
+	--ifm-background-surface-color: #341309;
+	--ifm-menu-color-background-active: #1f0a04;
+}
+
+html[data-theme='dark'] code {
+	color: #E38163;
+	background-color: #341309;
+}
+
+html[data-theme='dark'] .footer--dark {
+	--ifm-footer-background-color: #1f0a04;
+}
+
+.navbar__title {
+	letter-spacing: -0.03rem;
+}
+
+.menu__link {
+	font-size: 90%;
+	font-weight: 600;
+}
+
+.markdown a {
+	text-decoration: underline;
+}
+
+blockquote {
+	font-size: 90%;
+	color: #682712;
+	background-color: #FAEAE5;
+	border-radius: 0.25rem;
+	border-left: none;
+}
+
+blockquote code {
+	background-color: #F3C7BA;
+}
+
+html[data-theme='dark'] blockquote {
+	background-color: #1f0a04;
+	color: #E38163;
+}
+
+code {
+	color: #682712;
+	font-size: 85%;
+}
+
+html[data-theme='dark'] blockquote .codeBlockLines_node_modules-\@docusaurus-theme-classic-lib-next-theme-CodeBlock- {
+	background-color: #120502 !important;
+}
+
+.codeBlockLines_node_modules-\@docusaurus-theme-classic-lib-next-theme-CodeBlock- {
+	background-color: #230b07 !important;
+}
+
+.token.comment {
+	color: #634747 !important;
 }
 
 .navbar {
-	background-color: #fdf8f6;
-	color: var(--ifm-color-primary-dark);
 	box-shadow: none;
 }
 
 .footer {
-	background-color: #fdf8f6;
+	--ifm-footer-background-color: #fdf8f6;
 	color: var(--ifm-color-primary-dark);
 }
 
@@ -39,7 +111,7 @@
 }
 
 .docusaurus-highlight-code-line {
-	background-color: rgb(72, 77, 91);
+	background-color: #3c1913;
 	display: block;
 	margin: 0 calc(-1 * var(--ifm-pre-padding));
 	padding: 0 var(--ifm-pre-padding);
