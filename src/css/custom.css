@@ -37,6 +37,20 @@ html[data-theme='dark'] {
 	--ifm-menu-color-background-active: #1f0a04;
 }
 
+.DocSearch {
+	--docsearch-searchbox-background: #ffffff;
+}
+
+.DocSearch-Button-Key {
+	--docsearch-key-gradient: linear-gradient(-26.5deg,#682712,#341309);
+	--docsearch-muted-color: #FAEAE5;
+	--docsearch-key-shadow: inset 0 -2px 0 0 #1f0a04, inset 0 0 1px 1px #682712, 0 2px 2px 0 rgba(3,4,9,0.3);
+}
+
+html[data-theme='dark'] .DocSearch {
+	--docsearch-searchbox-background: #1f0a04;
+}
+
 html[data-theme='dark'] code {
 	color: #E38163;
 	background-color: #341309;
