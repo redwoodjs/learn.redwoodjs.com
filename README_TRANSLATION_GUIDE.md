@@ -67,23 +67,23 @@ Crowdin is a pretty cool tool but it has its quirks - feel free to reach out to 
 
 ## FAQ
 
-** I finished translating in Crowdin... Where's the PR?!? **
+**I finished translating in Crowdin... Where's the PR?!?**
 
 Translations are only eligible for auto-PR once 100% approved. After approval, it takes ~10 minutes until the PR will sync to this repo.
 
-** I found a typo in an existing translation, can I update it? **
+**I found a typo in an existing translation, can I update it?**
 
 Yes please!
 
-** I see weird symbols like `<0>` in Crowdin strings... what?**
+**I see weird symbols like `<0>` in Crowdin strings... what?**
 
 Those symbols are stand-ins for html tags like `<a></a>`. It is how Crowdin can map the tags to your translated content. In general, Crowdin tries to hide content that is not subject for translation, as to reduce clutter for translators.
 
-** Are there term glossaries to ensure consistency between translators in the same language? **
+**Are there term glossaries to ensure consistency between translators in the same language?**
 
 You can help us start some if you like! There is a glossary tab in Crowdin.
 
-** This whole process is a little confusing. **
+**This whole process is a little confusing.**
 
 Your feedback will help us smooth things out!
 
