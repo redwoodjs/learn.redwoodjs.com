@@ -10,7 +10,7 @@ This WIP site will be used to present multilingual tutorial docs for RedwoodJS a
 
 We currently support English and French, but wish to include more languages!
 
-Are you fluent in another language and want to contribute translations?
+Hey polyglots, **want to help translate or proofread?** Check out the [Translation Guide](./README_TRANSLATION_GUIDE.md) to find out how to get started
 
 ### Docusaurus 2 + Crowdin
 
@@ -66,50 +66,38 @@ Fully approved translations made from the above repo are auto-PR'ed into this Gi
 
 We only have a `tutorial` category for now. Contact `@clairefro` to add new doc categories if needed.
 
-### Note about relative paths
+### Keep in mind in source markdown
 
-If a static asset or document is referenced in the source markdown with a relative path (ex: `[]!(../img/logo.svg)`), it will break in it's differently-nested i18n counterparts ("Where's that???").
+#### Static assets
 
-Solution: copy the asset to the same "relativity" within the i18n target folder.
+If a static asset is referenced in the source markdown with a relative path (ex: `[]!(../img/logo.svg)`), the path will break in the target locale document which is in a differently nested directory.
 
-Cool thing is this also gives the opportunity to change image based on locale.
+**Use absolute paths** for local static assets that do not change accross locales.
+
+If it is an image that you feel absolutely inclined to localize, you can use relative paths and include files with the exact same name (with different image content) at the same relative path in all target dirs.
+^ This is cumbersome - let's try to be as lazy as possible and not localize image assets unless totally necessary.
+
+#### Internal linking
+
+For links to other docs inside the `tutorials` directory, USE RELATIVE LINKS!
+
+```
+In [previous section](./our-first-page) we....
+```
+
+This ensures accurate linking no matter what locale a user is viewing.
+
+```
+# acessing ./our-first-page from within tutorial/* works in any locale
+
+/docs/tutorial/our-first-page/
+/fr/docs/tutorial/our-first-page/
+```
 
 ## Crowdin
 
 Crowdin is our localization (l10n) manager. We use a Github integration to sync our [Crowdin repo](https://crowdin.com/project/learn-redwoodjs) with this repo.
 
-## Translation
+## Contact
 
-**IMPORTANT: Do not translate directly in this repo!**
-
-All content is translated via Crowdin so we can keep our docs from going stale.  
-https://crowdin.com/project/learn-redwoodjs/
-
-Translations made from the above repo are auto-PR'ed to this Github repo once approved.
-
-### Frontmatter
-
-When translating, keep frontmatter `id` as-is (same as English). This id is used for placing items correctly in the sidebar and must be the same for all counterpart docs.
-
-`title` and `sidebar_label` however can and should be translated! Use quotes `""` - it's a habit to prevent YAML breaking on special characters like `:`.
-
-example
-
-```md
----
-<!-- /docs/tutorial/welcome-to-redwood.md  -->
-id: welcome-to-redwood
-title: "Welcome to Redwood"
-sidebar_label: "Welcome to Redwood"
----
-
----
-
-<!-- /i18n/fr/docusaurus-plugin-content-docs/current/tutorial/welcome-to-redwood.md  -->
-
-id: welcome-to-redwood
-title: "Bienvenue chez Redwood"
-sidebar_label: "Bienvenue chez Redwood"
-
----
-```
+Questions or ideas? Hit up @clairefro or drop a post in the Redwood forums under ["Docs & Content Translations"](https://community.redwoodjs.com/c/translations/10)
