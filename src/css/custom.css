@@ -24,6 +24,7 @@
 	--ifm-code-font-size: 90%;
 	--ifm-font-family-base: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, sans-serif;
 	--ifm-font-family-monospace: "Fira Code", "Fira Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	--ifm-footer-background-color: #fdf8f6;
 }
 
 /* Page titles, h1 */
@@ -54,10 +55,6 @@ html[data-theme='dark'] .DocSearch {
 html[data-theme='dark'] code {
 	color: #E38163;
 	background-color: #341309;
-}
-
-html[data-theme='dark'] .footer--dark {
-	--ifm-footer-background-color: #1f0a04;
 }
 
 .navbar__title {
@@ -112,8 +109,12 @@ html[data-theme='dark'] blockquote .codeBlockLines_node_modules-\@docusaurus-the
 }
 
 .footer {
-	--ifm-footer-background-color: #fdf8f6;
+	background-color: #fdf8f6;
 	color: var(--ifm-color-primary-dark);
+}
+
+html[data-theme='dark'] .footer {
+	background-color: #1f0a04;
 }
 
 .footer__title {
