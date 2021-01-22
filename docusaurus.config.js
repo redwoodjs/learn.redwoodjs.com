@@ -26,6 +26,12 @@ module.exports = {
   organizationName: 'redwoodjs', // Usually your GitHub org/user name.
   projectName: 'learn.redwoodjs.com', // Usually your repo name.
   themeConfig: {
+    algolia: {
+      apiKey: process.env.ALGOLIA_API_KEY || 'dev',
+      indexName: process.env.ALGOLIA_INDEX_NAME || 'dev',
+      contextualSearch: true,
+      searchParameters: {}
+    },
     navbar: {
       title: 'Learn RedwoodJS',
       logo: {
