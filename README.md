@@ -64,7 +64,8 @@ All translation is done via our [Crowdin repo](https://crowdin.com/project/learn
 
 Fully approved translations made from the above repo are auto-PR'ed into this Github repo (every 10 minutes).
 
-We only have a `tutorial` category for now. Contact `@clairefro` to add new doc categories if needed.
+Here's the lifecycle
+![image](https://user-images.githubusercontent.com/9841162/105461058-8b062f00-5c41-11eb-94e4-4fa7e8dc397b.png)
 
 ### Keep in mind in source markdown
 
