@@ -20,7 +20,7 @@
     "description": "The label of footer link with label=Discord linking to https://discord.com/invite/redwoodjs"
   },
   "link.item.label.Discourse": {
-    "message": "Discours",
+    "message": "Discourse",
     "description": "The label of footer link with label=Discourse linking to https://community.redwoodjs.com/"
   },
   "link.item.label.Twitter": {
