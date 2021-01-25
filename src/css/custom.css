@@ -114,6 +114,14 @@ html[data-theme='dark'] blockquote [class^='codeBlockLines'] {
   box-shadow: none;
 }
 
+.pagination-nav__link {
+	border-color: var(--ifm-color-primary);
+}
+
+.pagination-nav__sublabel {
+	color: var(--ifm-color-primary-light);
+}
+
 .footer {
   background-color: #fdf8f6;
   color: var(--ifm-color-primary-dark);
@@ -124,11 +132,30 @@ html[data-theme='dark'] .footer {
 }
 
 .footer__title {
-  color: var(--ifm-color-primary-dark);
+	color: var(--ifm-color-primary);
+	margin-bottom: 0.5rem;
+}
+
+html[data-theme='dark'] .footer__title {
+	color: var(--ifm-color-primary-light);
 }
 
 .footer__link-item {
   color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .footer__link-item {
+	color: var(--ifm-color-primary-light);
+}
+
+.footer__copyright {
+	margin-top: 2rem;
+	color: var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .footer__copyright {
+	margin-top: 2rem;
+	color: var(--ifm-color-primary-light);
 }
 
 .docusaurus-highlight-code-line {
