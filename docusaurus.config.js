@@ -1,3 +1,4 @@
+const path = require('path');
 const locales = ['en', 'fr'];
 
 const localeConfigs = {
@@ -30,7 +31,7 @@ module.exports = {
       apiKey: process.env.ALGOLIA_API_KEY || 'dev',
       indexName: process.env.ALGOLIA_INDEX_NAME || 'dev',
       contextualSearch: true,
-      searchParameters: {}
+      searchParameters: {},
     },
     navbar: {
       title: 'Learn RedwoodJS',
@@ -126,6 +127,7 @@ module.exports = {
     ],
   ],
   stylesheets: [
-    "https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap"
+    'https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap',
   ],
+  plugins: [path.resolve(__dirname, 'plugins', 'youtube-localize-plugin')],
 };
