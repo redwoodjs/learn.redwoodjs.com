@@ -30,6 +30,8 @@
   --ifm-font-family-monospace: 'Fira Code', 'Fira Mono', SFMono-Regular, Menlo,
     Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   --ifm-footer-background-color: #fdf8f6;
+  --ifm-menu-color-active: #682712;
+  --ifm-navbar-link-hover-color: #682712;
 }
 
 /* Page titles, h1 */
@@ -43,8 +45,32 @@ html[data-theme='dark'] {
   --ifm-menu-color-background-active: #1f0a04;
 }
 
+html[data-theme='dark'] a {
+  color: #e38163;
+}
+
+html[data-theme='dark'] .navbar__link--active {
+  color: #e38163;
+}
+
+html[data-theme='dark'] .menu__link--active {
+  color: #e38163;
+}
+
+.react-toggle-track {
+  background-color: #682712 !important;
+}
+
 .DocSearch {
   --docsearch-searchbox-background: #ffffff;
+}
+
+.DocSearch-Button {
+  color: #bf4722 !important;
+}
+
+.DocSearch-Button-Placeholder {
+  font-size: 0.9rem !important;
 }
 
 .DocSearch-Button-Key {
