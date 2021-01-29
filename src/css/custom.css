@@ -69,6 +69,11 @@ html[data-theme='dark'] .menu__link--active {
   color: #bf4722 !important;
 }
 
+html[data-theme='dark'] .DocSearch-Button {
+  color: #e38163 !important;
+}
+
+
 .DocSearch-Button-Placeholder {
   font-size: 0.9rem !important;
 }
