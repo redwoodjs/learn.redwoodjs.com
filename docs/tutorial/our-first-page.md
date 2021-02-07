@@ -8,7 +8,7 @@ Let's give our users something to look at besides the Redwood welcome page. We'l
 
     yarn redwood generate page home /
 
-The command above does three things:
+The command above does four things:
 
 - Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument, capitalizes it, and appends "Page" to construct your new page component.
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
@@ -30,13 +30,13 @@ It's not pretty, but it's a start! Open the page in your editor, change some tex
 Open up `web/src/Routes.js` and take a look at the route that was created:
 
 ```html
-<Route path="/" page="{HomePage}" name="home" />
+<Route path="/" page={HomePage} name="home" />
 ```
 
 Try changing the route to something like:
 
 ```html
-<Route path="/hello" page="{HomePage}" name="home" />
+<Route path="/hello" page={HomePage} name="home" />
 ```
 
 As soon as you add your first route, you'll never see the initial Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.

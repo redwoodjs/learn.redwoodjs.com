@@ -45,30 +45,30 @@ Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateC
 // api/src/graphql/contacts.sdl.js
 
 export const schema = gql`
-	type Contact {
-		id: Int!
-		name: String!
-		email: String!
-		message: String!
-		createdAt: DateTime!
-	}
+  type Contact {
+    id: Int!
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
 
-	type Query {
-		contacts: [Contact!]!
-	}
+  type Query {
+    contacts: [Contact!]!
+  }
 
-	input CreateContactInput {
-		name: String!
-		email: String!
-		message: String!
-	}
+  input CreateContactInput {
+    name: String!
+    email: String!
+    message: String!
+  }
 
-	input UpdateContactInput {
-		name: String
-		email: String
-		message: String
-	}
-`;
+  input UpdateContactInput {
+    name: String
+    email: String
+    message: String
+  }
+`
 ```
 
 What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explictly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, was a good compromise for optimal developer experience.
@@ -90,34 +90,34 @@ In this case we're creating a single `Mutation` that we'll call `createContact`.
 // api/src/graphql/contacts.sdl.js
 
 export const schema = gql`
-	type Contact {
-		id: Int!
-		name: String!
-		email: String!
-		message: String!
-		createdAt: DateTime!
-	}
+  type Contact {
+    id: Int!
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
 
-	type Query {
-		contacts: [Contact!]!
-	}
+  type Query {
+    contacts: [Contact!]!
+  }
 
-	input CreateContactInput {
-		name: String!
-		email: String!
-		message: String!
-	}
+  input CreateContactInput {
+    name: String!
+    email: String!
+    message: String!
+  }
 
-	input UpdateContactInput {
-		name: String
-		email: String
-		message: String
-	}
+  input UpdateContactInput {
+    name: String
+    email: String
+    message: String
+  }
 
-	type Mutation {
-		createContact(input: CreateContactInput!): Contact
-	}
-`;
+  type Mutation {
+    createContact(input: CreateContactInput!): Contact
+  }
+`
 ```
 
 The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
@@ -127,15 +127,15 @@ That's it for the SDL file, let's define the service that will actually save the
 ```javascript {9-11}
 // api/src/services/contacts/contacts.js
 
-import { db } from "src/lib/db";
+import { db } from 'src/lib/db'
 
 export const contacts = () => {
-	return db.contact.findMany();
-};
+  return db.contact.findMany()
+}
 
 export const createContact = ({ input }) => {
-	return db.contact.create({ data: input });
-};
+  return db.contact.create({ data: input })
+}
 ```
 
 Thanks to Prisma Client JS it takes very little code to actually save something to the database! This is an asynchronous call but we didn't have to worry about resolving Promises or dealing with `async/await`. Apollo will do that for us!
@@ -168,12 +168,12 @@ Our GraphQL mutation is ready to go on the backend so all that's left is to invo
 // web/src/pages/ContactPage/ContactPage.js
 
 const CREATE_CONTACT = gql`
-	mutation CreateContactMutation($input: CreateContactInput!) {
-		createContact(input: $input) {
-			id
-		}
-	}
-`;
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    createContact(input: $input) {
+      id
+    }
+  }
+`
 ```
 
 We reference the `createContact` mutation we defined in the Contacts SDL passing it an `input` object which will contain the actual name, email and message fields.
@@ -209,14 +209,14 @@ const ContactPage = () => {
 
 ```javascript
 create({
-	variables: {
-		input: {
-			name: "Rob",
-			email: "rob@redwoodjs.com",
-			message: "I love Redwood!",
-		},
-	},
-});
+  variables: {
+    input: {
+      name: 'Rob',
+      email: 'rob@redwoodjs.com',
+      message: 'I love Redwood!',
+    },
+  },
+})
 ```
 
 If you'll recall `<Form>` gives us all of the fields in a nice object where the key is the name of the field, which means the `data` object we're receiving in `onSubmit` is already in the proper format that we need for the `input`!
@@ -275,10 +275,10 @@ Now we know if the database call is still in progress by looking at `loading`. A
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-	// ...
-	<Submit disabled={loading}>Save</Submit>
-	// ...
-);
+  // ...
+  <Submit disabled={loading}>Save</Submit>
+  // ...
+)
 ```
 
 It may be hard to see a difference in development because the submit is so fast, but you could enable network throttling via the Network tab Chrome's Web Inspector to simulate a slow connection:
@@ -334,28 +334,28 @@ We talked about business logic belonging in our services files and this is a per
 ```javascript {3,7-15,22}
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from "@redwoodjs/api";
+import { UserInputError } from '@redwoodjs/api'
 
-import { db } from "src/lib/db";
+import { db } from 'src/lib/db'
 
 const validate = (input) => {
-	if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
-		throw new UserInputError("Can't create new contact", {
-			messages: {
-				email: ["is not formatted like an email address"],
-			},
-		});
-	}
-};
+  if (input.email && !input.email.match(/[^@]+@[^.]+\..+/)) {
+    throw new UserInputError("Can't create new contact", {
+      messages: {
+        email: ['is not formatted like an email address'],
+      },
+    })
+  }
+}
 
 export const contacts = () => {
-	return db.contact.findMany();
-};
+  return db.contact.findMany()
+}
 
 export const createContact = ({ input }) => {
-	validate(input);
-	return db.contact.create({ data: input });
-};
+  validate(input)
+  return db.contact.create({ data: input })
+}
 ```
 
 So when `createContact` is called it will first validate the inputs and only if no errors are thrown will it continue to actually create the record in the database.
@@ -380,20 +380,27 @@ We already capture any existing error in the `error` constant that we got from `
 > ```javascript {3-8}
 > // web/src/pages/ContactPage/ContactPage.js
 > const onSubmit = async (data) => {
-> 	try {
-> 		await create({ variables: { input: data } });
-> 		console.log(data);
-> 	} catch (error) {
-> 		console.log(error);
-> 	}
-> };
+>   try {
+>     await create({ variables: { input: data } })
+>     console.log(data)
+>   } catch (error) {
+>     console.log(error)
+>   }
+> }
 > ```
 
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, }}
-errorClassName="error" />
+// web/src/pages/ContactPage/ContactPage.js
+
+<TextField
+  name="email"
+  validation={{
+    required: true,
+  }}
+  errorClassName="error"
+/>
 ```
 
 Now try filling out the form with an invalid email address:
@@ -460,7 +467,7 @@ First we'll import `useForm`:
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form'
 ```
 
 And now call it inside of our component:
@@ -496,87 +503,111 @@ Now we can call `reset()` on `formMethods` after the success message is added to
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-	onCompleted: () => {
-		// addMessage...
-		formMethods.reset();
-	},
-});
+  onCompleted: () => {
+    // addMessage...
+    formMethods.reset()
+  },
+})
 ```
 
-<img alt="Screenshot of Contact form with Flash success message" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png" />
+<img alt="Screenshot of Contact form with Flash success message" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png"/>
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
 Here's the final `ContactPage.js` page:
 
 ```javascript
-import { Form, TextField, TextAreaField, Submit, FieldError, Label, FormError } from "@redwoodjs/forms";
-import { Flash, useFlash, useMutation } from "@redwoodjs/web";
-import { useForm } from "react-hook-form";
-import BlogLayout from "src/layouts/BlogLayout";
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+  Label,
+  FormError,
+} from '@redwoodjs/forms'
+import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import { useForm } from 'react-hook-form'
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const CREATE_CONTACT = gql`
-	mutation CreateContactMutation($input: CreateContactInput!) {
-		createContact(input: $input) {
-			id
-		}
-	}
-`;
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    createContact(input: $input) {
+      id
+    }
+  }
+`
 
 const ContactPage = () => {
-	const formMethods = useForm();
-	const { addMessage } = useFlash();
+  const formMethods = useForm()
+  const { addMessage } = useFlash()
 
-	const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-		onCompleted: () => {
-			addMessage("Thank you for your submission!", {
-				style: { backgroundColor: "green", color: "white", padding: "1rem" },
-			});
-			formMethods.reset();
-		},
-	});
+  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+    onCompleted: () => {
+      addMessage('Thank you for your submission!', {
+        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
+      })
+      formMethods.reset()
+    },
+  })
 
-	const onSubmit = (data) => {
-		create({ variables: { input: data } });
-		console.log(data);
-	};
+  const onSubmit = (data) => {
+    create({ variables: { input: data } })
+    console.log(data)
+  }
 
-	return (
-		<BlogLayout>
-			<Flash timeout={1000} />
-			<Form onSubmit={onSubmit} validation={{ mode: "onBlur" }} error={error} formMethods={formMethods}>
-				<FormError error={error} wrapperStyle={{ color: "red", backgroundColor: "lavenderblush" }} />
-				<Label name="name" errorClassName="error">
-					Name
-				</Label>
-				<TextField name="name" validation={{ required: true }} errorClassName="error" />
-				<FieldError name="name" className="error" />
+  return (
+    <BlogLayout>
+      <Flash timeout={1000} />
+      <Form
+        onSubmit={onSubmit}
+        validation={{ mode: 'onBlur' }}
+        error={error}
+        formMethods={formMethods}
+      >
+        <FormError
+          error={error}
+          wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
+        />
+        <Label name="name" errorClassName="error">
+          Name
+        </Label>
+        <TextField
+          name="name"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="name" className="error" />
 
-				<Label name="email" errorClassName="error">
-					Email
-				</Label>
-				<TextField
-					name="email"
-					validation={{
-						required: true,
-					}}
-					errorClassName="error"
-				/>
-				<FieldError name="email" className="error" />
+        <Label name="email" errorClassName="error">
+          Email
+        </Label>
+        <TextField
+          name="email"
+          validation={{
+            required: true,
+          }}
+          errorClassName="error"
+        />
+        <FieldError name="email" className="error" />
 
-				<Label name="message" errorClassName="error">
-					Message
-				</Label>
-				<TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
-				<FieldError name="message" className="error" />
+        <Label name="message" errorClassName="error">
+          Message
+        </Label>
+        <TextAreaField
+          name="message"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="message" className="error" />
 
-				<Submit disabled={loading}>Save</Submit>
-			</Form>
-		</BlogLayout>
-	);
-};
+        <Submit disabled={loading}>Save</Submit>
+      </Form>
+    </BlogLayout>
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [functionality](https://react-hook-form.com/api) that `<Form>` doesn't expose. When you want to get to that functionality you can: just call `useForm()` yourself but make sure to pass the returned object (we called it `formMethods`) as a prop to `<Form>` so that the validation and other functionality keeps working.
@@ -584,7 +615,7 @@ That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [
 > You may have noticed that the onBlur form validation stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automaticaly passes it the `validation` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
 >
 > ```javascript
-> const formMethods = useForm({ mode: "onBlur" });
+> const formMethods = useForm({ mode: 'onBlur' })
 > ```
 
 The public site is looking pretty good. How about the administrative features that let us create and edit posts? We should move them to some kind of admin section and put them behind a login so that random users poking around at URLs can't create ads for discount pharmaceuticals.

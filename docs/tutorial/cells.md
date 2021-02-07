@@ -10,39 +10,40 @@ When you create a cell you export several specially named constants and then Red
 
 ```javascript
 export const QUERY = gql`
-	query {
-		posts {
-			id
-			title
-			body
-			createdAt
-		}
-	}
-`;
+  query {
+    posts {
+      id
+      title
+      body
+      createdAt
+    }
+  }
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>No posts yet!</div>;
+export const Empty = () => <div>No posts yet!</div>
 
-export const Failure = ({ error }) => <div>Error loading posts: {error.message}</div>;
+export const Failure = ({ error }) => (
+  <div>Error loading posts: {error.message}</div>
+)
 
 export const Success = ({ posts }) => {
-	return posts.map((post) => (
-		<article>
-			<h2>{post.title}</h2>
-			<div>{post.body}</div>
-		</article>
-	));
-};
+  return posts.map((post) => (
+    <article>
+      <h2>{post.title}</h2>
+      <div>{post.body}</div>
+    </article>
+  ))
+}
 ```
 
 When React renders this component, Redwood will perform the `QUERY` and display the `Loading` component until a response is received.
 
 Once the query returns, it will display one of three states:
-
-- If there was an error, the `Failure` component
-- If the data return is empty (`null` or empty array), the `Empty` component
-- Otherwise, the `Success` component
+  - If there was an error, the `Failure` component
+  - If the data return is empty (`null` or empty array), the `Empty` component
+  - Otherwise, the `Success` component
 
 There are also some lifecycle helpers like `beforeQuery` (for massaging any props before being given to the `QUERY`) and `afterQuery` (for massaging the data returned from GraphQL but before being sent to the `Success` component).
 
@@ -62,22 +63,22 @@ This command will result in a new file at `/web/src/components/BlogPostsCell/Blo
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-	query BlogPostsQuery {
-		blogPosts {
-			id
-		}
-	}
-`;
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ blogPosts }) => {
-	return JSON.stringify(blogPosts);
-};
+  return JSON.stringify(blogPosts)
+}
 ```
 
 > **Indicating Multiplicity to the Cell Generator**
@@ -99,25 +100,25 @@ To get you off and running as quickly as possible the generator assumes you've g
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-	query BlogPostsQuery {
-		blogPosts {
-			id
-		}
-	}
-`;
+  query BlogPostsQuery {
+    blogPosts {
+      id
+    }
+  }
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ posts }) => {
-	return JSON.stringify(posts);
-};
+  return JSON.stringify(posts)
+}
 ```
 
-However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](./getting-dynamic#creating-a-post-editor) in the _Getting Dynamic_ part.)
+However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](./getting-dynamic#creating-a-post-editor in the *Getting Dynamic* part.)
 
 We'll have to rename that to just `posts` in both the query name and in the prop name in `Success`:
 
@@ -125,22 +126,22 @@ We'll have to rename that to just `posts` in both the query name and in the prop
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-	query BlogPostsQuery {
-		posts {
-			id
-		}
-	}
-`;
+  query BlogPostsQuery {
+    posts {
+      id
+    }
+  }
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ posts }) => {
-	return JSON.stringify(posts);
-};
+  return JSON.stringify(posts)
+}
 ```
 
 Let's plug this cell into our `HomePage` and see what happens:
@@ -148,18 +149,18 @@ Let's plug this cell into our `HomePage` and see what happens:
 ```javascript {4,9}
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
-import BlogPostsCell from "src/components/BlogPostsCell";
+import BlogLayout from 'src/layouts/BlogLayout'
+import BlogPostsCell from 'src/components/BlogPostsCell'
 
 const HomePage = () => {
-	return (
-		<BlogLayout>
-			<BlogPostsCell />
-		</BlogLayout>
-	);
-};
+  return (
+    <BlogLayout>
+      <BlogPostsCell />
+    </BlogLayout>
+  )
+}
 
-export default HomePage;
+export default HomePage
 ```
 
 The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](./getting-dynamic#creating-a-post-editor) from earlier). Neat!
@@ -172,12 +173,12 @@ The browser should actually show an array with a number or two (assuming you cre
 >
 > ```javascript
 > export const QUERY = gql`
-> 	query BlogPostsQuery {
-> 		postIds: posts {
-> 			id
-> 		}
-> 	}
-> `;
+>   query BlogPostsQuery {
+>     postIds: posts {
+>       id
+>     }
+>   }
+> `
 > ```
 >
 > Now `postIds` will be available in `Success` instead of `posts`
@@ -188,15 +189,15 @@ In addition to the `id` that was added to the `query` by the generator, let's ge
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const QUERY = gql`
-	query BlogPostsQuery {
-		posts {
-			id
-			title
-			body
-			createdAt
-		}
-	}
-`;
+  query BlogPostsQuery {
+    posts {
+      id
+      title
+      body
+      createdAt
+    }
+  }
+`
 ```
 
 The page should now show a dump of all the data you created for any blog posts you scaffolded:
@@ -209,16 +210,16 @@ Now we're in the realm of good ol' React components, so just build out the `Succ
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 export const Success = ({ posts }) => {
-	return posts.map((post) => (
-		<article key={post.id}>
-			<header>
-				<h2>{post.title}</h2>
-			</header>
-			<p>{post.body}</p>
-			<div>Posted at: {post.createdAt}</div>
-		</article>
-	));
-};
+  return posts.map((post) => (
+    <article key={post.id}>
+      <header>
+        <h2>{post.title}</h2>
+      </header>
+      <p>{post.body}</p>
+      <div>Posted at: {post.createdAt}</div>
+    </article>
+  ))
+}
 ```
 
 And just like that we have a blog! It may be the most basic, ugly blog that ever graced the internet, but it's something! (Don't worry, we've got more features to add.)

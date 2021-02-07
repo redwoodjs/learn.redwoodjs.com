@@ -22,34 +22,34 @@ Consider the following SDL javascript snippet:
 // api/src/graphql/posts.sdl.js
 
 export const schema = gql`
-	type Post {
-		id: Int!
-		title: String!
-		body: String!
-		createdAt: DateTime!
-	}
+  type Post {
+    id: Int!
+    title: String!
+    body: String!
+    createdAt: DateTime!
+  }
 
-	type Query {
-		posts: [Post!]!
-		post(id: Int!): Post!
-	}
+  type Query {
+    posts: [Post!]!
+    post(id: Int!): Post!
+  }
 
-	input CreatePostInput {
-		title: String!
-		body: String!
-	}
+  input CreatePostInput {
+    title: String!
+    body: String!
+  }
 
-	input UpdatePostInput {
-		title: String
-		body: String
-	}
+  input UpdatePostInput {
+    title: String
+    body: String
+  }
 
-	type Mutation {
-		createPost(input: CreatePostInput!): Post!
-		updatePost(id: Int!, input: UpdatePostInput!): Post!
-		deletePost(id: Int!): Post!
-	}
-`;
+  type Mutation {
+    createPost(input: CreatePostInput!): Post!
+    updatePost(id: Int!, input: UpdatePostInput!): Post!
+    deletePost(id: Int!): Post!
+  }
+`
 ```
 
 In this example, Redwood will look in `api/src/services/posts/posts.js` for the following five resolvers:
@@ -64,36 +64,36 @@ To implement these, simply export them from the services file. They will usually
 
 ```javascript
 // api/src/services/posts/posts.js
-import { db } from "src/lib/db";
+import { db } from 'src/lib/db'
 
 export const posts = () => {
-	return db.post.findMany();
-};
+  return db.post.findMany()
+}
 
 export const post = ({ id }) => {
-	return db.post.findOne({
-		where: { id },
-	});
-};
+  return db.post.findUnique({
+    where: { id },
+  })
+}
 
 export const createPost = ({ input }) => {
-	return db.post.create({
-		data: input,
-	});
-};
+  return db.post.create({
+    data: input,
+  })
+}
 
 export const updatePost = ({ id, input }) => {
-	return db.post.update({
-		data: input,
-		where: { id },
-	});
-};
+  return db.post.update({
+    data: input,
+    where: { id },
+  })
+}
 
 export const deletePost = ({ id }) => {
-	return db.post.delete({
-		where: { id },
-	});
-};
+  return db.post.delete({
+    where: { id },
+  })
+}
 ```
 
 > Apollo assumes these functions return promises, which `db` (an instance of `PrismaClient`) does. Apollo waits for them to resolve before responding with your query results, so you don't need to worry about `async`/`await` or mess with callbacks yourself.

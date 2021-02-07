@@ -12,10 +12,10 @@ Part 4 of the video tutorial picks up here:
 
 The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. You've seen what building a Redwood app is like, how about we try deploying one?
 
-We've only got one change to make to the codebase to get it ready for deployment and we've got a generator to do it for us:
+We've only got one change to make to the codebase to get it ready for deployment and we've got a setup command to do it for us:
 
 ```terminal
-yarn rw g deploy netlify
+yarn rw setup deploy netlify
 ```
 
 This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
@@ -44,11 +44,10 @@ We'll need a database somewhere on the internet to store our data. We've been us
 First we'll let Prisma know that we intend to use Postgres in addition to SQLite so it will build client libraries for both. Update the `provider` entry in `schema.prisma`:
 
 ```javascript
-provider = ["sqlite", "postgresql"];
+provider = ["sqlite", "postgresql"]
 ```
 
 > If you are deploying to Netlify and using Prisma version `< 2.11.0`, you will need to add `rhel-openssl-1.0.x` to your `binaryTargets`:
->
 > ```javascript
 > // api/db/schema.prisma
 >
@@ -73,15 +72,15 @@ We're going to go with Heroku for now because it's a) free and b) easier to get 
 
 Head over to [Heroku](https://signup.heroku.com/) and create an account or log in. Then click that **Create a new app** button:
 
-<img alt="Screen Shot 2020-02-03 at 3 22 36 PM" src="https://user-images.githubusercontent.com/300/73703866-438c3900-46a6-11ea-9a90-bdab2fed8bff.png" />
+<img alt="Screen Shot 2020-02-03 at 3 22 36 PM" src="https://user-images.githubusercontent.com/300/73703866-438c3900-46a6-11ea-9a90-bdab2fed8bff.png"/>
 
 Give it a name like "redwoodblog" if it's available. Go to the **Resources** tab and then click **Find more add-ons** in the **Add-ons** section:
 
-<img alt="Screen Shot 2020-02-03 at 3 23 25 PM" src="https://user-images.githubusercontent.com/300/73703877-4e46ce00-46a6-11ea-87c0-079346f4d9b3.png" />
+<img alt="Screen Shot 2020-02-03 at 3 23 25 PM" src="https://user-images.githubusercontent.com/300/73703877-4e46ce00-46a6-11ea-87c0-079346f4d9b3.png"/>
 
 And scroll down to **Heroku Postgres**:
 
-<img alt="Screen Shot 2020-02-03 at 3 23 48 PM" src="https://user-images.githubusercontent.com/300/73703883-556ddc00-46a6-11ea-8777-ee27d2202e0e.png" />
+<img alt="Screen Shot 2020-02-03 at 3 23 48 PM" src="https://user-images.githubusercontent.com/300/73703883-556ddc00-46a6-11ea-8777-ee27d2202e0e.png"/>
 
 Click that and then on the detail page that comes up, click the **Install Heroku Postgres** button that's at the top right. On the next screen tell it you want to connect it to the app you just created, then click **Submit Order Form**:
 
@@ -93,7 +92,7 @@ You'll be returned to your app's detail page. You should be on the **Resources**
 
 Click the **Heroku Postgres** link to get to the detail page, then the **Settings** tab and finally the **View Credentials...** button. We did all the steps above so that we could copy the URI listed at the bottom:
 
-<img alt="Screen Shot 2020-02-03 at 3 25 31 PM" src="https://user-images.githubusercontent.com/300/73703956-70405080-46a6-11ea-81f2-bed99ca4c4cc.png" />
+<img alt="Screen Shot 2020-02-03 at 3 25 31 PM" src="https://user-images.githubusercontent.com/300/73703956-70405080-46a6-11ea-81f2-bed99ca4c4cc.png"/>
 
 It will be really long and scroll off the right side of the page so make sure you copy the whole thing!
 
