@@ -2,6 +2,7 @@
 id: side-quest-how-redwood-works-with-data
 title: "Quête secondaire: Fonctionnement de Redwood avec les Données"
 sidebar_label: "Quête secondaire: Fonctionnement de Redwood avec les Données"
+custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Redwood apprécie GraphQL. Nous pensons qu'il s'agit de l'API pour l'avenir. Notre implémentation de GraphQL is construite avec [Apollo](https://www.apollographql.com/). Voici comment une requête GraphQL classique fonctionne dans votre application:

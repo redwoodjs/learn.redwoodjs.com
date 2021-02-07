@@ -2,6 +2,7 @@
 id: a-second-page-and-a-link
 title: "Une Seconde Page et un Lien"
 sidebar_label: "Une Seconde Page et un Lien"
+custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ajoutons donc une page "About" à notre blog de manière à ce que personne n'ignore qui se trouve derrière cette application exceptionnelle. Nous allons créer une nouvelle page en utilisant `redwood`:

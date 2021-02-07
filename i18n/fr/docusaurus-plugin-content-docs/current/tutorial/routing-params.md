@@ -2,6 +2,7 @@
 id: routing-params
 title: "Paramètres de Routes"
 sidebar_label: "Paramètres de Routes"
+custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Maintenant que notre page d'accueil liste l'ensemble des articles de notre blog, il est temps de créer une page présentant le détail d'un article. Commençons par générer une page et sa route associée:
