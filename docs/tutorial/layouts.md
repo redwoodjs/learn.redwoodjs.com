@@ -25,27 +25,27 @@ Cut the `<header>` from both `HomePage` and `AboutPage` and paste it in the layo
 ```javascript {3,7-19}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 const BlogLayout = ({ children }) => {
-	return (
-		<>
-			<header>
-				<h1>Redwood Blog</h1>
-				<nav>
-					<ul>
-						<li>
-							<Link to={routes.about()}>About</Link>
-						</li>
-					</ul>
-				</nav>
-			</header>
-			<main>{children}</main>
-		</>
-	);
-};
+  return (
+    <>
+      <header>
+        <h1>Redwood Blog</h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to={routes.about()}>About</Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <main>{children}</main>
+    </>
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 `children` is where the magic will happen. Any page content given to the layout will be rendered here. Back to `HomePage` and `AboutPage`, we add a `<BlogLayout>` wrapper and now they're back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead):
@@ -53,31 +53,34 @@ export default BlogLayout;
 ```javascript {3,6}
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const HomePage = () => {
-	return <BlogLayout>Home</BlogLayout>;
-};
+  return <BlogLayout>Home</BlogLayout>
+}
 
-export default HomePage;
+export default HomePage
 ```
 
 ```javascript {4,8-14}
 // web/src/pages/AboutPage/AboutPage.js
 
-import { Link, routes } from "@redwoodjs/router";
-import BlogLayout from "src/layouts/BlogLayout";
+import { Link, routes } from '@redwoodjs/router'
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const AboutPage = () => {
-	return (
-		<BlogLayout>
-			<p>This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and despair!</p>
-			<Link to={routes.home()}>Return home</Link>
-		</BlogLayout>
-	);
-};
+  return (
+    <BlogLayout>
+      <p>
+        This site was created to demonstrate my mastery of Redwood: Look on my
+        works, ye mighty, and despair!
+      </p>
+      <Link to={routes.home()}>Return home</Link>
+    </BlogLayout>
+  )
+}
 
-export default AboutPage;
+export default AboutPage
 ```
 
 > **The `src` alias**
@@ -103,29 +106,29 @@ One more `<Link>`, let's have the title/logo link back to the homepage as per us
 ```javascript {9-11}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 const BlogLayout = ({ children }) => {
-	return (
-		<>
-			<header>
-				<h1>
-					<Link to={routes.home()}>Redwood Blog</Link>
-				</h1>
-				<nav>
-					<ul>
-						<li>
-							<Link to={routes.about()}>About</Link>
-						</li>
-					</ul>
-				</nav>
-			</header>
-			<main>{children}</main>
-		</>
-	);
-};
+  return (
+    <>
+      <header>
+        <h1>
+          <Link to={routes.home()}>Redwood Blog</Link>
+        </h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to={routes.about()}>About</Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <main>{children}</main>
+    </>
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 And then we can remove the extra "Return to Home" link (and Link/routes import) that we had on the About page:
@@ -133,15 +136,18 @@ And then we can remove the extra "Return to Home" link (and Link/routes import) 
 ```javascript
 // web/src/pages/AboutPage/AboutPage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const AboutPage = () => {
-	return (
-		<BlogLayout>
-			<p>This site was created to demonstrate my mastery of Redwood: Look on my works, ye mighty, and despair!</p>
-		</BlogLayout>
-	);
-};
+  return (
+    <BlogLayout>
+      <p>
+        This site was created to demonstrate my mastery of Redwood: Look on my
+        works, ye mighty, and despair!
+      </p>
+    </BlogLayout>
+  )
+}
 
-export default AboutPage;
+export default AboutPage
 ```
