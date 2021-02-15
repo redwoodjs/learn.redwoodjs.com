@@ -42,3 +42,4 @@ Try changing the route to something like:
 As soon as you add your first route, you'll never see the initial Redwood splash screen again. From now on, when no route can be found that matches the requested URL, Redwood will render the `NotFoundPage`. Change your URL to http://localhost:8910/hello and you should see the homepage again.
 
 Change the route path back to `/` before continuing!
+
