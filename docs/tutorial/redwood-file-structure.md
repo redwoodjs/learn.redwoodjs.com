@@ -10,7 +10,7 @@ Let's take a look at the files and directories that were created for us (config 
 ├── api
 │   ├── db
 │   │   ├── schema.prisma
-│   │   └── seeds.js
+│   │   └── seed.js
 │   └── src
 │       ├── functions
 │       │   └── graphql.js
@@ -49,7 +49,7 @@ Within `api` there are two directories:
 - `db` contains the plumbing for the database:
 
   - `schema.prisma` contains the database schema (tables and columns)
-  - `seeds.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
+  - `seed.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
 
   After we add our first database table there will also be a SQLite database file named `dev.db` and a directory called `migrations` created for us. `migrations` contains the files that act as snapshots of the database schema changing over time.
 
@@ -71,9 +71,10 @@ That's it for the backend.
     - `FatalErrorPage.js` will be rendered when there is an uncaught error that can't be recovered from and would otherwise cause our application to really blow up (normally rendering a blank page).
   - `index.css` is a generic place to put your CSS, but there are many options.
   - `index.html` is the standard React starting point for our app.
-  - `index.js` the bootstraping code to get our Redwood app up and running.
+  - `index.js` the bootstrapping code to get our Redwood app up and running.
   - `Routes.js` the route definitions for our app which map a URL to a _Page_.
 - `public` contains assets not used by React components (they will be copied over unmodified to the final app's root directory):
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
   - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
+

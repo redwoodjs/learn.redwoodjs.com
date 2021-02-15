@@ -253,3 +253,4 @@ Let's summarize:
 3. We created a cell to fetch and display the post.
 4. Redwood made the world a better place by making that `id` available to us at several key junctions in our code and even turning it into a number automatically.
 5. We turned the actual post display into a standard React component and used it in both the homepage and new detail page.
+

@@ -12,6 +12,14 @@ This tutorial assumes you are already familiar with a few core concepts:
 
 You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
 
+### Redwood Versions
+
+You will need to be on v0.25 or greater of Redwood to complete the tutorial. If this is your first time using Redwood then no worries: the latest version will be installed automatically when you create your app skeleton! If you have an existing site created with a version prior to 0.25 you'll need to upgrade. Run this command in the root of your app and follow the prompts:
+
+```bash
+yarn redwood upgrade
+```
+
 ### Node.js and Yarn Versions
 
 During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
@@ -19,14 +27,14 @@ During installation, RedwoodJS checks if your system meets version requirements 
 - node: ">=12"
 - yarn: ">=1.15"
 
-👉 **Heads Up:** If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
+If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
 
 ```
 node --version
 yarn --version
 ```
 
-Please do upgrade accordingly. Then proceed to the RedwoodJS installation when you're ready!
+Please do upgrade accordingly. Then proceed to the Redwood installation when you're ready!
 
 > **Installing Node and Yarn**
 >
@@ -44,3 +52,4 @@ Please do upgrade accordingly. Then proceed to the RedwoodJS installation when y
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
 >
 > If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v14.
+
