@@ -8,15 +8,15 @@ sidebar_label: "Authentication"
 
 But you know Redwood has your back! Login isn't something we have to write from scratch—it's a solved problem and is one less thing we should have to worry about. Today Redwood includes integrations to:
 
-- [Auth0](https://auth0.com/)
 - [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
 - [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
+- [Auth0](https://auth0.com/)
 - [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
 - [Firebase's GoogleAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
 - [Supabase](https://supabase.io/docs/guides/auth)
 - [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 
-We're going to demo a Netlify Identity integration in this tutorial since we're already deployed there and it's very easy to add to a Netlify site.
+We're going to demo a Netlify Identity integration in this tutorial since we're going to end up deploying there as our last exercise.
 
 > **Authentication vs. Authorization**
 >
@@ -30,11 +30,31 @@ We're going to demo a Netlify Identity integration in this tutorial since we're 
 > * **Authentication** deals with determining whether someone is who they say they are, generally by "logging in" with an email and password, or a third party OAuth provider like Google.
 > * **Authorization** is whether a user (who has usually already been authenticated) is allowed to do something they want to do. This generally involves some combination of roles and permission checking before allowing access to a URL or feature of your site.
 >
-> This section of the tutorial focuses on **Authentication** only. We're currently working on integrating a simple and flexible role-based authorization system and once we release it we'll update the tutorial to include a walkthrough!
+> This section of the tutorial focuses on **Authentication** only. See [part 2 of the tutorial](https://redwoodjs.com/tutorial2) to learn about Authorization in Redwood!
 
-### Netlify Identity Setup
+### Netlify Setup
 
-Assuming you've been following along, you already have a Netlify account and a site set up. If you'd be so kind, head to the **Identity** tab and click the **Enable Identity** button:
+Before we can enable Netlify Identity we need to setup a new Netlify site with our app. [Netlify](https://netlify.com) is a hosting platform that takes your code from a git repo and then builds and deploys the generated files to their CDN, and provides serverless function endpoints that your frontend can access. To say that again without as many fancy words: it turns the web-side into plain HTML, CSS and JS files and turns the api-side into a real API accessible by both the web-side and the internet in general.
+
+The easiest way to setup a site on Netlify is to simply deploy our site. You don't often hear the terms "simply" and "deploy" together in the same sentence (unless that sentence is "one does not simply deploy code to the internet"), but Netlify actually makes it easy! (Note that the deploy won't complete successfully because we don't have a database for our production app to talk to. But we'll fix that later—for now we just need enough configured in Netlify so that we can enable Identity.)
+
+We've only got one change to make to our codebase to get it ready for deployment and Redwood has a setup command to do it for us:
+
+```terminal
+yarn rw setup deploy netlify
+```
+
+This creates a file at `/netlify.toml` which contains the commands and file paths that Netlify needs to know about to build a Redwood app.
+
+Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `main` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
+
+You'll need to [create a Netlify account](https://app.netlify.com/signup) if you don't have one already. Once you've signed up and verified your email done just click the **New site from Git** button at the upper right:
+
+<img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
+
+Now just authorize Netlify to connect to your git hosting provider and find your repo. When the deploy settings come up you can leave everything as the defaults and click **Deploy site**.
+
+Netlify will start building your app (click the **Deploying your site** link to watch the logs) and it will say "Site is live", but nothing will work. That's okay! Head to the **Identity** tab in Netlify and click the **Enable Identity** button:
 
 ![Netlify Identity screenshot](https://user-images.githubusercontent.com/300/82271191-f5850380-992b-11ea-8061-cb5f601fa50f.png)
 
@@ -42,24 +62,15 @@ When the screen refreshes click the **Invite users** button and enter a real ema
 
 ![Netlify invite user screenshot](https://user-images.githubusercontent.com/300/82271302-439a0700-992c-11ea-9d6d-004adef3a385.png)
 
-We'll need to get that email confirmation link soon, but for now let's set up our app for authentication.
+We'll need to get that email confirmation link soon, but in the meantime let's set up our app for authentication.
 
 ### Authentication Setup
 
-There are a couple of places we need to add some code for authentication and lucky for us Redwood can do it automatically with a setup command:
+There are a couple of places we need to add some code for authentication and once again Redwood can do it automatically with a setup command:
 
 ```terminal
 yarn rw setup auth netlify
 ```
-
-The command adds one file and modifies a couple others.
-
-> **Are you on the latest Redwood?**
->
-> For this to work you must be on version `0.7.0` or greater of Redwood. If you
-> don't see any file changes, try
-> [upgrading](https://redwoodjs.com/reference/command-line-interface#upgrade) your Redwood packages
-> with `yarn rw upgrade`.
 
 Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 
@@ -77,7 +88,6 @@ export const requireAuth = () => {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 }
-
 ```
 
 By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
@@ -231,11 +241,11 @@ You need the protocol and domain, not the rest of the path. Paste that into the 
 
 #### Accepting Invites
 
-Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and appened it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
+Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and append it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
 
 ![Netlify identity set password](https://user-images.githubusercontent.com/300/82388369-54ab4c80-99ee-11ea-920e-9df10ee0cac2.png)
 
-Once you do that the modal should update and say that you're logged in! It worked! Click the X in the upper right to close the modal.
+Once you do that the modal should update and say that you're logged in! It worked! Click the &times; in the upper right to close the modal.
 
 > We know that invite acceptance flow is less than ideal. The good news is that once you deploy your site again with authentication, future invites will work automatically—the link will go to production which will now have the code needed to launch the modal and let you accept the invite.
 
@@ -284,7 +294,7 @@ When you *are* logged in, you should be able to access the admin pages again: ht
 
 > If you start working on another Redwood app that uses Netlify Identity you'll need to manually clear out your Local Storage which is where the site URL is stored that you entered the first time you saw the modal. Local Storage is tied to your domain and port, which by default will be the same for any Redwood app when developing locally. You can clear your Local Storage in Chrome by going to the Web Inspector, the **Application** tab, and then on the left open up **Local Storage** and click on http://localhost:8910. You'll see the keys stored on the right and can delete them all.
 
-One more touch: let's show the email address of the user that's logged in. We can get the `currentUser` from `useAuth()` and it will contain the data that our third party authentication library is storing about the currently logged in user:
+One more finishing touch: let's show the email address of the user that's logged in. We can get the `currentUser` from `useAuth()` and it will contain the data that our third party authentication library is storing about the currently logged in user:
 
 ```javascript {7,27}
 // web/src/layouts/BlogLayout/BlogLayout.js
@@ -330,6 +340,5 @@ export default BlogLayout
 >
 > Check out the settings (or [docs](https://docs.netlify.com/visitor-access/identity/)) for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
-Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Expect more magic soon!
+Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Now let's get this site working in production.
 
-> If you inspect the contents of `currentUser` you'll see it contains an array called `roles`. On the Netlify Identity dashboard you can give your user a collection of roles, which are just strings like "admin" or "guest". Using this array of roles you *could* create a very rudimentary role-based authentication system. Unless you are in dire need of this simple role checking, we recommend waiting for the Redwood solution, coming soon!
