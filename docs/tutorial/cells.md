@@ -163,7 +163,7 @@ const HomePage = () => {
 export default HomePage
 ```
 
-The browser should actually show an array with a number or two (assuming you created a blog post with our [scaffolding](./getting-dynamic#creating-a-post-editor) from earlier). Neat!
+The browser should actually show an array with a number of post items (assuming you created a blog post with our [scaffolding](./getting-dynamic#creating-a-post-editor) from earlier). Neat!
 
 <img src="https://user-images.githubusercontent.com/300/73210519-5380a780-40ff-11ea-8639-968507a79b1f.png" />
 
@@ -241,3 +241,4 @@ To sum up, what did we actually do to get this far?
 This will become a standard lifecycle of new features as you build a Redwood app.
 
 So far, other than a little HTML, we haven't had to do much by hand. And we especially didn't have to write a bunch of plumbing just to move data from one place to another. It makes web development a little more enjoyable, don't you think?
+
