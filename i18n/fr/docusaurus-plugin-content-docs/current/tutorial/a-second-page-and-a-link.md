@@ -2,7 +2,6 @@
 id: a-second-page-and-a-link
 title: "Une Seconde Page et un Lien"
 sidebar_label: "Une Seconde Page et un Lien"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ajoutons donc une page "About" à notre blog de manière à ce que personne n'ignore qui se trouve derrière cette application exceptionnelle. Nous allons créer une nouvelle page en utilisant `redwood`:
@@ -76,7 +75,8 @@ const AboutPage = () => {
             </header>
             <main>
                 <p>
-                    Ce site est créé avec pour seule intention de démontrer la puissance créative de Redwood! Oui, c'est très
+                    Ce site est créé avec pour seule intention de démontrer la puissance créative de Redwood!
+        Oui, c'est très
                     impressionant :D
                 </p>
                 <Link to={routes.home()}>Retour à la page d'accueil</Link>
@@ -91,3 +91,4 @@ export default AboutPage;
 Bien! Affichons cette page dans le navigateur and vérifions que nous pouvons aller et venir entre les différentes pages.
 
 En tant que développeur de classe cosmique, vous avez probablement repéré ce copier-coller un peu lourd du `<header>`. Nous aussi. C'est la raison pour laquelle Redwood dispose d'un petite chose bien pratique appelé "_Layout_"."
+
