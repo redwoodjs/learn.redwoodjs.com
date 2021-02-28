@@ -2,15 +2,19 @@
 id: authentication
 title: "Authentification"
 sidebar_label: "Authentification"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 "Authentification" est un mot-valise pour tout ce qui se rapporte au fait de s'assurer que l'utilisateur, souvent identifié à l'aide d'un couple email/mot de passe, est autorisé à accéder à quelque chose. L'authentification peut être parfois [délicate à mettre en oeuvre](https://www.rdegges.com/2017/authentication-still-sucks/) techniquement et vous causer de sérieux maux de tête.
 
 Heureusement, Redwood est là pour vous! L'authentification n'est pas une chose qu'il vous faut écrire en partant de zero, c'est un problème identifié et résolu qui ne devrait au contraire vous causer que peu de soucis. A ce jour, Redwood s'intégre avec :
 
-- [Auth0](https://auth0.com/)
 - [Netlify Identity](https://docs.netlify.com/visitor-access/identity/)
+- [Netlify GoTrue-JS](https://github.com/netlify/gotrue-js)
+- [Auth0](https://auth0.com/)
+- [Magic Links - Magic.js](https://github.com/MagicHQ/magic-js)
+- [GoogleAuthProvider de Firebase](https://firebase.google.com/docs/reference/js/firebase.auth.GoogleAuthProvider)
+- [Supabase](https://supabase.io/docs/guides/auth)
+- [Ethereum](https://github.com/oneclickdapp/ethereum-auth)
 
 Puisque nous avons déjà commecé à déployer notre application sur Netlify, nous allons ici découvrir ensemble Netlify Identity.
 
@@ -18,23 +22,43 @@ Puisque nous avons déjà commecé à déployer notre application sur Netlify, n
 > 
 > Voici comment Redwood utilise ces termes:
 > 
-> - Authentification (**Authentication** en anglais)
-> - Autorisation (**Authorization** en anglais)
+> * Authentification (**Authentication** en anglais)
+> * Autorisation (**Authorization** en anglais)
 > 
 > Voici comment Redwood utilise ces termes :
 > 
-> - **Authentification** se rapporte au fait de savoir dans quelle mesure une personne est bien celle qu'elle prétend être. Celà prend généralement la forme d'un formulaire de Login avec un email et un mot de passe, ou un fournisseurs OAuth tiers comme Google.
-> - **Autorisation** se rapporte au fait de savoir si un utilisateur (qui en général s'est déjà authentifié) est autorisé à effectuer ou non une action. Celà recouvre en général une combinaison de roles et de permissions qui sont évaluées avant de donner ou refuser l'accès à une URL du site.
+> * **Authentification** se rapporte au fait de savoir dans quelle mesure une personne est bien celle qu'elle prétend être. Celà prend généralement la forme d'un formulaire de Login avec un email et un mot de passe, ou un fournisseurs OAuth tiers comme Google.
+> * **Autorisation** se rapporte au fait de savoir si un utilisateur (qui en général s'est déjà authentifié) est autorisé à effectuer ou non une action. Celà recouvre en général une combinaison de roles et de permissions qui sont évaluées avant de donner ou refuser l'accès à une URL du site.
 > 
-> Cette section du didacticiel se concentre en particulier sur l'**authentification**. Nous travaillons actuellement à inclure un système simple et flexible de rôles. Une fois ceci réalisé, nous mettrons à jour ce didacticiel!
+> Cette section du didacticiel se concentre en particulier sur l'**authentification**. Voir [la partie 2 du tutoriel](https://redwoodjs.com/tutorial2) pour en apprendre plus sur l'Autorisation dans Redwood !
 
 ### Netlify Identity Setup
 
+Avant de pouvoir activer Netlify Identity nous devons configurer un nouveau site Netlify avec notre application. [Netlify](https://netlify.com) est une plate-forme d'hébergement qui prend votre code d'un dépôt git, puis construit et déploie les fichiers générés sur leur CDN et fournit des *endpoints* de fonctions serverless auxquelles votre interface peut accéder. En termes plus rudimentaires : cela transforme le côté web en HTML, CSS et JS simple et transforme le côté api en une véritable API accessible à la fois par le web et par Internet en général.
+
+La façon la plus simple de configurer un site sur Netlify est de le déployer. Vous n'entendez pas souvent les termes "simple" et "déployer" ensemble dans la même phrase (à moins que cette phrase ne soit "on ne déploie pas simplement du code sur Internet"), mais Netlify facilite la tâche ! (Notez que le déploiement ne se terminera pas avec succès parce que nous n'avons pas de base de données avec laquelle notre application de production peut communiquer. Mais nous allons corriger cela plus tard — pour l'instant, nous avons juste besoin de suffisamment de configuration dans Netlify pour pouvoir activer Identity.)
+
+Il n'y a qu'une modification à faire pour que notre application soit prête à être déployée et bien entendu, nous avons un générateur pour ça :
+
+```terminal
+yarn rw setup deploy netlify
+```
+
+L'exécution de cette commande va créer un fichier `/netlify.toml` contenant les commandes et les chemins de fichiers dont Netlify a besoin afin de construire l'application.
+
+Avant que nous ne poursuivions, assurez-vous que tous les commits soient faits et bien envoyés sur GitHub, GitLab or BitBucket. En effet, nous allons lier Netlify à notre dépôt Git de façon à ce tout nouveau push sur la branch `main` permette de re-déployer le site. Si vous n'avez jamais travaillé auparavant avec une application Jamstack, préparez-vous à une sympatique expérience!
+
 En supposant que vous avez complété toutes les étapes précédentes, vous disposez déjà d'un compte Netlify ainsi que d'une application fonctionelle. Dans ce cas, rendez-vous sur l'onglet **Identity** et cliquez sur le boutton **Enable Identity**:
+
+<img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
+
+Donnez l'autorisation à Netlify de se connecter à votre fournisseur d'hébergement Git, et sélectionnez le dépôt de votre application. Laissez les paramètres par défaut et cliquez sur **Deploy site**.
+
+Netlify va alors construire votre application (cliquez sur **Deploying your site** pour prendre connaissance des logs) puis retournera "Site is live", mais rien ne fonctionnera. C'est pas grave ! Dans ce cas, rendez-vous sur Netlify à l'onglet **Identity** et cliquez sur le boutton **Enable Identity** :
 
 ![Netlify Identity screenshot](https://user-images.githubusercontent.com/300/82271191-f5850380-992b-11ea-8061-cb5f601fa50f.png)
 
-Lorsque l'écran s'affiche, cliquez sur le boutton **Invite users** et entrez une adresse email. Netlify enverra à cette adresse un lien de confirmation:
+Nous allons connecter les côtés Web et API ci-dessous pour nous assurer qu'un utilisateur ne fait que les choses qu'il est autorisé à faire.
 
 ![Netlify invite user screenshot](https://user-images.githubusercontent.com/300/82271302-439a0700-992c-11ea-9d6d-004adef3a385.png)
 
@@ -45,14 +69,8 @@ Nous aurons besoin de cet email de confirmation très bientôt, mais pour le mom
 Quelques modifications doivent être effectuées sur le code pour mettre en place l'authentification. Fort heureusement, Redwood peut le faire pour nous car un générateur est prévu pour ça:
 
 ```terminal
-yarn rw g auth netlify
+yarn rw setup auth netlify
 ```
-
-Cette commande permet d'ajouter un fichier et d'en modifier quelques autres.
-
-> **Utilisez-vous la dernière version de Redwood?**
-> 
-> Afin que celà fonctionne, vous devez utiliser au minimum la version `0.7.0` de Redwood. Le cas échéant, [mettez à jour Redwood](https://redwoodjs.com/docs/cli-commands#upgrade) avec `yarn rw upgrade`.
 
 Observez le contenu du fichier `api/src/lib/auth.js` qui vient d'être créé (les commentaires ont été supprimé pour plus de clarté):
 
@@ -66,7 +84,7 @@ export const getCurrentUser = async (decoded, { token, type }) => {
 }
 
 export const requireAuth = () => {
-We'll hook up both the web and api sides below to make sure a user is only doing things they're allowed to do. if (!context.currentUser) {
+  if (!context.currentUser) {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 }
@@ -76,71 +94,16 @@ Par défaut, le système d'authentification va retourner uniquement les données
 
 Les fichiers qui ont été modifés par le générateur sont les suivants:
 
-- `web/src/index.js`— Entoure le routeur au sein du composant `<AuthProvider>`, ce qui fait que les routes elle-mêmes sont soumises à authentification. Cela donne également accès au "hook" `useAuth()` qui expose quelques fonctions permettant à l'utilisateur de se connecter, se déconnecter, verifier le statut courant, etc..
-- `api/src/functions/graphql.js`— Rend disponible `currentUser` pour la partie API de l'application, de telle façon que vous puissez verifier si un utilisateur est autorisé ou non à faire quelque chose. Si vous ajoutez une implémentation à `getCurrentUser()` dans `api/src/lib/auth.js`, alors ce sera ce qui sera retourné par `currentUser`, dans le cas contraire `currentUser` contiendra `null`. If they're not logged in at all then `currentUser` will be `null`.
+* `web/src/index.js`— Entoure le routeur au sein du composant `<AuthProvider>`, ce qui fait que les routes elle-mêmes sont soumises à authentification. Cela donne également accès au "hook" `useAuth()` qui expose quelques fonctions permettant à l'utilisateur de se connecter, se déconnecter, verifier le statut courant, etc..
+* `api/src/functions/graphql.js`— Rend disponible `currentUser` pour la partie API de l'application, de telle façon que vous puissez verifier si un utilisateur est autorisé ou non à faire quelque chose. Si vous ajoutez une implémentation à `getCurrentUser()` dans `api/src/lib/auth.js`, alors ce sera ce qui sera retourné par `currentUser`, dans le cas contraire `currentUser` contiendra `null`. S'ils ne sont pas du tout connectés, `currentUser` vaudra `null`.
 
-Nous allons connecter les côtés Web et API ci-dessous pour nous assurer qu'un utilisateur ne fait que les choses qu'il est autorisé à faire.
+Essayez de cliquer sur le lien Login:
 
 ### Authentification côté API
 
 Commençons par verrouiller l'API afin que nous puissions être sûrs que seuls les utilisateurs autorisés peuvent créer, mettre à jour et supprimer une publication. Ouvrez le service Post et ajoutons une vérification:
 
 ```javascript {4,17,24,32}
-// api/src/services/posts/posts.js
-
-import { db } from "src/lib/db";
-import { requireAuth } from "src/lib/auth";
-
-export const posts = () => {
-    return db.post.findMany();
-};
-
-export const post = ({ id }) => {
-    return db.post.findOne({
-        where: { id },
-    });
-};
-
-export const createPost = ({ input }) => {
-    requireAuth();
-    return db.post.create({
-        data: input,
-    });
-};
-
-export const updatePost = ({ id, input }) => {
-    requireAuth();
-    return db.post.update({
-        data: input,
-        where: { id },
-    });
-};
-
-export const deletePost = ({ id }) => {
-    requireAuth();
-    return db.post.delete({
-        where: { id },
-    });
-};
-
-export const Post = {
-    user: (_obj, { root }) => db.post.findOne({ where: { id: root.id } }).user(),
-};
-```
-
-Essayez maintenant de créer, de modifier ou de supprimer un article de nos pages d'administration. Il ne se passe rien! Devrions-nous afficher une sorte de message d'erreur convivial? Dans ce cas, probablement pas - nous allons verrouiller complètement les pages d'administration afin qu'elles ne soient pas accessibles par un navigateur. La seule façon pour quelqu'un de déclencher ces erreurs dans l'API est de tenter d'accéder directement au point de terminaison GraphQL, sans passer par notre interface utilisateur. L'API renvoie déjà un message d'erreur (ouvrez l'inspecteur Web dans votre navigateur et essayez à nouveau de créer / modifier / supprimer), nous sommes donc couverts.
-
-> ****Services en tant que conteneurs pour votre logique métier ****
-> 
-> Notez que nous mettons les vérifications d'authentification dans le service et non la vérification dans l'interface GraphQL (dans les fichiers SDL). Redwood a créé le concept de **services** en tant que conteneurs pour votre logique métier qui peuvent être utilisés par d'autres parties de votre application en plus de l'API GraphQL.
-> 
-> En plaçant des contrôles d'authentification ici, vous pouvez être sûr que tout autre code qui tente de créer / mettre à jour / supprimer une publication tombera sous les mêmes contrôles d'authentification. En fait, Apollo (la bibliothèque GraphQL utilisée par Redwood) [est d'accord avec nous](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
-
-### Authentification côté Web
-
-Nous allons maintenant restreindre complètement l'accès aux pages d'administration, sauf si vous êtes connecté. La première étape consistera à indiquer les itinéraires qui nécessiteront que vous soyez connecté. Pour ce faire, ajouter la balise `<Private>`:
-
-```javascript {3,12,16}
 // web/src/Routes.js
 
 import { Router, Route, Private } from "@redwoodjs/router";
@@ -164,6 +127,55 @@ const Routes = () => {
 };
 
 export default Routes;
+```
+
+Essayez maintenant de créer, de modifier ou de supprimer un article de nos pages d'administration. Il ne se passe rien! Devrions-nous afficher une sorte de message d'erreur convivial? Dans ce cas, probablement pas - nous allons verrouiller complètement les pages d'administration afin qu'elles ne soient pas accessibles par un navigateur. La seule façon pour quelqu'un de déclencher ces erreurs dans l'API est de tenter d'accéder directement au point de terminaison GraphQL, sans passer par notre interface utilisateur. L'API renvoie déjà un message d'erreur (ouvrez l'inspecteur Web dans votre navigateur et essayez à nouveau de créer / modifier / supprimer), nous sommes donc couverts.
+
+> **Utilisez-vous la dernière version de Redwood?**
+> 
+> Notez que nous mettons les vérifications d'authentification dans le service et non la vérification dans l'interface GraphQL (dans les fichiers SDL). Redwood a créé le concept de **services** en tant que conteneurs pour votre logique métier qui peuvent être utilisés par d'autres parties de votre application en plus de l'API GraphQL.
+> 
+> En plaçant des contrôles d'authentification ici, vous pouvez être sûr que tout autre code qui tente de créer / mettre à jour / supprimer une publication tombera sous les mêmes contrôles d'authentification. En fait, Apollo (la bibliothèque GraphQL utilisée par Redwood) [est d'accord avec nous](https://www.apollographql.com/docs/apollo-server/security/authentication/#authorization-in-data-models)!
+
+### Authentification côté Web
+
+Nous allons maintenant restreindre complètement l'accès aux pages d'administration, sauf si vous êtes connecté. La première étape consistera à indiquer les itinéraires qui nécessiteront que vous soyez connecté. Pour ce faire, ajouter la balise `<Private>`:
+
+```javascript {3,12,16}
+// web/src/layouts/BlogLayout/BlogLayout.js
+
+import { Link, routes } from "@redwoodjs/router";
+import { useAuth } from "@redwoodjs/auth";
+
+const BlogLayout = ({ children }) => {
+    const { logIn } = useAuth();
+
+    return (
+        <div>
+            <h1>
+                <Link to={routes.home()}>Redwood Blog</Link>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to={routes.about()}>About</Link>
+                    </li>
+                    <li>
+                        <Link to={routes.contact()}>Contact</Link>
+                    </li>
+                    <li>
+                        <a href="#" onClick={logIn}>
+                            Log In
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <main>{children}</main>
+        </div>
+    );
+};
+
+export default BlogLayout;
 ```
 
 Entourez les routes que vous voulez protéger par l'authentification, et ajoutez éventuellement l'attribut `unauthenticated` qui répertorie le nom d'une autre route vers laquelle rediriger si l'utilisateur n'est pas connecté. Dans ce cas, nous reviendrons à la page d'accueil.
@@ -324,4 +336,3 @@ export default BlogLayout;
 
 Croyez-le ou non, c'est tout! L'authentification avec Redwood est un jeu d'enfant et nous ne faisons que commencer. Attendez-vous à plus de magie bientôt!
 
-> Si vous inspectez le contenu de `currentUser`, vous verrez qu'il contient un tableau appelé `roles`. Sur le tableau de bord Netlify Identity, vous pouvez attribuer à votre utilisateur une collection de rôles, qui ne sont que des chaînes de caractères telles que «admin» ou «guest». En utilisant cette gamme de rôles, vous _pourriez_ créer un système d'authentification basé sur les rôles très rudimentaire. À moins que vous n'ayez un besoin urgent de cette simple vérification de rôle, nous vous recommandons d'attendre la solution Redwood, à venir bientôt!
