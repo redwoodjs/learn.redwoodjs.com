@@ -84,7 +84,7 @@ Yes please!
 
 **I see weird symbols like `<0>` in Crowdin strings... what?**
 
-Those symbols are stand-ins for html tags like `<a></a>`. It is how Crowdin can map the tags to your translated content. In general, Crowdin tries to hide content that is not subject for translation, as to reduce clutter for translators.
+Those symbols are stand-ins for html tags like `<a></a>`. It is how Crowdin can map the tags to your translated content. In general, Crowdin tries to hide content that is not subject for translation, as to reduce clutter for translators. Do not delete these - keep them in your translation.
 
 **Are there term glossaries to ensure consistency between translators in the same language?**
 
