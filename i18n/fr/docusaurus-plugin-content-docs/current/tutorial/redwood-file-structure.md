@@ -2,7 +2,6 @@
 id: redwood-file-structure
 title: "Structure d'une application Redwood"
 sidebar_label: "Structure d'une application Redwood"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Examinons maintenant les fichiers et répertoires qui ont été créés pour nous (laissons de côté les fichiers de configuration sur lesquels nous reviendrons plus tard)
@@ -78,3 +77,4 @@ Et nous en avons terminé avec la partie backend.
   - `favicon.png` est l’icône utilisée par les onglets des navigateurs lorsqu’une page est ouverte (par défaut il s’agit du logo RedwoodJS).
   - `robots.txt` est utilisé pour controller ce que les moteurs de recherche sont [autorisé à indexer](https://www.robotstxt.org/robotstxt.html).
   - `README.md` explique comment, et quand, utiliser le répertoire `public` pour vos ressources statiques. Il mentionne également les bonnes méthodes pour importer des ressources à l'intérieur des composants via Webpack. Vous pouvez également lire à ce sujet ce [fichier README.md sur GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
+
