@@ -24,7 +24,7 @@ Yes, these are subjective requirements :) The goal is to make Redwood accessible
 | Language | Translators | Proofreaders |
 | -------- | ----------- | ------------ |
 | [French](https://crowdin.com/project/learn-redwoodjs/fr#)   | @Thieffen, @noire.munich  | @Thieffen    |
-| [Spanish](https://crowdin.com/project/learn-redwoodjs/es#)   | --  | @clairefro    |
+| [Spanish](https://crowdin.com/project/learn-redwoodjs/es-ES#)   | --  | @clairefro    |
 | Japanese | --          | @clairefro   |
 
 Want to add yourself to a translator and/or proofreader role for a language? Don't see your language here and wish to contribute?
