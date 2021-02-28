@@ -23,7 +23,8 @@ Yes, these are subjective requirements :) The goal is to make Redwood accessible
 
 | Language | Translators | Proofreaders |
 | -------- | ----------- | ------------ |
-| French   | @Thieffen, @noire.munich  | @Thieffen    |
+| [French](https://crowdin.com/project/learn-redwoodjs/fr#)   | @Thieffen, @noire.munich  | @Thieffen    |
+| [Spanish](https://crowdin.com/project/learn-redwoodjs/es#)   | --  | @clairefro    |
 | Japanese | --          | @clairefro   |
 
 Want to add yourself to a translator and/or proofreader role for a language? Don't see your language here and wish to contribute?
@@ -33,6 +34,10 @@ Tag @clairefro in a new issue in this repo and we'll get it started!
 ## Guide for translators
 
 In Crowdin, go to your target language and look for any incomplete translations. You then translate each untranslated string directly in Crowdin's interface.
+
+### Branch
+
+Please translate in the `main` branch folder
 
 ### Frontmatter
 
