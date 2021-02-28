@@ -42,24 +42,26 @@ When translating, keep the frontmatter `id` the same as English. This id is used
 
 example
 
+English
 ```md
 ---
-<!-- /docs/tutorial/welcome-to-redwood.md  -->
 id: welcome-to-redwood
 title: "Welcome to Redwood"
 sidebar_label: "Welcome to Redwood"
 ---
 
+French (`id` stays in English!)
 ---
-
-<!-- /i18n/fr/docusaurus-plugin-content-docs/current/tutorial/welcome-to-redwood.md  -->
-
 id: welcome-to-redwood
 title: "Bienvenue chez Redwood"
 sidebar_label: "Bienvenue chez Redwood"
-
 ---
 ```
+
+### Code blocks
+Leave code blocks as-is. There is an icon in the input box for translation that copies the source string in one click: 
+
+![image](https://user-images.githubusercontent.com/9841162/109427680-5c9a1300-79a8-11eb-9a0c-c28cfa781db5.png)
 
 ### Troubleshooting
 
