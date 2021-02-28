@@ -2,7 +2,6 @@
 id: saving-data
 title: "Enregistrer les Données"
 sidebar_label: "Enregistrer les Données"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ajoutons une nouvelle table à notre base de données. Ouvrez `api/prisma/schema.prisma` et ajoutez un nouveau modèle "Contact" à la suite du premier modèle "Post":
@@ -21,15 +20,13 @@ model Contact {
 
 > **Syntaxe Prisma pour les champs facultatifs**
 > 
-> Pour définir une colonne comme optionnelle (c'est à dire permettre que sa valeur soit `NULL`), il suffit de suffixer le type de la donnée avec un point d'interrogation: `name String?` Cela permettra `name` d'accepter une valeur de type chaîne de caractères, ou `NULL`.
+> Pour définir une colonne comme optionnelle (c'est à dire permettre que sa valeur soit `NULL`), il suffit de suffixer le type de la donnée avec un point d'interrogation: `name String?` Cela permettra `name` d'accepter une valeur de type chaîne de caractères, ou `NULL`. Cela permettra à la valeur de `name` d'être soit de type `string`, soit `NULL`.
 
 Nous créons ensuite notre nouvelle migration:
 
     yarn rw db save create contact
 
 Enfin, nous executons la migration de façon à mettre à jour le schéma de la base de données:
-
-    yarn rw db up
 
 Maintenant nous créeons l'interface GraphQL permettant d'accéder à cette nouvelle table. C'est la première fois que nous utilisons cette commande `generate` nous même. (la commande `scaffold` repose également dessus):
 
@@ -48,21 +45,21 @@ De la même manière qu'avec la commande `scaffold`, ceci va créer deux nouveau
 export const schema = gql`
     type Contact {
         id: Int!
-        name: String!
-        email: String!
-        message: String!
-        createdAt: DateTime!
-    }
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
 
     type Query {
         contacts: [Contact!]!
-    }
+  }
 
     input CreateContactInput {
         name: String!
-        email: String!
-        message: String!
-    }
+    email: String!
+    message: String!
+  }
 
     input UpdateContactInput {
         name: String
@@ -76,7 +73,7 @@ Que sont les "input" `CreateContactInput` et `UpdateContactInput`? Redwood suit 
 
 > Redwood suppose que votre code n'essaiera pas de définir une valeur sur un champ nommé `id` ou `createdAt` donc il les a laissés en dehors des types d'entrée, mais si votre base de données autorise l'un ou l'autre de ceux à définir manuellement, vous pouvez mettre à jour`CreateContactInput`ou `UpdateContactInput` et les ajouter.
 
-Puisque toutes les colonnes de la table étaient définies comme requises dans `schema.prisma`, elles sont également définies comme requises ici (notez le suffixe `!` sur les types de données) ).
+Puisque toutes les colonnes de la table étaient définies comme requises dans `schema.prisma`, elles sont également définies comme requises ici (notez le suffixe `!` sur les types de données) ). ).
 
 > **Syntaxe GraphQL pour les champs obligatoires**
 > 
@@ -92,21 +89,21 @@ Dans le cas présent, nous créeons une unique `Mutation` que nous appelons `cre
 export const schema = gql`
     type Contact {
         id: Int!
-        name: String!
-        email: String!
-        message: String!
-        createdAt: DateTime!
-    }
+    name: String!
+    email: String!
+    message: String!
+    createdAt: DateTime!
+  }
 
     type Query {
         contacts: [Contact!]!
-    }
+  }
 
     input CreateContactInput {
         name: String!
-        email: String!
-        message: String!
-    }
+    email: String!
+    message: String!
+  }
 
     input UpdateContactInput {
         name: String
@@ -276,7 +273,7 @@ Ce faisant, nous savons si un appel à la base est toujours en cours en utilisan
 
 return (
   // ...
-    <Submit disabled={loading}>Save</Submit>
+  <Submit disabled={loading}>Save</Submit>
   // ...
 )
 ```
@@ -378,17 +375,21 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 > Si vous avez besoin de manipuler l'objet contenant les erreurs, vous pouvez procéder ainsi:
 > 
 > ```javascript {3-8}
-// web/src/pages/ContactPage/ContactPage.js
-const onSubmit = async (data) => {
-  try {
-    await create({ variables: { input: data } })
-    console.log(data)
-  } catch (error) {
-    console.log(error)
+```javascript {3-8}
+  // web/src/pages/ContactPage/ContactPage.js
+  const onSubmit = async (data) =&#062; {
+    try {
+      await create({ variables: { input: data } })
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
 ```
 
+Maintenant, essayons de remplir le formulaire avec un adresse invalide:
+
+```html
 Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
 
 ```html
@@ -396,7 +397,7 @@ Afin de tester ceci, provoquons une erreur en retirant temporairement la validat
 errorClassName="error" />
 ```
 
-Maintenant, essayons de remplir le formulaire avec un adresse invalide:
+Désormais, l'envoi du formulaire avec une adresse invalide donne ceci:
 
 <img src="https://user-images.githubusercontent.com/16427929/98918425-e394af80-24cd-11eb-9056-58c295cf0d5c.PNG" />
 
@@ -434,7 +435,7 @@ return (
 )
 ```
 
-Désormais, l'envoi du formulaire avec une adresse invalide donne ceci:
+Désormais, l'envoi du formulaire avec une adresse invalide donne ceci :
 
 <img src="https://user-images.githubusercontent.com/300/80259553-c46e2780-863a-11ea-9441-54a9112b9ce5.png" />
 
@@ -449,13 +450,13 @@ Nous obtenons un message d'erreur en haut du formulaire _et_ les champs concern�
 > - `listStyle` / `listClassName`: le `<ul>` qui contient la liste des erreurs
 > - `listItemStyle` / `listItemClassName`: chaque `<li>` contenant chaque erreur
 
-### One more thing...
+### Une dernière chose...
 
 Puisque nous ne redirigeons pas l'utilisateur une fois le formulaire envoyé, nous devrions au moins remettre le formulaire à zéro. Pour celà nous devons utiliser la fonction `reset()` proposée par `react-hook-form`, mais nous n'y avons pas accès compte tenu de la manière dont nous utilisons `<Form>`.
 
 `react-hook-form` possède un 'hook' appelé `useForm()` qui est en principe invoquéé pour nous à l'intérieur de `<Form>`. De façon à réinitialiser le formulaire nous devons invoquer ce 'hook' manuellement. Mais la fonctionnalité que `useForm()` fournit doit tout de même être utilisée dans `Form`. Voici comment faire:
 
-Commençons par importer `useForm`:
+Puis invoquons ce 'hook' dans notre composant:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
@@ -463,7 +464,7 @@ Commençons par importer `useForm`:
 import { useForm } from "react-hook-form";
 ```
 
-Puis invoquons ce 'hook' dans notre composant:
+Enfin, donnons pour instruction explicite à `<Form>` d'utiliser `formMethods`, au lieu de le laisser le faire lui-même:
 
 ```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
@@ -473,7 +474,7 @@ const ContactPage = () => {
   //...
 ```
 
-Enfin, donnons pour instruction explicite à `<Form>` d'utiliser `formMethods`, au lieu de le laisser le faire lui-même:
+Maintenant nous pouvons invoquer manuellement `reset()` depuis `formMethods()` juste après que le message de confirmation soit affiché:
 
 ```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
@@ -498,7 +499,7 @@ Maintenant nous pouvons invoquer manuellement `reset()` depuis `formMethods()` j
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
         // addMessage...
-        formMethods.reset();
+    formMethods.reset();
     },
 });
 ```
@@ -588,3 +589,4 @@ const formMethods = useForm({ mode: "onBlur" });
 ```
 
 La partie publique du site a bon aspect. Que faire maintenant de la partie administration qui nous permet de créer et éditer les articles? Nous devrions la déplacer dans une partie réservée et la placer derrière un login, de façon à ce des utilisateurs mal intentionnés ne puissent pas créer en chaîne, par exemple, des publicités pour l'achat de médicaments en ligne...
+
