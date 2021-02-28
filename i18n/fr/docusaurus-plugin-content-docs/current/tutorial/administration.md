@@ -2,6 +2,7 @@
 id: administration
 title: "Administration"
 sidebar_label: "Administration"
+custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Il semble raisonable de faire en sorte que les écrans d'administration soient regroupés sous un chemin `/admin`. Mettons à jour les routes de manière à ce que les quatre routes commençant par `/posts` commencent désormais paar `/admin/posts`:

@@ -2,6 +2,7 @@
 id: authentication
 title: "Authentification"
 sidebar_label: "Authentification"
+custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 "Authentification" est un mot-valise pour tout ce qui se rapporte au fait de s'assurer que l'utilisateur, souvent identifié à l'aide d'un couple email/mot de passe, est autorisé à accéder à quelque chose. L'authentification peut être parfois [délicate à mettre en oeuvre](https://www.rdegges.com/2017/authentication-still-sucks/) techniquement et vous causer de sérieux maux de tête.
