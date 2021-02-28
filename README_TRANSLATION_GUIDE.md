@@ -23,7 +23,7 @@ Yes, these are subjective requirements :) The goal is to make Redwood accessible
 
 | Language | Translators | Proofreaders |
 | -------- | ----------- | ------------ |
-| French   | @Thieffen   | @Thieffen    |
+| French   | @Thieffen, @noire.munich  | @Thieffen    |
 | Japanese | --          | @clairefro   |
 
 Want to add yourself to a translator and/or proofreader role for a language? Don't see your language here and wish to contribute?
