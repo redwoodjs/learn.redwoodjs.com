@@ -2,7 +2,6 @@
 id: cells
 title: "Cells"
 sidebar_label: "Cells"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ces fonctionnalités sont courantes dans la plupart des applications web. Nous voulions voir s'il était possible de faciliter la vie aux développeurs. Nous pensons être arrivé à réaliser quelque chose d'utile. Nous appelons ça les _Cells_ (ou _cellules_ en français). Les Cells proposent une approche simple et déclarative pour récupérer des données au sein de vos composants. ([Lisez la documentation complète sur Cells](https://redwoodjs.com/docs/cells).)
@@ -40,10 +39,9 @@ export const Success = ({ posts }) => {
 Lorsque React affiche ce composant, Redwood va:
 
 Il existe également quelques outils supplémentaire pour générer le cycle de vie du composant comme `beforeQuery` (pour manipuler les propriétés passées à `QUERY`) et `afterQuery` (pour manipuler les données retournées par GraphQL avant qu'elles ne soient transmises au composant `Success`)
-
-- Exécuter la requête `QUERY` et afficher le composant `Loading` jusqu'à ce qu'une réponse soit reçue
-- Si aucune donnée n'est retournée (c'est à dire `null` ou un tableau vide), le composant `Empty`
-- Dans le cas contraire (ni erreur, ni vide), le composant `Success`
+  - Exécuter la requête `QUERY` et afficher le composant `Loading` jusqu'à ce qu'une réponse soit reçue
+  - Si aucune donnée n'est retournée (c'est à dire `null` ou un tableau vide), le composant `Empty`
+  - Dans le cas contraire (ni erreur, ni vide), le composant `Success`
 
 Il existe également quelques outils supplémentaire pour générer le cycle de vie du composant comme `beforeQuery` (pour manipuler les propriétés passées à `QUERY`) et `afterQuery` (pour manipuler les données retournées par GraphQL avant qu'elles ne soient transmises au composant `Success`).
 
@@ -169,13 +167,23 @@ Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en 
 > ```javascript
 export const QUERY = gql`
   query BlogPostsQuery {
-      postIds: posts {
-          id
-      }
+    postIds: posts {
+      id
+    }
   }
-`;
+`
 ```
 
+```javascript export const QUERY = gql`
+    query BlogPostsQuery {
+        postIds: posts {
+            id
+        }
+    }`;
+
+La page devrait désormais afficher un dump de l'ensemble des données pour tous les articles enregistrés:
+
+```javascript {7-9}
 De cette manière la propriété `postIds` sera transmise à `Success` au lieu de `posts`
 
 `Success` est ni plus ni moins qu'un bon vieux composant React, vous pouvez donc le modifier simplement pour afficher chaque article dans un format un peu plus sympa et lisible:
@@ -223,7 +231,7 @@ Et ce faisant, nous avons maintenant notre blog! Ok, à ce stade c'est encore le
 
 ### Résumé
 
-Pour résumer, qu'avons nous réalisé jusqu'ici ?
+En réalité, cette différentes étapes sont ni plus ni moins ce qui deviendra votre façon habituelle d'ajouter de nouvelles fonctionnalités dans une application Redwood.
 
 1. Génération de la page d'accueil
 2. Génération du Layout pour notre blog
@@ -236,3 +244,4 @@ Pour résumer, qu'avons nous réalisé jusqu'ici ?
 En réalité, cette différentes étapes sont ni plus ni moins ce qui deviendra votre façon habituelle d'ajouter de nouvelles fonctionnalités dans une application Redwood.
 
 Jusqu'ici, hormis un peu de code HTML, nous n'avons pas écrit grand chose à la main. En particulier, nous n'avons pratiquement pas eu à écrire de code pour récupérer les données depuis la base. Le développement web s'en trouve facilité et devient même agréable, qu'en pensez-vous?
+
