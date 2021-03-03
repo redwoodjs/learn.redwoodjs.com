@@ -23,7 +23,7 @@ Yes, these are subjective requirements :) The goal is to make Redwood accessible
 
 | Language | Translators | Proofreaders |
 | -------- | ----------- | ------------ |
-| [French](https://crowdin.com/project/learn-redwoodjs/fr#)   | @Thieffen, @noire.munich  | @Thieffen    |
+| [French](https://crowdin.com/project/learn-redwoodjs/fr#)   | @Thieffen, @noire.munich, @simoncrypta  | @Thieffen    |
 | [Spanish](https://crowdin.com/project/learn-redwoodjs/es-ES#)   | --  | @clairefro    |
 | Japanese | --          | @clairefro   |
 
