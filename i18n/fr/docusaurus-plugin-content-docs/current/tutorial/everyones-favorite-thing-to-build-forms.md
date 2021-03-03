@@ -9,6 +9,10 @@ Attendez, ne fermez pas votre navigateur ! Vous deviez bien vous douter que ça 
 
 La troisième partie du didacticiel en video commence ici:
 
+> **Style des erreurs**
+> 
+> Ces vidéos ont été enregistrées avec une version antérieure de Redwood et de nombreuses commandes sont maintenant obsolètes. Si vous voulez vraiment construire l'application de blog, vous devrez suivre avec le texte que nous gardons à jour avec les dernières versions.
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/eT7iIy0F8Tk?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
@@ -457,9 +461,9 @@ export default ContactPage;
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
 
-> **Style des erreurs**
+> **Validation instantanée des champs côté client**
 > 
-> En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs.
+> En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs.
 
 ### Validation du Format des Champs
 
@@ -481,7 +485,7 @@ OK, ça n'est pas la validation ultime pour un champ email, mais pour le moment 
 
 Vous avez peut-être remarqué qu'essayer d'envoyer le formulaire alors que sont présentes des erreurs de validation n'affiche rien dans la console. C'est en réalité une bonne chose car celà vous indique que le formulaire n'a pas été envoyé. Corrigez la valeur des champs concernés, et tout fonctionne correctement.
 
-> **Validation instantanée des champs côté client**
+> **En savoir plus sur les formulaires dans Redwood**
 > 
 > Lorsqu'un message lié à une erreur lors de la validation d'un champ s'affiche, il disparaît dès que la valeur est corrigée. Vous n'avez pas à cliquer à nouveau sur "Submit" pour supprimer les messages d'erreur.
 
@@ -500,3 +504,4 @@ Alors, qu'en pensez-vous? Est-ce que ça valait la peine? Quelques nouveaux comp
 Redwood a encore plus d'un tour dans son sac pour ce qui concerne les formulaires, mais nous allons garder ça pour une étape ultérieure.
 
 Avoir un formulaire de contact, c'est bien. Mais conserver les message qu'on vous envoie, c'est mieux! Procédons maintenant à la création de la table en base de données pour y enregistrer ces informations. Ce faisant nous allons créer notre première mutation GraphQL!
+

@@ -11,6 +11,10 @@ Dans ce didacticiel, nous allons construire un moteur de blog. En réalité, un 
 
 Peut-être souhaitez-vous voir ce didacticiel en vidéo? C’est ici :
 
+> **Avis : contenu ancien**
+> 
+> Ces vidéos ont été enregistrées avec une version antérieure de Redwood et de nombreuses commandes sont maintenant obsolètes. Si vous voulez vraiment construire l'application de blog, vous devrez suivre avec le texte que nous gardons à jour avec les dernières versions.
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tiF9SdM1i7M?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
@@ -26,3 +30,4 @@ Peut-être souhaitez-vous voir ce didacticiel en vidéo? C’est ici :
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/UpD3HyuZkvY?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
 </div>
+
