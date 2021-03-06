@@ -2,7 +2,6 @@
 id: cells
 title: "Cells"
 sidebar_label: "Cells"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ces fonctionnalités sont courantes dans la plupart des applications web. Nous voulions voir s'il était possible de faciliter la vie aux développeurs. Nous pensons être arrivé à réaliser quelque chose d'utile. Nous appelons ça les _Cells_ (ou _cellules_ en français). Les Cells proposent une approche simple et déclarative pour récupérer des données au sein de vos composants. ([Lisez la documentation complète sur Cells](https://redwoodjs.com/docs/cells).)

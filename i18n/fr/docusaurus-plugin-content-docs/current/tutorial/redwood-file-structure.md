@@ -2,7 +2,6 @@
 id: redwood-file-structure
 title: "Structure d'une application Redwood"
 sidebar_label: "Structure d'une application Redwood"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Examinons maintenant les fichiers et répertoires qui ont été créés pour nous (laissons de côté les fichiers de configuration sur lesquels nous reviendrons plus tard)
