@@ -1,10 +1,10 @@
 import config from '../../docusaurus.config';
 
-const { defaultLandingPages } = config.customFields;
+const { defaultSectionLandingPages } = config.customFields;
 
 function getFirstArticleId(section) {
-  if (!defaultLandingPages || !section) return undefined;
-  return defaultLandingPages[section];
+  if (!defaultSectionLandingPages || !section) return undefined;
+  return defaultSectionLandingPages[section];
 }
 
 export default getFirstArticleId;

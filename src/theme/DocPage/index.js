@@ -141,6 +141,7 @@ function DocPage(props) {
         currentSection,
         firstArticleId,
       ].join('/');
+
       return <Redirect to={getFirstArticlePath} />;
     }
     return <NotFound {...props} />;

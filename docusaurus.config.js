@@ -20,7 +20,8 @@ module.exports = {
   },
   customFields: {
     translationGuideUrl,
-    defaultLandingPages: {
+    defaultDocsLandingPage: 'tutorial/welcome-to-redwood', // redirects here when hitting /docs/
+    defaultSectionLandingPages: {
       // map of what is considered the first article in each section
       // section: id
       tutorial: 'welcome-to-redwood',

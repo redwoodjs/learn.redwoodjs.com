@@ -1,9 +1,18 @@
 import React from 'react';
-import { Redirect } from '@docusaurus/router';
+import { Redirect, useLocation } from '@docusaurus/router';
+import config from '../../docusaurus.config';
+
+const { defaultDocsLandingPage } = config.customFields;
 
 function Home() {
-	// Must use relative path to allow dynamic routing in various locales
-	return <Redirect to="./docs/tutorial/welcome-to-redwood" />;
+	const location = useLocation();
+  const defaultUrl = [
+    location.pathname.replace(/\/$/, ''),
+    'docs',
+    defaultDocsLandingPage,
+  ].join('/');
+
+  return <Redirect to={defaultUrl} />;
 }
 
 export default Home;
