@@ -2,7 +2,6 @@
 id: everyones-favorite-thing-to-build-forms
 title: "Votre partie préférée: Les Formulaires"
 sidebar_label: "Votre partie préférée: Les Formulaires"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Attendez, ne fermez pas votre navigateur ! Vous deviez bien vous douter que ça allait venir, non? Et vous vous êtes probablement rendu compte maintenant que nous n'aurions même pas cette section dans le tutoriel à moins que Redwood n'ait trouvé un moyen astucieux de faire les choses. En fait, Redwood pourrait même vous faire _aimer_ les formulaires. Bon, aimer est peut-être un peu fort. Disons _apprécier_ travailler avec les formulaires, ou à tout le moins les _tolérer_?

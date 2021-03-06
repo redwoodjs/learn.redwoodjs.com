@@ -35,6 +35,10 @@
     "message": "GitHub",
     "description": "The label of footer link with label=GitHub linking to https://github.com/redwoodjs/learn.redwoodjs.com"
   },
+  "link.item.label.Help us translate": {
+    "message": "Aidez-nous à traduire",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/redwoodjs/learn.redwoodjs.com"
+  },
   "copyright": {
     "message": "Droits d'auteur © 2021 RedwoodJS. Construit avec Docusaurus.",
     "description": "The footer copyright"

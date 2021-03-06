@@ -2,7 +2,6 @@
 id: layouts
 title: "Layouts"
 sidebar_label: "Layouts"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Une façon de résoudre la duplication du `<header>` aurait pu être de créer un composant `<Header>` et l'inclure à la fois dans `HomePage` et `AboutPage`. Cela fonctionne, mais y a-t-il une meilleure solution? Dans l'idéal, votre code ne devrait comporter qu'une seule et unique balise `<header>`.

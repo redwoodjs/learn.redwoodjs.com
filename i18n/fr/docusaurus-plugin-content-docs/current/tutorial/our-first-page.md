@@ -2,7 +2,6 @@
 id: our-first-page
 title: "Notre Première Page"
 sidebar_label: "Notre Première Page"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Donnons à nos utilisateurs quelque chose de plus à contempler que la page d'accueil de Redwood. Utilisons la commande `redwood` pour créer une première page :

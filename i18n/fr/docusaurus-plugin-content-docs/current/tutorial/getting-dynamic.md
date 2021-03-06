@@ -2,7 +2,6 @@
 id: getting-dynamic
 title: "Devenir Dynamique"
 sidebar_label: "Devenir Dynamique"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 La seconde partie du didacticiel est disponible en video ici:

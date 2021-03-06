@@ -1,3 +1,6 @@
+const translationGuideUrl =
+  'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md'; // replaces editUrl on localized Pages
+
 const locales = ['en', 'fr'];
 
 const localeConfigs = {
@@ -16,8 +19,7 @@ module.exports = {
     localeConfigs,
   },
   customFields: {
-    translationGuideUrl:
-      'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md', // replaces editUrl on localized Pages
+    translationGuideUrl,
   },
   title: 'Learn RedwoodJS',
   tagline:
@@ -105,6 +107,10 @@ module.exports = {
             {
               label: 'GitHub',
               href: 'https://github.com/redwoodjs/learn.redwoodjs.com',
+            },
+            {
+              label: 'Help us translate',
+              href: translationGuideUrl,
             },
           ],
         },

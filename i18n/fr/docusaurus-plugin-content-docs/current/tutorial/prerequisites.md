@@ -2,7 +2,6 @@
 id: prerequisites
 title: "Prérequis"
 sidebar_label: "Prérequis"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ce didacticiel suppose que vous soyez déjà familier avec quelques concepts fondamentaux :

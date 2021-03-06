@@ -2,7 +2,6 @@
 id: wrapping-up
 title: "Conclusion"
 sidebar_label: "Conclusion"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Vous l'avez fait! Si vous avez vraiment parcouru tout le tutoriel: félicitations! Si vous venez de passer à cette page pour essayer d'obtenir des félicitations gratuites: tss, tss...
