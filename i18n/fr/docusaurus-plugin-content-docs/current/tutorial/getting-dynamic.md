@@ -2,10 +2,13 @@
 id: getting-dynamic
 title: "Devenir Dynamique"
 sidebar_label: "Devenir Dynamique"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 La seconde partie du didacticiel est disponible en video ici:
+
+> **Avis : contenu ancien**
+> 
+> Ces vidéos ont été enregistrées avec une version antérieure de Redwood et de nombreuses commandes sont maintenant obsolètes. Si vous voulez vraiment construire l'application de blog, vous devrez suivre avec le texte que nous gardons à jour avec les dernières versions.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SP5vbsWf5Yg?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
@@ -56,7 +59,7 @@ Cette série d'instructions signifie que nous voulons créer une table `Post` av
 - Un champ `body` également de type `String`
 - Un champ `createdAt` de type `DateTime` avec une valeur par `@default` égale à `now()` pour chaque nouvel enregistrement (ainsi nous n'avons pas à nous en charger dans l'application, la base de données le fera pour nous)
 
-> **Identifiant de type Integer vs. identifiant de type String**
+> **Raccourçi `redwood`**
 > 
 > Pour le didacticiel, nous resterons simple et utiliserons un identifiant de type Integer. Ceci étant, une application plus évoluée pourra utiliser un identifiant de type CUID ou UUID. Tous deux sont pris en charge par Prisma. Dans ce cas, vous utiliseriez un champ de type `String` au lieu de `Int`, et `cuid()` ou `uuid()` au lieu de `autoincrement()`:
 > 
@@ -72,19 +75,15 @@ C'était simple. Maintenant nous souhaitons faire un snapshot de notre migration
 
     yarn redwood db save create posts
 
-Ce faisant, vous venez de nommer votre première migration "create posts". Redwood ne tient pas compte de ce nom, mais il est recommandé de choisir un nom significatif pour les autres développeurs de votre équipe.
-
-Une fois la commande exécutée, vous pourrez constater la création d'un nouveau sous-répertoire dans `api/prisma/migrations` avec un _timestamp_ et le nom que vous avez donné votre migration. Ce sous-répertoire contient quelques fichiers: une capture du schéma de la base dans `schema.prisma`, ainsi que la suite de directives que Prima utilise pour effectuer les modifications dans `steps.json`).
-
-Nous allons maintenant appliquer cette migration avec cette commande:
-
-    yarn rw db up
-
-> **Raccourçi `redwood`**
+> **Générateurs et conventions de nommage**
 > 
 > Désormais, nous utiliserons dans nos commandes la forme courte `rw` à la place de `redwood`.
 
-L'exécution de cette commande permet à Prisma d'appliquer les changements sur la base de données, en l'espèce la création d'une nouvelle table `Post` avec les champs définis plus haut.
+Vous serez invité à donner un nom à cette migration. Idéalement le nom décrira ce qu'il se passe, en l'occurrence "créer des publications" (sans les guillemets, bien sûr). C'est à votre avantage : Redwood ne se soucie pas du nom de la migration, c'est juste une référence lorsque vous regardez les anciennes migrations et essayez de trouver quand vous avez créé ou modifié quelque chose de spécifique.
+
+Une fois la commande exécutée, vous pourrez constater la création d'un nouveau sous-répertoire dans `api/prisma/migrations` avec un _timestamp_ et le nom que vous avez donné votre migration. Il contiendra un seul fichier nommé `migration.sql` qui contient le SQL nécessaire pour mettre à jour la structure de la base de données pour correspondre au `schema.prisma` au moment où la migration a été créée. Vous avez donc un seul fichier `schema.prisma` qui décrit la structure de la base de données telle qu'elle est *sur l'instant* et les migrations qui retracent l'historique des modifications pour parvenir à cette structure. C'est une sorte de contrôle de version pour la structure de votre base de données, qui peut être assez pratique.
+
+En plus de créer le fichier de migration, la commande ci-dessus exécutera également le SQL sur la base de données, appliquant ainsi la migration. L'exécution de cette commande permet à Prisma d'appliquer les changements sur la base de données, en l'espèce la création d'une nouvelle table `Post` avec les champs définis plus haut.
 
 ### Créer une Interface d'Édition d'un Article
 
@@ -118,7 +117,7 @@ D'accord, et en cliquant sur le bouton "Delete" (supprimer)?
 
 <img src="https://user-images.githubusercontent.com/300/73031339-aea95600-3df0-11ea-9d58-475d9ef43988.png" />
 
-Oui c'est bien ça, en une seule commande, Redwood à créé l'ensemble des pages, composants et services nécessaires aux opérations usuelles de manipulation des articles. Pas même besoin d'ouvrir le gestionnaire de base de données. Redwood appelle ceci des _scaffolds_. Pas mal, non?
+Oui c'est bien ça, en une seule commande, Redwood à créé l'ensemble des pages, composants et services nécessaires aux opérations usuelles de manipulation des articles. Pas même besoin d'ouvrir le gestionnaire de base de données. Redwood appelle ceci des _scaffolds_.
 
 Voici dans le détail ce qui arrive lorsqu'on execute la commande `yarn rw g scaffold post` :
 
@@ -168,4 +167,5 @@ Puisque nous voudront probablement conserver un moyen de créer et éditer des a
 
 Nous avons déjà la `HomePage`, pas besoin de créer celle-ci donc. Nous souhaitons afficher une liste d'articles à l'utilisateur donc nous allons devoir ajouter ça. Nous avons besoin de récupérer le contenu depuis la base de données, et nous ne voulons pas que l'utilisateur soit face à une page blanche le temps du chargement (conditions réseau dégradées, serveur géographiquement distant, etc...), donc nous voudrons montrer une sorte de message de chargement et/ou une animation. D'autre part, si une erreur se produit, nous devrons faire en sorte de la prendre en charge. D'autre part, que va-t-il se passer lorsque nous publierons ce moteur de blog en open-source et qu'une personne l'initialisera sans aucun contenu dans la base de données? Ce serait sympa s'il y avait une sorte de message indiquant que le blog ne comporte encore aucun article.
 
-Pffiou... notre première page avec des données et il semble que nous ayons déjà à nous soucier du chargement des états, des erreurs… mais est-ce vraiment le cas ?
+notre première page avec des données et il semble que nous ayons déjà à nous soucier du chargement des états, des erreurs…
+
