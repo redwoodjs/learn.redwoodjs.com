@@ -2,7 +2,6 @@
 id: saving-data
 title: "Enregistrer les Données"
 sidebar_label: "Enregistrer les Données"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Ajoutons une nouvelle table à notre base de données. Ouvrez `api/prisma/schema.prisma` et ajoutez un nouveau modèle "Contact" à la suite du premier modèle "Post":

@@ -2,7 +2,6 @@
 id: installation-starting-development
 title: "Installation & Démarrage du développement"
 sidebar_label: "Installation & Démarrage du développement"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Nous utiliserons yarn ([yarn](https://yarnpkg.com/en/docs/install) est un pré-requis) pour créer la structure de base pour notre application :

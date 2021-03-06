@@ -2,7 +2,6 @@
 id: deployment
 title: "Déploiement"
 sidebar_label: "Déploiement"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 La partie 4 de ce didacticiel en vidéo se trouve ici:

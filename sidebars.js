@@ -19,5 +19,17 @@ module.exports = {
       'tutorial/deployment',
       'tutorial/wrapping-up',
     ],
+    'Tutorial II': [
+      'tutorial2/welcome-to-redwood-part-ii-redwoods-revenge',
+      'tutorial2/prerequisites',
+      'tutorial2/introduction-to-storybook',
+      'tutorial2/our-first-story',
+      'tutorial2/building-a-component-the-redwood-way',
+      'tutorial2/multiple-comments',
+      'tutorial2/adding-comments-to-the-schema',
+      'tutorial2/creating-a-comment-form',
+      'tutorial2/role-based-authorization-control-rbac',
+      'tutorial2/wrapping-up',
+    ],
   },
 };

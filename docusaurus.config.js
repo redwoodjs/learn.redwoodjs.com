@@ -1,3 +1,6 @@
+const translationGuideUrl =
+  'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md'; // replaces editUrl on localized Pages
+
 const locales = ['en', 'fr'];
 
 const localeConfigs = {
@@ -15,6 +18,16 @@ module.exports = {
     locales,
     localeConfigs,
   },
+  customFields: {
+    translationGuideUrl,
+    defaultDocsLandingPage: 'tutorial/welcome-to-redwood', // redirects here when hitting /docs/
+    defaultSectionLandingPages: {
+      // map of what is considered the first article in each section
+      // section: id
+      tutorial: 'welcome-to-redwood',
+      tutorial2: 'welcome-to-redwood-part-ii-redwoods-revenge',
+    },
+  },
   title: 'Learn RedwoodJS',
   tagline:
     'Built on React, GraphQL, and Prisma, Redwood works with the components and development workflow you love, but with simple conventions and helpers to make your experience even better.',
@@ -24,7 +37,7 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'redwoodjs', // Usually your GitHub org/user name.
-  projectName: 'learn.redwoodjs.com', // Usually your repo name.
+  projectName: 'learn.redwoodjs.com', // Usually your repo name.,
   themeConfig: {
     algolia: {
       apiKey: process.env.ALGOLIA_API_KEY || 'dev',
@@ -40,7 +53,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/tutorial/welcome-to-redwood',
+          to: 'https://redwoodjs.com/docs/introduction',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
@@ -67,6 +80,10 @@ module.exports = {
             {
               label: 'Tutorial',
               to: 'docs/tutorial/welcome-to-redwood',
+            },
+            {
+              label: 'Tutorial II',
+              to: 'docs/tutorial2/welcome-to-redwood-part-ii-redwoods-revenge',
             },
           ],
         },
@@ -98,6 +115,10 @@ module.exports = {
               label: 'GitHub',
               href: 'https://github.com/redwoodjs/learn.redwoodjs.com',
             },
+            {
+              label: 'Help us translate',
+              href: translationGuideUrl,
+            },
           ],
         },
       ],
@@ -110,14 +131,8 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: 'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/', // base path for repo edit pages
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
