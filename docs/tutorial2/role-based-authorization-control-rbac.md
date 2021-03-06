@@ -12,13 +12,13 @@ Enter role-based authorization control, thankfully shortened to the common phras
 
 ### Defining Roles
 
-If you remember back in the first part of the tutorial we actually [pointed out](./authentication#authentication-generation) that Netlify Identity provides an optional array of roles that you can attach to a user. That's exactly what we need!
+If you remember back in the first part of the tutorial we actually [pointed out](../tutorial/authentication#authentication-generation) that Netlify Identity provides an optional array of roles that you can attach to a user. That's exactly what we need!
 
 > **What about other auth providers besides Netlify?**
 >
 > Some auth providers have a similar data structure that you can attach to a user, but if not you'll need to rely on your own database to store their roles. Read more in the [RBAC Cookbook](https://redwoodjs.com/cookbook/role-based-access-control-rbac.html#roles-from-a-database).
 
-If you started with your own blog code from Part 1 of the tutorial and already have it deployed on Netlify, you're ready to continue! If you cloned the [redwood-tutorial](https://github.com/redwoodjs/redwood-tutorial) code from GitHub you'll need to [create a Netlify site and deploy it](./deployment), then [enable Netlify Identity](./authentication#netlify-identity-setup) as described in the first part of the tutorial.
+If you started with your own blog code from Part 1 of the tutorial and already have it deployed on Netlify, you're ready to continue! If you cloned the [redwood-tutorial](https://github.com/redwoodjs/redwood-tutorial) code from GitHub you'll need to [create a Netlify site and deploy it](../tutorial/deployment), then [enable Netlify Identity](../tutorial/authentication#netlify-identity-setup) as described in the first part of the tutorial.
 
 > If you don't want to go through getting Netlify Identity working, but still want to follow along, you can simulate the roles returned by Netlify by just hard-coding them into `/api/src/lib/auth.js`. Just have the `getCurrentUser()` function return a simple object that contains a `roles` property:
 >
@@ -49,7 +49,7 @@ Edit your original user to have the role "admin":
 
 ![image](https://user-images.githubusercontent.com/300/101226249-ba88ba00-3648-11eb-8e83-7b4d17822442.png)
 
-Be sure to accept the invite for your new user and set a password so that you can actually log in as them (if you haven't deployed yet you'll need to copy the `invite_token` from the URL and use it on your local dev web server, as described [here](./authentication#accepting-invites)).
+Be sure to accept the invite for your new user and set a password so that you can actually log in as them (if you haven't deployed yet you'll need to copy the `invite_token` from the URL and use it on your local dev web server, as described [here](../tutorial/authentication#accepting-invites)).
 
 If all went well, you should be able to log in as either user with no change in the functionality between them—both can access http://localhost:8910/admin/posts Log in as your moderator user and go there now so we can verify that we get booted out once we add some authorization rules.
 
