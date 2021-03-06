@@ -104,21 +104,20 @@ function DocItem(props) {
                   </span>
                 </div>
               )}
+              {/* Add a 'help us translate banner! If rendered page is not default locale */}
+              {isLocalizedPath && (
+                <div className="docItemCol_node_modules-@docusaurus-theme-classic-lib-next-theme-DocItem-">
+                  <div className="docItemContainer_node_modules-@docusaurus-theme-classic-lib-next-theme-DocItem-">
+                    <HelpUsTranslateBanner />
+                  </div>
+                </div>
+              )}
               {!hideTitle && (
                 <header>
                   <h1 className={styles.docTitle}>{title}</h1>
                 </header>
               )}
               <div className="markdown">
-                {/* Add a 'help us translate banner! If rendered page is not default locale */}
-                {isLocalizedPath && (
-                  <div className="docItemCol_node_modules-@docusaurus-theme-classic-lib-next-theme-DocItem-">
-                    <div className="docItemContainer_node_modules-@docusaurus-theme-classic-lib-next-theme-DocItem-">
-                      <HelpUsTranslateBanner />
-                    </div>
-                  </div>
-                )}
-
                 <DocContent />
               </div>
             </article>
