@@ -24,7 +24,7 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'redwoodjs', // Usually your GitHub org/user name.
-  projectName: 'learn.redwoodjs.com', // Usually your repo name.
+  projectName: 'learn.redwoodjs.com', // Usually your repo name.,
   themeConfig: {
     algolia: {
       apiKey: process.env.ALGOLIA_API_KEY || 'dev',
