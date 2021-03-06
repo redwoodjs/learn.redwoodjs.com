@@ -24,6 +24,7 @@ module.exports = {
       'tutorial2/prerequisites',
       'tutorial2/introduction-to-storybook',
       'tutorial2/our-first-story',
+      'tutorial2/our-first-test',
       'tutorial2/building-a-component-the-redwood-way',
       'tutorial2/multiple-comments',
       'tutorial2/adding-comments-to-the-schema',
