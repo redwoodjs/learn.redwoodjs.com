@@ -20,6 +20,12 @@ module.exports = {
   },
   customFields: {
     translationGuideUrl,
+    defaultLandingPages: {
+      // map of what is considered the first article in each section
+      // section: id
+      tutorial: 'welcome-to-redwood',
+      tutorial2: 'welcome-to-redwood-part-ii-redwoods-revenge',
+    },
   },
   title: 'Learn RedwoodJS',
   tagline:
@@ -124,9 +130,8 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
           editUrl:
-            'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/',
+            'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/', // base path for repo edit pages
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
