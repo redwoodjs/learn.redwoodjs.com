@@ -42,7 +42,7 @@ module.exports = {
         {
           to: 'docs/tutorial/welcome-to-redwood',
           activeBasePath: 'docs',
-          label: 'Docs',
+          label: 'Tutorial',
           position: 'left',
         },
         {
@@ -67,6 +67,10 @@ module.exports = {
             {
               label: 'Tutorial',
               to: 'docs/tutorial/welcome-to-redwood',
+            },
+            {
+              label: 'Tutorial II',
+              to: 'docs/tutorial2/welcome-to-redwood-part-ii-redwoods-revenge',
             },
           ],
         },
@@ -111,7 +115,8 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/',
+          editUrl:
+            'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/',
         },
         blog: {
           showReadingTime: true,
