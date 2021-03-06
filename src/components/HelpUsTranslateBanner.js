@@ -1,5 +1,8 @@
 import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import config from '../../docusaurus.config';
+
+const { translationGuideUrl } = config.customFields;
 
 // hacky method of string translation in custom components
 // TODO: centralize these custom component string translations in /i18n
@@ -24,7 +27,7 @@ function HelpUsTranslateBanner() {
     <blockquote>
       <span>{t.message[currentLocale] || t.message.en} </span>
       <a
-        href="https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md"
+        href={translationGuideUrl}
         rel="noreferrer noopener nofollow"
         target="_blank"
       >

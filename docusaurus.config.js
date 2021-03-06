@@ -15,6 +15,10 @@ module.exports = {
     locales,
     localeConfigs,
   },
+  customFields: {
+    translationGuideUrl:
+      'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md', // replaces editUrl on localized Pages
+  },
   title: 'Learn RedwoodJS',
   tagline:
     'Built on React, GraphQL, and Prisma, Redwood works with the components and development workflow you love, but with simple conventions and helpers to make your experience even better.',

@@ -21,6 +21,9 @@ import {
   useActiveVersion,
 } from '@theme/hooks/useDocs';
 import HelpUsTranslateBanner from '../../components/HelpUsTranslateBanner';
+import config from '../../../docusaurus.config';
+
+const { translationGuideUrl } = config.customFields;
 
 function DocItem(props) {
   const { siteConfig } = useDocusaurusContext();
@@ -62,6 +65,7 @@ function DocItem(props) {
   const ctx = useDocusaurusContext();
   const { defaultLocale, currentLocale } = ctx.i18n;
   const isLocalizedPath = currentLocale !== defaultLocale;
+  const resolvedEditUrl = isLocalizedPath ? translationGuideUrl : editUrl;
 
   return (
     <>
@@ -118,13 +122,13 @@ function DocItem(props) {
                 <DocContent />
               </div>
             </article>
-            {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
+            {(resolvedEditUrl || lastUpdatedAt || lastUpdatedBy) && (
               <div className="margin-vert--xl">
                 <div className="row">
                   <div className="col">
-                    {editUrl && (
+                    {resolvedEditUrl && (
                       <a
-                        href={editUrl}
+                        href={resolvedEditUrl}
                         target="_blank"
                         rel="noreferrer noopener"
                       >
