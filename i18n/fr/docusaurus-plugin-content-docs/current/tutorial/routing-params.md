@@ -2,7 +2,6 @@
 id: routing-params
 title: "Paramètres de Routes"
 sidebar_label: "Paramètres de Routes"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Maintenant que notre page d'accueil liste l'ensemble des articles de notre blog, il est temps de créer une page présentant le détail d'un article. Commençons par générer une page et sa route associée:
@@ -123,7 +122,7 @@ const BlogPostPage = ({ id }) => {
 
 `id` existe déjà sans effort supplémentaire puisque nous avons nommé notre paramètre de route `{id}`. Merci Redwood! Mais comment se fait-il que cet `id` finisse par devenir un paramètre GraphQL `$id`? Si vous avez appris quoi que ce soit sur Redwood, vous devriez savoir qu'il va prendre soin de cela pour vous! Par défaut, chaque propriété que vous donnez à une Cell devient automatiquement un variable disponible pour une requête GraphQL. Et oui! C'est exact.
 
-D'ailleurs on peut le prouver! Essayez de vous rendre à la page de détail d'un article dans le navigateur et — ahem.. ouch. Hmm:
+D'ailleurs on peut le prouver! Essayez de vous rendre à la page de détail d'un article dans le navigateur et — ahem.. Hmm:
 
 ![image](https://user-images.githubusercontent.com/300/75820346-096b9100-5d51-11ea-8f6e-53fda78d1ed5.png)
 
@@ -157,12 +156,15 @@ Voilà! Non seulement vous allez convertir sans effort le paramètre `id` en un 
 <BlogPostCell id={id} rand={Math.random()} />
 ```
 
+```javascript 
+
+```javascript
 Et ensuite vous la récupérez avec le résulat de la requête ans le composant (et même avec l'identifiant de l'article si vous le souhaitez): And get it, along with the query result (and even the original `id` if you want) in the component:
 
 ```javascript
 export const Success = ({ post, id, rand }) => {
   //...
-};
+}
 ```
 
 Merci Redwood!
@@ -173,26 +175,30 @@ Maintenant, affichons le véritable article au lieu de simplement dumper le rés
 
     yarn rw g component BlogPost
 
-L'exécution de cette commande créé le composant `BlogPost` dans le fichier `web/src/components/BlogPost/BlogPost.js`, accompagné de son fichier de test:
+// web/src/components/BlogPost/BlogPost.js const BlogPost = () =&gt; { return (
+        &lt;div&gt;
+            &lt;h2&gt;{"BlogPost"}&lt;/h2&gt;
+            &lt;p&gt;{"Find me in ./web/src/components/BlogPost/BlogPost.js"}&lt;/p&gt;
+        &lt;/div&gt; ); }; export default BlogPost;
 
 ```javascript
 // web/src/components/BlogPost/BlogPost.js
 
 const BlogPost = () => {
-    return (
-        <div>
-            <h2>{"BlogPost"}</h2>
-            <p>{"Find me in ./web/src/components/BlogPost/BlogPost.js"}</p>
-        </div>
-    );
-};
+  return (
+    <div>
+      <h2>{'BlogPost'}</h2>
+      <p>{'Find me in ./web/src/components/BlogPost/BlogPost.js'}</p>
+    </div>
+  )
+}
 
-export default BlogPost;
+export default BlogPost
 ```
 
 > Vous remarquerez peut-être que nous n'avons ici aucun `import` relatif à la librairie `React`. En réalité, nous (la "Redwood dev team") sommes un peu fatigués d'avoir à importer constamment les mêmes fichiers de la même manière... alors nous avons fait en sorte que Redwood le fasse pour nous, et donc pour vous!
 
-Supprimons la partie de code qui affiche l'article dans `BlogPostCell`, et mettons la plutôt ici.
+L'exécution de cette commande créé le composant `BlogPost` dans le fichier `web/src/components/BlogPost/BlogPost.js`, accompagné de son fichier de test:
 
 ```javascript {3,5,7-14}
 // web/src/components/BlogPost/BlogPost.js
@@ -215,7 +221,7 @@ const BlogPost = ({ post }) => {
 export default BlogPost
 ```
 
-Mettons à jour `BlogPostsCell` et `BlogPostCell` pour utiliser notre composant d'affichage commun:
+Supprimons la partie de code qui affiche l'article dans `BlogPostCell`, et mettons la plutôt ici.
 
 ```javascript {3,8}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
@@ -254,3 +260,4 @@ Un petit état des lieux de ce que nous avons réalisé:
 3. Création d'une Cell permettant de récupérer et afficher un article
 4. Constat de la capacité de Redwood à vous mettre de bonne humeur en vous donnant accès à `id` là où vous en avez besoin tout en le convertissant au format numérique à la volée
 5. Transformation de l'affichage d'un article en un composant React classique pouvant être partagé à plusieurs endroits dans l'interface (en l'espèce dans la page d'accueil et la page de détail)
+
