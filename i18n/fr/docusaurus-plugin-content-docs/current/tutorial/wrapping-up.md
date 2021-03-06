@@ -2,7 +2,6 @@
 id: wrapping-up
 title: "Conclusion"
 sidebar_label: "Conclusion"
-custom_edit_url: https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md
 ---
 
 Vous l'avez fait! Si vous avez vraiment parcouru tout le tutoriel: félicitations! Si vous venez de passer à cette page pour essayer d'obtenir des félicitations gratuites: tss, tss...
@@ -12,6 +11,8 @@ Cela représentait potentiellement beaucoup de nouveaux concepts à absorber d'u
 Comme l'a dit un utilisateur anonyme de Twitter: "Si vous aimez vous sentir à la fois la personne la plus intelligente du monde et la personne la plus stupide de l'histoire en l'espace de 24 heures, la programmation peut être un bon choix de carrière!"
 
 ### Et maintenant?
+
+Si vous êtes prêt pour encore plus de Redwood, rendez-vous à la [Partie 2 du Tutoriel](https://redwoodjs.com/tutorial2) ! Nous allons aborder Storybook et Jest et construire une nouvelle fonctionnalité pour le blog : les commentaires. Storybook introduit une nouvelle façon de construire des composants. Nous ajouterons également des tests et les exécuterons avec Jest pour nous assurer que les choses continuent de fonctionner comme prévu. Nous aborderons l’autorisation en donnant un rôle spécial aux modérateurs de commentaires.
 
 Vous souhaitez ajouter d'autres fonctionnalités à votre application? Découvrez quelques-un de nos "Cookbook" (livres de recettes) comme [appeler une API tierce](https://redwoodjs.com/cookbook/using-a-third-party-api), ou encore [déployer une application sans API du tout](https://redwoodjs.com/cookbook/disable-api-database). Vous en avez assez de SQLite et souhaitez [installer Postgres localement](https://redwoodjs.com/docs/local-postgres-setup)? Nous avons également de nombreux [guides](https://redwoodjs.com/docs/introduction) pour plus d'informations sur les composants internes de Redwood.
 
