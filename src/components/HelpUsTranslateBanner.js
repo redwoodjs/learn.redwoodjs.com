@@ -9,7 +9,7 @@ const { translationGuideUrl } = config.customFields;
 const t = {
   message: {
     fr:
-      'Y a-t-il des traductions manquantes ou incorrectes? Aidez-nous à traduire! Consultez notre guide de traduction:',
+      'Vous voyez des traductions manquantes ou incorrectes? Aidez-nous à traduire! Consultez notre guide de traduction:',
     en:
       'See any missing or incorrect translations? Help us translate! See our translation guide:',
   },
