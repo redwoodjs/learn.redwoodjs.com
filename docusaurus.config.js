@@ -40,9 +40,9 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/tutorial/welcome-to-redwood',
+          to: 'https://redwoodjs.com/docs/introduction',
           activeBasePath: 'docs',
-          label: 'Tutorial',
+          label: 'Docs',
           position: 'left',
         },
         {
@@ -117,12 +117,6 @@ module.exports = {
           // Please change this to your repo.
           editUrl:
             'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
