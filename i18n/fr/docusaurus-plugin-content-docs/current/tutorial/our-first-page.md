@@ -42,3 +42,4 @@ Essayez de modifier cette route de la façon suivante:
 Dès que vous ajoutez votre première route, la page d'accueil par défaut de Redwood disparaît. Désormais, lorsqu'aucune route ne peut être trouvée pour l'URL demandée, Redwood va retourner la page `NotFoundPage`. Modifiez l'URL de votre navigateur pour ouvrir `http://localhost:8910/hello`, vous devriez voir de nouveau le contenu de `HomePage.js`.
 
 Modifiez à nouveau la route pour revenir à son état initial `/` avant de continuer.
+

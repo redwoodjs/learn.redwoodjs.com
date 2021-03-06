@@ -14,19 +14,27 @@ Vous pouvez tout à fait compléter ce didacticiel sans savoir quoique ce soit s
 
 ### Node.js et Yarn
 
-Pendant l’installation, RedwoodJS commence par verifier si votre système possède les versions requises de Node et Yarn :
+Vous aurez besoin d'être sur une version de Redwood supérieure ou égale à v0.25 pour achever ce tutoriel. Si c'est la première fois que vous utilisez Redwood, alors pas de soucis : la dernière version sera installée automatiquement lorsque vous créerez votre squelette d'application ! Si vous avez un site existant créé avec une version antérieure à la v0.25, vous devrez le mettre à jour. Exécutez cette commande à la racine de votre application et suivez les instructions :
+
+```bash
+yarn redwood upgrade
+```
+
+### Node.js et Yarn
+
+👉 **Important:** Si votre système ne repond pas à ces prérequis, _l’installation se soldera par une ERREUR._ Vérifiez en exécutant les commandes suivantes dans un terminal:
 
 - node: ">=12"
 - yarn: ">=1.15"
 
-👉 **Important:** Si votre système ne repond pas à ces prérequis, _l’installation se soldera par une ERREUR._ Vérifiez en exécutant les commandes suivantes dans un terminal:
+Procédez aux mises à jour le cas échéant, puis relancez l’installation de RedwoodJS lorsque vous êtes prêt !
 
 ```
 node --version
 yarn --version
 ```
 
-Procédez aux mises à jour le cas échéant, puis relancez l’installation de RedwoodJS lorsque vous êtes prêt !
+Procédez ensuite à l'installation de Redwood quand vous serez prêt !
 
 > **Installer Node et Yarn**
 > 
@@ -44,3 +52,4 @@ Procédez aux mises à jour le cas échéant, puis relancez l’installation de 
 > - Nous recommandons aux utilisateurs de **Windows** de visiter [Nodejs.org](https://nodejs.org/en/) pour savoir comment procéder.
 > 
 > Si vous êtes un peu perdu au moment de choisir quelle version de Node utiliser, nous vous recommandons la plus récente LTS avec un numéro de version pair, actuellement il s'agit de la v12.
+
