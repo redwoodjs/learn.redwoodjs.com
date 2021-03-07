@@ -4,7 +4,7 @@ title: "Cells"
 sidebar_label: "Cells"
 ---
 
-Ces fonctionnalités sont courantes dans la plupart des applications web. Nous voulions voir s'il était possible de faciliter la vie aux développeurs. Nous pensons être arrivé à réaliser quelque chose d'utile. Nous appelons ça les _Cells_ (ou _cellules_ en français). Les Cells proposent une approche simple et déclarative pour récupérer des données au sein de vos composants. ([Lisez la documentation complète sur Cells](https://redwoodjs.com/docs/cells).)
+Ces fonctionnalités sont courantes dans la plupart des applications web. Nous voulions voir s'il y avait quelque chose que nous pouvions faire pour faciliter la vie des développeurs lorsqu'il s'agit de les ajouter à un composant standard. Nous pensons être parvenus à concevoir une proposition efficace. Nous appelons ça les _Cells_ (ou _cellules_ en français). Les Cells proposent une approche simple et déclarative pour récupérer des données au sein de vos composants. ([Lisez la documentation complète sur Cells](https://redwoodjs.com/docs/cells).)
 
 Lorsque vous créez une nouvelle Cell, vous exportez quelques constantes, toujours nommées de façon identique, et Redwood s'appuie dessus pour mettre en place la mécanique. Une Cell ressemble typiquement à ceci:
 
