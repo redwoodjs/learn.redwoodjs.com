@@ -8,8 +8,6 @@ Getting involved is easy! Crowdin lets you sign in with your Github account.
 
 ## Roles
 
-There are two roles in which you can help out.
-
 | Role        | Description                                                  | Language Proficiency                                        |
 | ----------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
 | Translator  | Translate content in Crowdin from English to target language | English: Intermediate+ <br />Target: Native level preferred |
@@ -18,6 +16,8 @@ There are two roles in which you can help out.
 Translators can double as proofreaders for other people's translations in their proficient language(s).
 
 Yes, these are subjective requirements :) The goal is to make Redwood accessible by providing easy to read and engaging tutorial content.
+
+To sign up for a role, simply request in Crowdin.
 
 ## Current Languages
 
