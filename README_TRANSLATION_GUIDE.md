@@ -4,11 +4,9 @@
 
 All content is translated via our [Crowdin repo](https://crowdin.com/project/learn-redwoodjs/) so we can keep our docs from going stale.
 
-Getting involved is easy! Crowdin lets you sign in with your Github account. Read below to find out how to get started.
+Getting involved is easy! Crowdin lets you sign in with your Github account.
 
 ## Roles
-
-There are two roles in which you can help out.
 
 | Role        | Description                                                  | Language Proficiency                                        |
 | ----------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
@@ -18,6 +16,8 @@ There are two roles in which you can help out.
 Translators can double as proofreaders for other people's translations in their proficient language(s).
 
 Yes, these are subjective requirements :) The goal is to make Redwood accessible by providing easy to read and engaging tutorial content.
+
+To sign up for a role, simply request in Crowdin.
 
 ## Current Languages
 
@@ -33,7 +33,7 @@ Tag @clairefro in a new issue in this repo and we'll get it started!
 
 ## Guide for translators
 
-In Crowdin, go to your target language and look for any incomplete translations. You then translate each untranslated string directly in Crowdin's interface.
+In [Crowdin](https://crowdin.com/project/learn-redwoodjs), go to your target language and look for any incomplete translations. Then translate untranslated strings directly in Crowdin's interface.
 
 ### Branch
 
@@ -41,7 +41,9 @@ Please translate in the `main` branch folder
 
 ### Frontmatter
 
-When translating, keep the frontmatter `id` the same as English. This id is used for placing items correctly in the sidebar and must be the same for all locales of a given document.
+When translating, keep the frontmatter `id` the same as English. 
+
+This id is used for placing items correctly in the sidebar and **must be the same for all locales of a given document**.
 
 `title` and `sidebar_label` however **can** and **should** be translated! Use double quotes `""` - it's a habit to prevent YAML breaking on special characters like `:`.
 
@@ -72,7 +74,7 @@ Leave code blocks as-is. There is an icon in the input box for translation that 
 
 Crowdin is a pretty cool tool but it has its quirks - feel free to reach out to the internet or @clairefro if you get stuck.
 
-## FAQ
+### Translator FAQ
 
 **I finished translating in Crowdin... Where's the PR?!?**
 
@@ -96,4 +98,28 @@ Your feedback will help us smooth things out!
 
 ## Guide for proofreaders
 
-Coming soon!
+Navigate to the translations page for your target locale from [here](https://crowdin.com/project/learn-redwoodjs)
+
+Look for blue! That means translated but not yet approved. Click the three dots next to any blue and select "Proofread"
+
+![image](https://user-images.githubusercontent.com/9841162/110227528-224fda80-7eae-11eb-933f-c1b529f856e7.png)
+
+
+You can now see a list of translated strings waiting to be approved.
+
+You can either approve them in bulk by selecting all, or one by one carefully.
+
+![image](https://user-images.githubusercontent.com/9841162/110227545-50cdb580-7eae-11eb-871d-e31b0f495d99.png)
+
+If you see something inaccurate or strange, do not approve that string. Instead, leave a comment for the translator by clicking the comment icon in the right pane. Please leave your comment in English, except for suggested phrasing.
+
+![image](https://user-images.githubusercontent.com/9841162/110227609-f719bb00-7eae-11eb-87a6-b422accbae48.png)
+
+Once you finish approving all translations in a file, that file becomes 100% green. Voila!
+
+100% green files will automatically be PRed to this repo every ~10 mins.
+
+
+
+
+
