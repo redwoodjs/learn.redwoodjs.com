@@ -64,12 +64,12 @@ module.exports = {
         {
           to: 'https://redwoodjs.com/docs/introduction',
           activeBasePath: 'docs',
-          label: 'Docs',
+          label: 'Docs ⇗',
           position: 'left',
         },
         {
-          to: 'https://redwoodjs.com/',
-          label: 'Redwoodjs.com',
+          to: 'https://redwoodjs.com/cookbook/custom-function',
+          label: 'Cookbooks ⇗',
           position: 'left',
         },
         { type: 'localeDropdown', position: 'right' },
