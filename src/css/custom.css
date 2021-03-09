@@ -208,3 +208,16 @@ html[data-theme='dark'] .footer__copyright {
   width: 100%;
   height: 100%;
 }
+
+/* Announcement bar */
+
+[class^='announcementBarContent'] {
+  color: #fff;
+  background-color: var(--ifm-color-primary);
+}
+html[data-theme='dark'] [class^='announcementBarContent'] {
+  color: #fff;
+}
+html[data-theme='dark'] [class^='announcementBarContent'] a {
+  color: #fff;
+}
