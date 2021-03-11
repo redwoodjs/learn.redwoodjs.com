@@ -24,7 +24,7 @@ yarn redwood upgrade
 
 👉 **Important:** Si votre système ne repond pas à ces prérequis, _l’installation se soldera par une ERREUR._ Vérifiez en exécutant les commandes suivantes dans un terminal:
 
-- node: ">=12"
+- node: ">=14"
 - yarn: ">=1.15"
 
 Procédez aux mises à jour le cas échéant, puis relancez l’installation de RedwoodJS lorsque vous êtes prêt !
