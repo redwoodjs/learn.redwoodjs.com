@@ -69,7 +69,7 @@ module.exports = {
         },
         {
           to: 'https://redwoodjs.com/cookbook/custom-function',
-          label: 'Cookbooks ⇗',
+          label: 'Cookbook ⇗',
           position: 'left',
         },
         { type: 'localeDropdown', position: 'right' },
