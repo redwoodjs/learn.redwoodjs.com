@@ -199,7 +199,7 @@ Now try filling in some data and submitting:
 
 Great! Let's turn this into a more useful form by adding a couple fields. We'll rename the existing one to "name" and add "email" and "message":
 
-```javascript {3,15,16}
+```javascript {3,14-16}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
