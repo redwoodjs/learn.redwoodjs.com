@@ -241,7 +241,8 @@ You need the protocol and domain, not the rest of the path. Paste that into the 
 
 #### Accepting Invites
 
-Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. But if you look at the URL it will end in something like `#invite_token=6gFSXhugtHCXO5Whlc5V`. Copy that (including the `#`) and append it to your localhost URL: http://localhost:8910/#invite_token=6gFSXhugtHCXO5Whlc5Vg Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
+Before we can log in, remember that confirmation email from Netlify? Go find that and click the **Accept the invite** link. That will bring you to your site live in production, where nothing will happen. 
+But if you look at the URL it will end in something like `?p=eyJzIjoiVXprcy1JSEhUckh`. Copy that `p` value and paste it into your favorite base64 decoder (or this if you don't have one https://codebeautify.org/base64-decode) look in the payload for the `#invite_token=WGSEnAYDw8a4_y9Eqi7opQ`. Copy that (including the #) and append it to your localhost URL http://localhost:8910/#invite_token=WGSEnAYDw8a4_y9Eqi7opQ Hit Enter, then go back into the URL and hit Enter again to get it to actually reload the page. Now the modal will show **Complete your signup** and give you the ability to set your password:
 
 ![Netlify identity set password](https://user-images.githubusercontent.com/300/82388369-54ab4c80-99ee-11ea-920e-9df10ee0cac2.png)
 
