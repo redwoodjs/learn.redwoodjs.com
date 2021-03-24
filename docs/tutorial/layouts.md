@@ -48,16 +48,16 @@ const BlogLayout = ({ children }) => {
 export default BlogLayout
 ```
 
-`children` is where the magic will happen. Any page content given to the layout will be rendered here. In our routes, we'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`, and now they're back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead):
+`children` is where the magic will happen. Any page content given to the layout will be rendered here. And now the pages are back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead). To actually render our layout we'll need to make a change to our routes files. We'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`:
 
-```javascript {3,5,10-13}
+```javascript {3,4,9-12}
 // web/src/Routes.js
 
 import { Router, Route, Set } from '@redwoodjs/router'
 import BlogLayout from 'src/layouts/BlogLayout'
 
-// ...
-
+const Routes = () => {
+  return (
     <Router>
       <Set wrap={BlogLayout}>
         <Route path="/about" page={AboutPage} name="about" />
@@ -65,6 +65,10 @@ import BlogLayout from 'src/layouts/BlogLayout'
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
+  )
+}
+
+export default Routes
 ```
 
 > **The `src` alias**
