@@ -158,18 +158,21 @@ Now try creating, editing or deleting a post from our admin pages. Nothing happe
 
 Now we'll restrict access to the admin pages completely unless you're logged in. The first step will be to denote which routes will require that you be logged in. Enter the `<Private>` tag:
 
-```javascript {3,12,16}
+```javascript {3,15,20}
 // web/src/Routes.js
 
-import { Router, Route, Private } from '@redwoodjs/router'
+import { Router, Route, Set, Private } from '@redwoodjs/router'
+import BlogPostLayout from 'src/layouts/BlogPostLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Route path="/contact" page={ContactPage} name="contact" />
-      <Route path="/about" page={AboutPage} name="about" />
-      <Route path="/" page={HomePage} name="home" />
-      <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+      <Set wrap={BlogPostLayout}>
+        <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+        <Route path="/contact" page={ContactPage} name="contact" />
+        <Route path="/about" page={AboutPage} name="about" />
+        <Route path="/" page={HomePage} name="home" />
+      </Set>
       <Private unauthenticated="home">
         <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
         <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />

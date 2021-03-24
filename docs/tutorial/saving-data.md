@@ -178,7 +178,7 @@ We reference the `createContact` mutation we defined in the Contacts SDL passing
 
 Next we'll call the `useMutation` hook provided by Apollo which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
-```javascript {11,15}
+```javascript {11,14}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -190,7 +190,6 @@ import {
   Label,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   const [create] = useMutation(CREATE_CONTACT)
@@ -297,7 +296,6 @@ Add the `onCompleted` callback to `useMutation` and include the **&lt;Toaster&gt
 // ...
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 // ...
 
@@ -311,9 +309,11 @@ const ContactPage = () => {
   // ...
 
   return (
-    <BlogLayout>
+    <>
       <Toaster />
       // ...
+    </>
+  )
 ```
 
 You can read the full documentation for Toast [here](https://redwoodjs.com/docs/toast-notifications).
@@ -432,7 +432,7 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 // ...
 
 return (
-  <BlogLayout>
+  <>
     <Toaster />
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
@@ -489,7 +489,7 @@ Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instea
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
+  <>
     <Toaster />
     <Form
       onSubmit={onSubmit}
@@ -532,7 +532,6 @@ import {
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import { useForm } from 'react-hook-form'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const CREATE_CONTACT = gql`
   mutation CreateContactMutation($input: CreateContactInput!) {
@@ -558,7 +557,7 @@ const ContactPage = () => {
   }
 
   return (
-    <BlogLayout>
+    <>
       <Toaster />
       <Form
         onSubmit={onSubmit}
@@ -604,7 +603,7 @@ const ContactPage = () => {
 
         <Submit disabled={loading}>Save</Submit>
       </Form>
-    </BlogLayout>
+    </>
   )
 }
 
