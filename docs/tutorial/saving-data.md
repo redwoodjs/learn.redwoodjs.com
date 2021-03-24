@@ -314,6 +314,9 @@ const ContactPage = () => {
     <BlogLayout>
       <Toaster />
       // ...
+    </BlogLayout>
+  )
+}
 ```
 
 You can read the full documentation for Toast [here](https://redwoodjs.com/docs/toast-notifications).
