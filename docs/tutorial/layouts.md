@@ -48,7 +48,7 @@ const BlogLayout = ({ children }) => {
 export default BlogLayout
 ```
 
-`children` is where the magic will happen. Any page content given to the layout will be rendered here. So in our router, we'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`, and now they're back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead):
+`children` is where the magic will happen. Any page content given to the layout will be rendered here. In our routes, we'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`, and now they're back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead):
 
 ```javascript {3,5,10-13}
 // web/src/Routes.js
