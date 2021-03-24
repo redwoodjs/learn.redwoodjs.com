@@ -285,25 +285,26 @@ It may be hard to see a difference in development because the submit is so fast,
 
 You'll see that the "Save" button become disabled for a second or two while waiting for the response.
 
-Next, let's use Redwood's `Flash` system to let the user know their submission was successful. `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to add a message for the `Flash` component to display. Add the `Flash` component to the page and use the `timeout` prop to schedule the message's dismissal. ([Read the full documentation about Redwood's Flash system](https://redwoodjs.com/docs/flash-messaging-bus).)
+Next, let's show a notification to let the user know their submission was successful. Redwood includes [react-hot-toast]https://react-hot-toast.com/) to quickly show a popup notification on a page.
 
-```javascript {4,10,13-17,24}
+`useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to invoke a `toast()` function which will add a message to be displayed in a **<Toaster>** component.
+
+Add the `onCompleted` callback to `useMutation` and include the **<Toaster>** component in our `return`, just inside the **<BlogLayout>**:
+
+```javascript {5,10,11-15,21}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 // ...
 
 const ContactPage = () => {
-  const { addMessage } = useFlash()
-
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
-      addMessage('Thank you for your submission!', {
-        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
-      })
+      toast.success('Thank you for your submission!')
     },
   })
 
@@ -311,9 +312,11 @@ const ContactPage = () => {
 
   return (
     <BlogLayout>
-      <Flash timeout={2000} />
+      <Toaster />
       // ...
 ```
+
+You can read the full documentation for Toast [here](https://redwoodjs.com/docs/toast-notifications).
 
 ### Displaying Server Errors
 
@@ -423,12 +426,14 @@ import {
   Label,
   FormError,
 } from '@redwoodjs/forms'
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
+
 // ...
 
 return (
   <BlogLayout>
-    <Flash timeout={1000} />
+    <Toaster />
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
@@ -485,7 +490,7 @@ Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instea
 
 return (
   <BlogLayout>
-    <Flash timeout={1000} />
+    <Toaster />
     <Form
       onSubmit={onSubmit}
       validation={{ mode: 'onBlur' }}
@@ -495,20 +500,20 @@ return (
     // ...
 ```
 
-Now we can call `reset()` on `formMethods` after the success message is added to the Flash system:
+Now we can call `reset()` on `formMethods` after we call `toast()`:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
   onCompleted: () => {
-    // addMessage...
+    toast.success('Thank you for your submission!')
     formMethods.reset()
   },
 })
 ```
 
-<img alt="Screenshot of Contact form with Flash success message" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png"/>
+<img alt="Screenshot of Contact form with toast success message" src="https://user-images.githubusercontent.com/300/112360362-7a008b00-8c8f-11eb-8649-76d00be920b7.png"/>
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
 
@@ -524,7 +529,8 @@ import {
   Label,
   FormError,
 } from '@redwoodjs/forms'
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 import { useForm } from 'react-hook-form'
 import BlogLayout from 'src/layouts/BlogLayout'
 
@@ -538,13 +544,10 @@ const CREATE_CONTACT = gql`
 
 const ContactPage = () => {
   const formMethods = useForm()
-  const { addMessage } = useFlash()
 
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
-      addMessage('Thank you for your submission!', {
-        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
-      })
+      toast.success('Thank you for your submission!')
       formMethods.reset()
     },
   })
@@ -556,7 +559,7 @@ const ContactPage = () => {
 
   return (
     <BlogLayout>
-      <Flash timeout={1000} />
+      <Toaster />
       <Form
         onSubmit={onSubmit}
         validation={{ mode: 'onBlur' }}
