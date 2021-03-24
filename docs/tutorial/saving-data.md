@@ -289,7 +289,7 @@ Next, let's show a notification to let the user know their submission was succes
 
 `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to invoke a `toast()` function which will add a message to be displayed in a **&lt;Toaster&gt;** component.
 
-Add the `onCompleted` callback to `useMutation` and include the **&lt;Toaster&gt;** component in our `return`, just inside the **<BlogLayout>**:
+Add the `onCompleted` callback to `useMutation` and include the **&lt;Toaster&gt;** component in our `return`, just inside the **&lt;BlogLayout&gt;**:
 
 ```javascript {5,10,11-15,21}
 // web/src/pages/ContactPage/ContactPage.js
@@ -314,9 +314,6 @@ const ContactPage = () => {
     <BlogLayout>
       <Toaster />
       // ...
-    </BlogLayout>
-  )
-}
 ```
 
 You can read the full documentation for Toast [here](https://redwoodjs.com/docs/toast-notifications).
