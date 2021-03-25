@@ -203,7 +203,7 @@ Essayons maintenant de saisir quelques mots puis soumettre ce formulaire:
 
 Extra! Rendons le formulaire un peu plus utile en ajoutant quelques champs supplémentaires. Nous renommons ainsi notre premier champ en `name` puis ajoutons les champs `email` et `message`:
 
-```javascript {3,15,16}
+```javascript {3,14-16}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField, TextAreaField, Submit } from "@redwoodjs/forms";
