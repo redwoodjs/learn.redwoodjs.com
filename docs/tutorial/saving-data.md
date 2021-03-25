@@ -290,7 +290,7 @@ Next, let's show a notification to let the user know their submission was succes
 
 Add the `onCompleted` callback to `useMutation` and include the **&lt;Toaster&gt;** component in our `return`, just before the **&lt;Form&gt;**. We also need to wrap it all in a fragment (&lt;&gt;&lt;/&gt;) because we are only allowed to return a single element:
 
-```javascript {5,10-14,20}
+```javascript {5,10-14,19,20,23}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
