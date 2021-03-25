@@ -146,17 +146,14 @@ export const Success = ({ posts }) => {
 
 Let's plug this cell into our `HomePage` and see what happens:
 
-```javascript {4,9}
+```javascript {3,7}
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from 'src/layouts/BlogLayout'
 import BlogPostsCell from 'src/components/BlogPostsCell'
 
 const HomePage = () => {
   return (
-    <BlogLayout>
-      <BlogPostsCell />
-    </BlogLayout>
+    <BlogPostsCell />
   )
 }
 

@@ -57,18 +57,19 @@ const BlogLayout = ({ children }) => {
 export default BlogLayout
 ```
 
-And then use the `BlogLayout` in the `ContactPage`:
+And then use the `BlogLayout` for the `ContactPage` by making sure its wrapped by the same `<Set>` as the other pages in the routes file:
 
-```javascript {3,6}
-// web/src/pages/ContactPage/ContactPage.js
+```javascript {5}
+// web/src/Routes.js
 
-import BlogLayout from 'src/layouts/BlogLayout'
-
-const ContactPage = () => {
-  return <BlogLayout></BlogLayout>
-}
-
-export default ContactPage
+<Router>
+  <Set wrap={BlogLayout}>
+    <Route path="/contact" page={ContactPage} name="contact" />
+    <Route path="/about" page={AboutPage} name="about" />
+    <Route path="/" page={HomePage} name="home" />
+  </Set>
+  <Route notfound page={NotFoundPage} />
+</Router>
 ```
 
 Double check that everything looks good and then let's get to the good stuff.
@@ -104,17 +105,14 @@ input.error, textarea.error {
 
 For now we won't be talking to the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
 
-```javascript {3,9}
+```javascript {3,7}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   return (
-    <BlogLayout>
-      <Form></Form>
-    </BlogLayout>
+    <Form></Form>
   )
 }
 
@@ -123,19 +121,16 @@ export default ContactPage
 
 Well that was anticlimactic. You can't even see it in the browser. Let's add a form field so we can at least see something. Redwood ships with several inputs and a plain text input box is `<TextField>`. We'll also give the field a `name` attribute so that once there are multiple inputs on this page we'll know which contains which data:
 
-```javascript {3,10}
+```javascript {3,8}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   return (
-    <BlogLayout>
-      <Form>
-        <TextField name="input" />
-      </Form>
-    </BlogLayout>
+    <Form>
+      <TextField name="input" />
+    </Form>
   )
 }
 
@@ -146,20 +141,17 @@ export default ContactPage
 
 Something is showing! Still, pretty boring. How about adding a submit button?
 
-```javascript {3,11}
+```javascript {3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField, Submit } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   return (
-    <BlogLayout>
-      <Form>
-        <TextField name="input" />
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
+    <Form>
+      <TextField name="input" />
+      <Submit>Save</Submit>
+    </Form>
   )
 }
 
@@ -174,7 +166,7 @@ We have what might actually be considered a real, bonafide form here. Try typing
 
 Similar to a plain HTML form we'll give `<Form>` an `onSubmit` handler. That handler will be called with a single argument—an object containing all of the submitted form fields:
 
-```javascript {4-6,10}
+```javascript {4-6,9}
 // web/src/pages/ContactPage/ContactPage.js
 
 const ContactPage = () => {
@@ -183,12 +175,10 @@ const ContactPage = () => {
   }
 
   return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <TextField name="input" />
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
+    <Form onSubmit={onSubmit}>
+      <TextField name="input" />
+      <Submit>Save</Submit>
+    </Form>
   )
 }
 ```
@@ -199,11 +189,10 @@ Now try filling in some data and submitting:
 
 Great! Let's turn this into a more useful form by adding a couple fields. We'll rename the existing one to "name" and add "email" and "message":
 
-```javascript {3,14-16}
+```javascript {3,12-14}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   const onSubmit = (data) => {
@@ -211,14 +200,12 @@ const ContactPage = () => {
   }
 
   return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <TextField name="name" />
-        <TextField name="email" />
-        <TextAreaField name="message" />
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
+    <Form onSubmit={onSubmit}>
+      <TextField name="name" />
+      <TextField name="email" />
+      <TextAreaField name="message" />
+      <Submit>Save</Submit>
+    </Form>
   )
 }
 
@@ -231,24 +218,22 @@ See the new `<TextAreaField>` component here which generates an HTML `<textarea>
 
 Let's add some labels:
 
-```javascript {6,9,12}
+```javascript {5,8,11}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" />
+  <Form onSubmit={onSubmit}>
+    <label htmlFor="name">Name</label>
+    <TextField name="name" />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" />
+    <label htmlFor="email">Email</label>
+    <TextField name="email" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" />
+    <label htmlFor="message">Message</label>
+    <TextAreaField name="message" />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
+    <Submit>Save</Submit>
+  </Form>
 )
 ```
 
@@ -262,24 +247,22 @@ Try filling out the form and submitting and you should get a console message wit
 
 All three of these fields should be required in order for someone to send a message to us. Let's enforce that with the standard HTML `required` attribute:
 
-```javascript {7,10,13}
+```javascript {6,9,12}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" required />
+  <Form onSubmit={onSubmit}>
+    <label htmlFor="name">Name</label>
+    <TextField name="name" required />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" required />
+    <label htmlFor="email">Email</label>
+    <TextField name="email" required />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" required />
+    <label htmlFor="message">Message</label>
+    <TextAreaField name="message" required />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
+    <Submit>Save</Submit>
+  </Form>
 )
 ```
 
@@ -289,24 +272,22 @@ Now when trying to submit there'll be message from the browser noting that a fie
 
 Yes! Let's update that `required` call to instead be an object we pass to a custom attribute on Redwood form helpers called `validation`:
 
-```javascript {7,10,13}
+```javascript {6,9,12}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" validation={{ required: true }} />
+  <Form onSubmit={onSubmit}>
+    <label htmlFor="name">Name</label>
+    <TextField name="name" validation={{ required: true }} />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" validation={{ required: true }} />
+    <label htmlFor="email">Email</label>
+    <TextField name="email" validation={{ required: true }} />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" validation={{ required: true }} />
+    <label htmlFor="message">Message</label>
+    <TextAreaField name="message" validation={{ required: true }} />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
+    <Submit>Save</Submit>
+  </Form>
 )
 ```
 
@@ -316,7 +297,7 @@ And now when we submit the form with blank fields...the Name field gets focus. B
 
 Introducing `<FieldError>` (don't forget to include it in the `import` statement at the top):
 
-```javascript {8,22,26,30}
+```javascript {8,20,24,28}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -326,7 +307,6 @@ import {
   Submit,
   FieldError,
 } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   const onSubmit = (data) => {
@@ -334,23 +314,21 @@ const ContactPage = () => {
   }
 
   return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <label htmlFor="name">Name</label>
-        <TextField name="name" validation={{ required: true }} />
-        <FieldError name="name" />
+    <Form onSubmit={onSubmit}>
+      <label htmlFor="name">Name</label>
+      <TextField name="name" validation={{ required: true }} />
+      <FieldError name="name" />
 
-        <label htmlFor="email">Email</label>
-        <TextField name="email" validation={{ required: true }} />
-        <FieldError name="email" />
+      <label htmlFor="email">Email</label>
+      <TextField name="email" validation={{ required: true }} />
+      <FieldError name="email" />
 
-        <label htmlFor="message">Message</label>
-        <TextAreaField name="message" validation={{ required: true }} />
-        <FieldError name="message" />
+      <label htmlFor="message">Message</label>
+      <TextAreaField name="message" validation={{ required: true }} />
+      <FieldError name="message" />
 
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
+      <Submit>Save</Submit>
+    </Form>
   )
 }
 
@@ -363,27 +341,25 @@ Note that the `name` attribute matches the `name` of the input field above it. T
 
 But this is just the beginning. Let's make sure folks realize this is an error message. Remember the `.error` class we defined in `index.css`? Check out the `className` attribute on `<FieldError>`:
 
-```javascript {8,12,16}
+```javascript {7,11,15}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" validation={{ required: true }} />
-      <FieldError name="name" className="error" />
+  <Form onSubmit={onSubmit}>
+    <label htmlFor="name">Name</label>
+    <TextField name="name" validation={{ required: true }} />
+    <FieldError name="name" className="error" />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" validation={{ required: true }} />
-      <FieldError name="email" className="error" />
+    <label htmlFor="email">Email</label>
+    <TextField name="email" validation={{ required: true }} />
+    <FieldError name="email" className="error" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" validation={{ required: true }} />
-      <FieldError name="message" className="error" />
+    <label htmlFor="message">Message</label>
+    <TextAreaField name="message" validation={{ required: true }} />
+    <FieldError name="message" className="error" />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
+    <Submit>Save</Submit>
+  </Form>
 )
 ```
 
@@ -391,39 +367,37 @@ return (
 
 You know what would be nice? If the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
 
-```javascript {10,18,26}
+```javascript {9,17,25}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField
-        name="name"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="name" className="error" />
+  <Form onSubmit={onSubmit}>
+    <label htmlFor="name">Name</label>
+    <TextField
+      name="name"
+      validation={{ required: true }}
+      errorClassName="error"
+    />
+    <FieldError name="name" className="error" />
 
-      <label htmlFor="email">Email</label>
-      <TextField
-        name="email"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="email" className="error" />
+    <label htmlFor="email">Email</label>
+    <TextField
+      name="email"
+      validation={{ required: true }}
+      errorClassName="error"
+    />
+    <FieldError name="email" className="error" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField
-        name="message"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="message" className="error" />
+    <label htmlFor="message">Message</label>
+    <TextAreaField
+      name="message"
+      validation={{ required: true }}
+      errorClassName="error"
+    />
+    <FieldError name="message" className="error" />
 
-      <Submit>Save</Submit>
-    </Form>
-  </BlogLayout>
+    <Submit>Save</Submit>
+  </Form>
 )
 ```
 
@@ -431,7 +405,7 @@ return (
 
 Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `htmlFor` attribute of `<label>` becomes the `name` prop on `<Label>`, just like with the other Redwood form components. And don't forget the import:
 
-```javascript {9,21-23,31-33,41-43}
+```javascript {9,19-21,29-31,39-41}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -442,7 +416,6 @@ import {
   FieldError,
   Label,
 } from '@redwoodjs/forms'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   const onSubmit = (data) => {
@@ -450,41 +423,39 @@ const ContactPage = () => {
   }
 
   return (
-    <BlogLayout>
-      <Form onSubmit={onSubmit}>
-        <Label name="name" errorClassName="error">
-          Name
-        </Label>
-        <TextField
-          name="name"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="name" className="error" />
+    <Form onSubmit={onSubmit}>
+      <Label name="name" errorClassName="error">
+        Name
+      </Label>
+      <TextField
+        name="name"
+        validation={{ required: true }}
+        errorClassName="error"
+      />
+      <FieldError name="name" className="error" />
 
-        <Label name="email" errorClassName="error">
-          Email
-        </Label>
-        <TextField
-          name="email"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="email" className="error" />
+      <Label name="email" errorClassName="error">
+        Email
+      </Label>
+      <TextField
+        name="email"
+        validation={{ required: true }}
+        errorClassName="error"
+      />
+      <FieldError name="email" className="error" />
 
-        <Label name="message" errorClassName="error">
-          Message
-        </Label>
-        <TextAreaField
-          name="message"
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="message" className="error" />
+      <Label name="message" errorClassName="error">
+        Message
+      </Label>
+      <TextAreaField
+        name="message"
+        validation={{ required: true }}
+        errorClassName="error"
+      />
+      <FieldError name="message" className="error" />
 
-        <Submit>Save</Submit>
-      </Form>
-    </BlogLayout>
+      <Submit>Save</Submit>
+    </Form>
   )
 }
 

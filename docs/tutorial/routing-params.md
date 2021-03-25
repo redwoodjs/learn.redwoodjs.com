@@ -42,7 +42,21 @@ If you click the link on the title of the blog post you should see the boilerpla
 <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
 ```
 
-Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces."
+Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogPostLayout`.
+
+```javascript {5}
+// web/src/Routes.js
+
+<Router>
+  <Set wrap={BlogLayout}>
+    <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
+    <Route path="/contact" page={ContactPage} name="contact" />
+    <Route path="/about" page={AboutPage} name="about" />
+    <Route path="/" page={HomePage} name="home" />
+  </Set>
+  <Route notfound page={NotFoundPage} />
+</Router>
+```
 
 Cool, cool, cool. Now we need to construct a link that has the ID of a post in it:
 
@@ -60,19 +74,16 @@ Ok, so the ID is in the URL. What do we need next in order to display a specific
 
     yarn rw g cell BlogPost
 
-And then we'll use that cell in `BlogPostPage` (and while we're at it let's surround the page with the `BlogLayout`):
+And then we'll use that cell in `BlogPostPage`:
 
 ```javascript
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
-import BlogLayout from 'src/layouts/BlogLayout'
 import BlogPostCell from 'src/components/BlogPostCell'
 
 const BlogPostPage = () => {
   return (
-    <BlogLayout>
-      <BlogPostCell />
-    </BlogLayout>
+    <BlogPostCell />
   )
 }
 
@@ -108,14 +119,12 @@ export const Success = ({ post }) => {
 
 Okay, we're getting closer. Still, where will that `$id` come from? Redwood has another trick up its sleeve. Whenever you put a route param in a route, that param is automatically made available to the page that route renders. Which means we can update `BlogPostPage` to look like this:
 
-```javascript {3,6}
+```javascript {3,5}
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
 const BlogPostPage = ({ id }) => {
   return (
-    <BlogLayout>
-      <BlogPostCell id={id} />
-    </BlogLayout>
+    <BlogPostCell id={id} />
   )
 }
 ```

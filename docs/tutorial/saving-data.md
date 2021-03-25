@@ -178,7 +178,7 @@ We reference the `createContact` mutation we defined in the Contacts SDL passing
 
 Next we'll call the `useMutation` hook provided by Apollo which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
-```javascript {11,15}
+```javascript {11,14}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -190,7 +190,6 @@ import {
   Label,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   const [create] = useMutation(CREATE_CONTACT)
@@ -289,15 +288,14 @@ Next, let's show a notification to let the user know their submission was succes
 
 `useMutation` accepts an options object as a second argument. One of the options is a callback function, `onCompleted`, that will be invoked when the mutation successfully completes. We'll use that callback to invoke a `toast()` function which will add a message to be displayed in a **&lt;Toaster&gt;** component.
 
-Add the `onCompleted` callback to `useMutation` and include the **&lt;Toaster&gt;** component in our `return`, just inside the **&lt;BlogLayout&gt;**:
+Add the `onCompleted` callback to `useMutation` and include the **&lt;Toaster&gt;** component in our `return`, just before the **&lt;Form&gt;**. We also need to wrap it all in a fragment (&lt;&gt;&lt;/&gt;) because we are only allowed to return a single element:
 
-```javascript {5,10,11-15,21}
+```javascript {5,10-14,19,20,23}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 // ...
 
@@ -311,9 +309,12 @@ const ContactPage = () => {
   // ...
 
   return (
-    <BlogLayout>
+    <>
       <Toaster />
+      <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
       // ...
+    </>
+  )
 ```
 
 You can read the full documentation for Toast [here](https://redwoodjs.com/docs/toast-notifications).
@@ -432,7 +433,7 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 // ...
 
 return (
-  <BlogLayout>
+  <>
     <Toaster />
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
@@ -489,7 +490,7 @@ Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instea
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
+  <>
     <Toaster />
     <Form
       onSubmit={onSubmit}
@@ -532,7 +533,6 @@ import {
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import { useForm } from 'react-hook-form'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const CREATE_CONTACT = gql`
   mutation CreateContactMutation($input: CreateContactInput!) {
@@ -558,7 +558,7 @@ const ContactPage = () => {
   }
 
   return (
-    <BlogLayout>
+    <>
       <Toaster />
       <Form
         onSubmit={onSubmit}
@@ -604,7 +604,7 @@ const ContactPage = () => {
 
         <Submit disabled={loading}>Save</Submit>
       </Form>
-    </BlogLayout>
+    </>
   )
 }
 
@@ -620,4 +620,3 @@ That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [
 > ```
 
 The public site is looking pretty good. How about the administrative features that let us create and edit posts? We should move them to some kind of admin section and put them behind a login so that random users poking around at URLs can't create ads for discount pharmaceuticals.
-
