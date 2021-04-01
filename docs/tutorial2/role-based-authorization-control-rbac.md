@@ -93,7 +93,7 @@ Locking down a whole page is easy enough, but what about individual functionalit
 
 Redwood provides a `hasRole()` function you can get from the `useAuth()` hook which returns `true` or `false` depending on whether the logged in user has the given role. Let's try it out by adding a `Delete` button when a moderator is viewing a blog post's comments:
 
-```javascript {3,12-17,28-36}
+```javascript {3,12-17,20,28-36}
 // web/src/components/Comment/Comment.js
 
 import { useAuth } from '@redwoodjs/auth'
