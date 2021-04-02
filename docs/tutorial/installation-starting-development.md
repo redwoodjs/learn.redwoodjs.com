@@ -4,7 +4,7 @@ title: "Installation & Starting Development"
 sidebar_label: "Installation & Starting Development"
 ---
 
-We'll use yarn ([yarn](https://yarnpkg.com/en/docs/install) is a requirement) to create the basic structure of our app:
+We'll use yarn ([yarn](https://yarnpkg.com/getting-started/install) is a requirement) to create the basic structure of our app:
 
     yarn create redwood-app ./redwoodblog
 
