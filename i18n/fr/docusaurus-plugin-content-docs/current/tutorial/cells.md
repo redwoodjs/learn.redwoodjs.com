@@ -111,7 +111,7 @@ export const Success = ({ posts }) => {
 };
 ```
 
-Cependant, ce nom de requête n'est pas valide par rapport à ce qui a déjà été créé dans nos fichiers SDL et Service. Nous devons donc renommer `blogPosts` en `posts` à la fois dans le nom de la requête GraphQL et dans la propriété passée à `Success`: (Pour voir d'où viennent ces fichiers, retournez à la section [Créer un éditeur de post](./getting-dynamic#creating-a-post-editor) dans la partie _Devenir dynamique_.
+Cependant, ce nom de requête n'est pas valide par rapport à ce qui a déjà été créé dans nos fichiers SDL et Service. (Pour voir d'où viennent ces fichiers, retournez à la section [Créer un éditeur de post](./getting-dynamic#creating-a-post-editor) dans la partie *Devenir dynamique*.
 
 Nous devons donc utiliser le terme `posts` dans le nom de la requête et dans le nom de la prop de `Success`:
 
@@ -139,21 +139,18 @@ export const Success = ({ posts }) => {
 
 En plus de l'identifiant `id` qui a été ajouté dans `QUERY` par le générateur, récupérons également le titre, le contenu et la date de création de l'article:
 
-```javascript {4,9}
+```javascript {3,7}
 // web/src/pages/HomePage/HomePage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
-import BlogPostsCell from "src/components/BlogPostsCell";
+import BlogPostsCell from 'src/components/BlogPostsCell'
 
 const HomePage = () => {
-    return (
-        <BlogLayout>
-            <BlogPostsCell />
-        </BlogLayout>
-    );
-};
+  return (
+    <BlogPostsCell />
+  )
+}
 
-export default HomePage;
+export default HomePage
 ```
 
 Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en supposant que vous ayez créé un article à l'étape du [scaffolding](./getting-dynamic) un peu plus tôt). Extra!
