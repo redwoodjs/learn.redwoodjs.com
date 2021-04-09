@@ -48,40 +48,27 @@ const BlogLayout = ({ children }) => {
 export default BlogLayout;
 ```
 
-`children` est l'endroit où la magie opère! Toute page passée en argument à un layout s'affiche là. Pour en revenir à `HomePage` et `AboutPage`, en les entourant simplement au sein du `<BlogLayout>`, nos deux pages ne font désormais que ce qu'elles sont supposées faire: afficher leur contenu. Nous pouvons maintenant supprimer les imports de `Link`et `Route` puisqu'ils figurent également dans le Layout.
+`children` est l'endroit où la magie opère! Toute page passée en argument à un layout s'affiche là. Les pages se focalisent donc à nouveau sur ce qui compte vraiment, le contenu ( nous pouvons retirer l'import de `Link` et les `routes` pour `Homepage` car ils sont désormais dans le Layout ). Pour ce faire, il va nous falloir changer notre fichier de routes. Nous allons encapsuler `HomePage` et `AboutPage` dans le `BlogLayout`, en utilisant un `<Set>` :
 
-```javascript {3,6}
-// web/src/pages/HomePage/HomePage.js
+```javascript {3,4,9-12}
+// web/src/Routes.js
 
-import BlogLayout from "src/layouts/BlogLayout";
+import { Router, Route, Set } from '@redwoodjs/router'
+import BlogLayout from 'src/layouts/BlogLayout'
 
-const HomePage = () => {
-    return <BlogLayout>Home</BlogLayout>;
-};
+const Routes = () => {
+  return (
+    <Router>
+      <Set wrap={BlogLayout}>
+        <Route path="/about" page={AboutPage} name="about" />
+        <Route path="/" page={HomePage} name="home" />
+      </Set>
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
 
-export default HomePage;
-```
-
-```javascript {4,8-14}
-// web/src/pages/AboutPage/AboutPage.js
-
-import { Link, routes } from "@redwoodjs/router";
-import BlogLayout from "src/layouts/BlogLayout";
-
-const AboutPage = () => {
-    return (
-        <BlogLayout>
-            <p>
-                Ce site est créé avec pour seule intention de démontrer la puissance créative de Redwood!
-      Oui, c'est très
-                impressionant :D
-            </p>
-            <Link to={routes.home()}>Return home</Link>
-        </BlogLayout>
-    );
-};
-
-export default AboutPage;
+export default Routes
 ```
 
 > **L'alias `src`**
@@ -107,29 +94,29 @@ Ajoutons encore un autre `<Link>` de façon à ce que le titre et le logo pointe
 ```javascript {9-11}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from "@redwoodjs/router";
+import { Link, routes } from '@redwoodjs/router'
 
 const BlogLayout = ({ children }) => {
-    return (
-        <>
-            <header>
-                <h1>
-                    <Link to={routes.home()}>Redwood Blog</Link>
-                </h1>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to={routes.about()}>About</Link>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-            <main>{children}</main>
-        </>
-    );
-};
+  return (
+    <>
+      <header>
+        <h1>
+          <Link to={routes.home()}>Redwood Blog</Link>
+        </h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to={routes.about()}>About</Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <main>{children}</main>
+    </>
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 Enfin nous pouvons éliminer de la page About le lien "Retour à la page d'accueil" devenu superflu (ainsi que les imports `Link` et `routes` associés).
@@ -137,20 +124,14 @@ Enfin nous pouvons éliminer de la page About le lien "Retour à la page d'accue
 ```javascript
 // web/src/pages/AboutPage/AboutPage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
-
 const AboutPage = () => {
-    return (
-        <BlogLayout>
-            <p>
-                Ce site est créé avec pour seule intention de démontrer la puissance créative de Redwood!
-      Oui, c'est très
-                impressionant :D
-            </p>
-        </BlogLayout>
-    );
-};
+  return (
+    <p>
+      This site was created to demonstrate my mastery of Redwood: Look on my
+      works, ye mighty, and despair!
+    </p>
+  )
+}
 
-export default AboutPage;
+export default AboutPage
 ```
-
