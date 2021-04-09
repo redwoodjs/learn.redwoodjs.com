@@ -92,9 +92,9 @@ export const requireAuth = () => {
 
 Par défaut, le système d'authentification va retourner uniquement les données connues par le fournisseur tiers (c'est ce qui se trouve dans l'objet `jwt`). Dans le cas de Netlify Identity, il s'agit d'une adresse email, d'un nom (optionnel), et d'un tableau de roles (optionnel également). En général, vous disposez de votre propre modélisation de ce qu'est un utilisateur dans votre base de données. Vous pouvez modifier `getCurrentUser` de façon à retourner cet utilisateur plutôt que les détails enregistrés par le fournisseur d'authentification. Les commentaires présents en haut du fichier vous montrent un exemple permettant de rechercher un utilisateur à partir de l'adresse email récupérée. Redwood fournit également par défaut la fonction `requireAuth()`, une implémentation simple pour s'assurer qu'un utilisateur est bien authentifié afin d'accéder à un service. Le cas échéant, une erreur sera lancée de telle façon que GraphQL sache quoi faire si un utilisateur non authentifié essaye de faire quelque chose qu'il ne devrait pas pourvoir effectuer.
 
-Les fichiers qui ont été modifés par le générateur sont les suivants:
+Les fichiers qui ont été modifiés par le générateur sont les suivants :
 
-* `web/src/index.js`— Entoure le routeur au sein du composant `<AuthProvider>`, ce qui fait que les routes elle-mêmes sont soumises à authentification. Cela donne également accès au "hook" `useAuth()` qui expose quelques fonctions permettant à l'utilisateur de se connecter, se déconnecter, verifier le statut courant, etc..
+* `web/src/`— Entoure le routeur au sein du composant `<AuthProvider>`, ce qui fait que les routes elles-mêmes sont soumises à authentification. Cela donne également accès au "hook" `useAuth()` qui expose quelques fonctions permettant à l'utilisateur de se connecter, se déconnecter, vérifier le statut courant, etc...
 * `api/src/functions/graphql.js`— Rend disponible `currentUser` pour la partie API de l'application, de telle façon que vous puissez verifier si un utilisateur est autorisé ou non à faire quelque chose. Si vous ajoutez une implémentation à `getCurrentUser()` dans `api/src/lib/auth.js`, alors ce sera ce qui sera retourné par `currentUser`, dans le cas contraire `currentUser` contiendra `null`. S'ils ne sont pas du tout connectés, `currentUser` vaudra `null`.
 
 Essayez de cliquer sur le lien Login:
@@ -141,41 +141,33 @@ Essayez maintenant de créer, de modifier ou de supprimer un article de nos page
 
 Nous allons maintenant restreindre complètement l'accès aux pages d'administration, sauf si vous êtes connecté. La première étape consistera à indiquer les itinéraires qui nécessiteront que vous soyez connecté. Pour ce faire, ajouter la balise `<Private>`:
 
-```javascript {3,12,16}
-// web/src/layouts/BlogLayout/BlogLayout.js
+```javascript {3,15,20}
+// web/src/Routes.js
 
-import { Link, routes } from "@redwoodjs/router";
-import { useAuth } from "@redwoodjs/auth";
+import { Router, Route, Set, Private } from '@redwoodjs/router'
+import BlogPostLayout from 'src/layouts/BlogPostLayout'
 
-const BlogLayout = ({ children }) => {
-    const { logIn } = useAuth();
+const Routes = () => {
+  return (
+    <Router>
+      <Set wrap={BlogPostLayout}>
+        <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
+        <Route path="/contact" page={ContactPage} name="contact" />
+        <Route path="/about" page={AboutPage} name="about" />
+        <Route path="/" page={HomePage} name="home" />
+      </Set>
+      <Private unauthenticated="home">
+        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+        <Route path="/admin/posts" page={PostsPage} name="posts" />
+      </Private>
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
 
-    return (
-        <div>
-            <h1>
-                <Link to={routes.home()}>Redwood Blog</Link>
-            </h1>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to={routes.about()}>About</Link>
-                    </li>
-                    <li>
-                        <Link to={routes.contact()}>Contact</Link>
-                    </li>
-                    <li>
-                        <a href="#" onClick={logIn}>
-                            Log In
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <main>{children}</main>
-        </div>
-    );
-};
-
-export default BlogLayout;
+export default Routes
 ```
 
 Entourez les routes que vous voulez protéger par l'authentification, et ajoutez éventuellement l'attribut `unauthenticated` qui répertorie le nom d'une autre route vers laquelle rediriger si l'utilisateur n'est pas connecté. Dans ce cas, nous reviendrons à la page d'accueil.
