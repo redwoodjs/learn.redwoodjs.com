@@ -42,7 +42,20 @@ Si vous cliquez sur le lien, vous deviez voir s'afficher un peu de texte issu de
 <Route path="/blog-post/{id}" page="{BlogPostPage}" name="blogPost" />
 ```
 
-Notez l'ajout de `{id}` dans notre route. Redwood nomme ceci un _paramètre de route_. Ces paramètres de route signifie la chose suivante: "quelque soit la valeur à cette position, elle sera référencée par le nom utilisé entre les accolades".
+Notez l'ajout de `{id}` dans notre route. Redwood nomme ceci un _paramètre de route_. Les paramètres de route sont identifiés par leur notation entre accolades, qui donnent la position du paramètre et leur contenu, qui correspond au nom des paramètres. Et tant que nous sommes dans le fichier routes, déplaçons la route à l'intérieur du `Set` qui contient le `BlogPostLayout`.
+
+```javascript {5}
+// web/src/Routes.js
+
+<Router>
+  <Set wrap={BlogLayout}>
+    <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
+    <Route path="/about" page={AboutPage} name="about" />
+    <Route path="/" page={HomePage} name="home" />
+  </Set>
+  <Route notfound page={NotFoundPage} />
+</Router>
+```
 
 Cool, cool, cool. Maintenant, nous devons donc construire un lien qui possède cet identifiant:
 
@@ -60,23 +73,20 @@ OK, donc l'identifiant se trouve bien dans l'URL. De quoi avons-nous besoin pour
 
     yarn rw g cell BlogPost
 
-Nous allons ensuite utiliser cette Cell dans notre page `BlogPostPage` (et pendant que nous y sommes, nous insèrerons notre page dans notre Layout `BlogLayout`):
+Puis nous utiliserons cette cellule dans `BlogPostPage` :
 
 ```javascript
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
-import BlogLayout from "src/layouts/BlogLayout";
-import BlogPostCell from "src/components/BlogPostCell";
+import BlogPostCell from 'src/components/BlogPostCell'
 
 const BlogPostPage = () => {
-    return (
-        <BlogLayout>
-            <BlogPostCell />
-        </BlogLayout>
-    );
-};
+  return (
+    <BlogPostCell />
+  )
+}
 
-export default BlogPostPage;
+export default BlogPostPage
 ```
 
 Maintenant, à l'intérieur de notre Cell, nous avons besoin d'accéder à ce paramètre de route `{id}` qui contient l'identifiant de notre article en base de données. Pour ce faire, mettons à jour la requête de façon à ce qu'elle accepte une variable en entrée. Modifions également le nom de la requête `blogPost` en `post`.
@@ -85,39 +95,37 @@ Maintenant, à l'intérieur de notre Cell, nous avons besoin d'accéder à ce pa
 // web/src/components/BlogPostCell/BlogPostCell.js
 
 export const QUERY = gql`
-    query BlogPostQuery($id: Int!) {
-        post(id: $id) {
-            id
-            title
-            body
-            createdAt
-        }
+  query BlogPostQuery($id: Int!) {
+    post(id: $id) {
+      id
+      title
+      body
+      createdAt
     }
-`;
+  }
+`
 
-export const Loading = () => <div>Loading...</div>;
+export const Loading = () => <div>Loading...</div>
 
-export const Empty = () => <div>Empty</div>;
+export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>;
+export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ post }) => {
-    return JSON.stringify(post);
-};
+  return JSON.stringify(post)
+}
 ```
 
 Okay, on approche du but! Ceci étant, d'où vient donc ce `$id`? Redwood a plus d'un tour dans son sac. Chaque fois que vous ajoutez un paramètre de route, ce paramètre est automatiquement accessible dans la page qui correspond. Ce qui signifie que vous pouvez modifier la page `BlogPostPage` de la façon suivante:
 
-```javascript {3,6}
+```javascript {3,5}
 // web/src/pages/BlogPostPage/BlogPostPage.js
 
 const BlogPostPage = ({ id }) => {
-    return (
-        <BlogLayout>
-            <BlogPostCell id={id} />
-        </BlogLayout>
-    );
-};
+  return (
+    <BlogPostCell id={id} />
+  )
+}
 ```
 
 `id` existe déjà sans effort supplémentaire puisque nous avons nommé notre paramètre de route `{id}`. Merci Redwood! Mais comment se fait-il que cet `id` finisse par devenir un paramètre GraphQL `$id`? Si vous avez appris quoi que ce soit sur Redwood, vous devriez savoir qu'il va prendre soin de cela pour vous! Par défaut, chaque propriété que vous donnez à une Cell devient automatiquement un variable disponible pour une requête GraphQL. Et oui! C'est exact.
@@ -143,7 +151,7 @@ Et si vous aviez la possibilité de demander cette conversion directement dans l
 ```html
 // web/src/Routes.js
 
-<Route path="/blog-post/{id:Int}" page="{BlogPostPage}" name="blogPost" />
+<Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
 ```
 
 Voilà! Non seulement vous allez convertir sans effort le paramètre `id` en un entier avant de la passer à votre Page, mais en bonus vous faîtes en sorte que la route n'applique que si `id` représente effectivement un entier, c'est à dire une suite de chiffres. Dans le cas contraire, le routeur essaiera d'autres routes. S'il ne s'en trouve aucune à s'appliquer, le routeur affichera la page `NotFoundPage`.
