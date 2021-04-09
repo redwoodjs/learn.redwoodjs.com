@@ -8,9 +8,9 @@ Examinons maintenant les fichiers et répertoires qui ont été créés pour nou
 
 ```terminal
 ├── api
-│   ├── prisma
+│   ├── db
 │   │   ├── schema.prisma
-│   │   └── seeds.js
+│   │   └── seed.js
 │   └── src
 │       ├── functions
 │       │   └── graphql.js
@@ -28,7 +28,7 @@ Examinons maintenant les fichiers et répertoires qui ont été créés pour nou
         ├── components
         ├── index.css
         ├── index.html
-        ├── index.js
+        ├── App.js
         ├── layouts
         └── pages
             ├── FatalErrorPage
@@ -71,7 +71,7 @@ Et nous en avons terminé avec la partie backend.
     - `FatalErrorPage.js` qui est utilisée lorsqu’une erreur survient, qu’elle n’a pas été gérée, et qu’il n’est pas possible de poursuivre plus avant sans faire exploser l’application (en général il s’agit d’une page blanche).
   - `index.css` est l'endroit par défaut où placer vos règles CSS. Il existe cependant d’autres possibilités avancées.
   - `index.html` est le point d’entrée React standard de votre application.
-  - `index.js` contient le code de démarrage pour une application Redwood.
+  - `App.js` le code d'amorçage pour mettre en marche notre application Redwood.
   - `Routes.js` contient les définitions des routes de l’application afin de faire correspondre chaque URL à une _Page_.
 - `public` contient des ressources non utilisées par vos composants React (En bout de chaîne, ces ressources seront copiées sans être modifiées dans le répertoire racine de l’application finale):
   - `favicon.png` est l’icône utilisée par les onglets des navigateurs lorsqu’une page est ouverte (par défaut il s’agit du logo RedwoodJS).
