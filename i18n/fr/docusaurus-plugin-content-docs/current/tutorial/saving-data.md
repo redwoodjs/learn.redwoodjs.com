@@ -390,6 +390,7 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
     }
   }
 ```
+```
 
 Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
 
