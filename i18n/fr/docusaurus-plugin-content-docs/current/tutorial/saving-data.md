@@ -379,7 +379,6 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 > Si vous avez besoin de manipuler l'objet contenant les erreurs, vous pouvez procéder ainsi:
 > 
 > ```javascript {3-8}
-```javascript {3-8}
   // web/src/pages/ContactPage/ContactPage.js
   const onSubmit = async (data) =&#062; {
     try {
@@ -395,11 +394,15 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
 
 ```html
-Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
+// web/src/pages/ContactPage/ContactPage.js 
 
-```html
-// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, }}
-errorClassName="error" />
+<TextField
+  name="email"
+  validation={{
+    required: true,
+  }}
+  errorClassName="error"
+/>
 ```
 
 Maintenant, essayons de remplir le formulaire avec un adresse invalide:
