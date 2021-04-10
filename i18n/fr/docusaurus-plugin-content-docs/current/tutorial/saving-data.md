@@ -287,7 +287,7 @@ Ensuite, affichons une notification pour faire savoir à l'utilisateur que son e
 
 `useMutation` accepte un second paramètre optionnel contenant des options. Une de ces options est une fonction callback appelée `onCompleted` qui sera invoquée lorsque la mutation sera achevée avec succès. Nous allons utiliser ce callback pour appeler une fonction `toast()` qui ajoutera un message à afficher dans un composant **&lt;Toaster&gt;**.
 
-Ajoutez le callback `onCompleted` </code> à `useMutation` et incluez le composant **&lt;Toaster&gt;** dans notre `return`, juste avant le **&lt;Form&gt;**. Nous avons également besoin de tout envelopper dans un fragment (&lt;&gt;&lt;/&gt;) parce que nous ne sommes autorisés à renvoyer qu'un seul élément :
+Ajoutez le callback `onCompleted` </code> à `useMutation` et incluez le composant **&lt;Toaster&gt;** dans notre `return`, juste avant le **&lt;Form&gt;**. Nous avons également besoin de tout envelopper dans un fragment (&lt;&gt;&lt;/&gt;) parce que nous ne sommes autorisés à renvoyer qu'un seul élément:
 
 ```javascript {5,10-14,19,20,23}
 // web/src/pages/ContactPage/ContactPage.js
