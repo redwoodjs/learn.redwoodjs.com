@@ -177,7 +177,7 @@ Nous référençons ainsi la mutation `createContact` définie auparavant dans l
 
 Après quoi, nous appelons le 'hook' `useMutation` fourni par Appolo, ce qui nous permet d'exécuter la mutation lorsque le moment est venu (n'oubliez pas les imports comme à chaque fois):
 
-```javascript {11,15}
+```javascript {11,14}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -189,7 +189,6 @@ import {
   Label,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import BlogLayout from 'src/layouts/BlogLayout'
 
 const ContactPage = () => {
   const [create] = useMutation(CREATE_CONTACT)
@@ -284,35 +283,40 @@ Il peut être difficile de voir une différence en phase de développement car l
 
 Vous verrez alors que le bouton "Save" devient inactif pendant une seconde ou deux en attendant la réponse.
 
-Maintenant, utilisons le système dit de `Flash` proposé par Redwood afin d'informer l'utilisateur que son envoi à bien été traité. `useMutation` accepte un second paramètre optionnel contenant des options. Une de ces options est une fonction callback appelée `onCompleted` qui sera invoquée lorsque la mutation sera achevée avec succès. Nous allons donc utiliser cette fonction pour ajouter un message qui sera affiché par un composant `Flash`. Ajoutez donc le composant `Flash` a votre page et utilisez sa propriété `timeout` pour définir le temps d'affichage. (Vous pouvez lire la documentation à propos du système de Flash proposé par Redwood [ici](https://redwoodjs.com/docs/flash-messaging-bus))
+Ensuite, affichons une notification pour faire savoir à l'utilisateur que son envoi a réussi. Redwood inclut [react-hot-toast](https://react-hot-toast.com/) pour afficher rapidement une notification sur une page.
 
-```javascript {4,10,13-17,24}
+`useMutation` accepte un second paramètre optionnel contenant des options. Une de ces options est une fonction callback appelée `onCompleted` qui sera invoquée lorsque la mutation sera achevée avec succès. Nous allons utiliser ce callback pour appeler une fonction `toast()` qui ajoutera un message à afficher dans un composant **&lt;Toaster&gt;**.
+
+Ajoutez le callback `onCompleted` à `useMutation` et incluez le composant **&lt;Toaster&gt;** dans notre `return`, juste avant le **&lt;Form&gt;**. Nous avons également besoin de tout envelopper dans un fragment (`<></>`) parce que nous ne sommes autorisés à renvoyer qu'un seul élément :
+
+```javascript {5,10-14,19,20,23}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
-import BlogLayout from 'src/layouts/BlogLayout'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
 // ...
 
 const ContactPage = () => {
-  const { addMessage } = useFlash()
-
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
-      addMessage('Thank you for your submission!', {
-        style: { backgroundColor: 'green', color: 'white', padding: '1rem' }
-      })
+      toast.success('Thank you for your submission!')
     },
   })
 
   // ...
 
   return (
-    <BlogLayout>
-      <Flash timeout={2000} />
+    <>
+      <Toaster />
+      <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
       // ...
+    </>
+  )
 ```
+
+Vous pouvez lire la documentation complète pour Toast [ici](https://redwoodjs.com/docs/toast-notifications).
 
 ### Afficher les erreurs serveur
 
@@ -375,7 +379,6 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 > Si vous avez besoin de manipuler l'objet contenant les erreurs, vous pouvez procéder ainsi:
 > 
 > ```javascript {3-8}
-```javascript {3-8}
   // web/src/pages/ContactPage/ContactPage.js
   const onSubmit = async (data) =&#062; {
     try {
@@ -386,18 +389,23 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
     }
   }
 ```
+```
 
-Maintenant, essayons de remplir le formulaire avec un adresse invalide:
-
-```html
 Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js <TextField name="email" validation={{ required: true, }}
-errorClassName="error" />
+// web/src/pages/ContactPage/ContactPage.js 
+
+<TextField
+  name="email"
+  validation={{
+    required: true,
+  }}
+  errorClassName="error"
+/>
 ```
 
-Désormais, l'envoi du formulaire avec une adresse invalide donne ceci:
+Maintenant, essayons de remplir le formulaire avec un adresse invalide:
 
 <img src="https://user-images.githubusercontent.com/16427929/98918425-e394af80-24cd-11eb-9056-58c295cf0d5c.PNG" />
 
@@ -407,7 +415,7 @@ Vous rapellez-vous lorsque nous avons dit que `<Form>` avait plus d'un tour dans
 
 Supprimez l'affichage de l'erreur tel que nous venons de l'ajouter (`{ error && ...}`) , et remplacez-le avec `<FormError>` tout en passant en argument la constante `error` que nous récupérons depuis `useMutation`. Ajoutez également quelques ééléments de style à `wrapperStyle`, sans oublier les `import` associés.
 
-```javascript {10,18-22}
+```javascript {10,20-24}
 // web/src/pages/ContactPage/ContactPage.js
 
 import {
@@ -419,12 +427,14 @@ import {
   Label,
   FormError,
 } from '@redwoodjs/forms'
-import { Flash, useFlash, useMutation } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
+
 // ...
 
 return (
-  <BlogLayout>
-    <Flash timeout={1000}>
+  <>
+    <Toaster />
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
@@ -435,7 +445,7 @@ return (
 )
 ```
 
-Désormais, l'envoi du formulaire avec une adresse invalide donne ceci :
+Désormais, l'envoi du formulaire avec une adresse invalide donne ceci:
 
 <img src="https://user-images.githubusercontent.com/300/80259553-c46e2780-863a-11ea-9441-54a9112b9ce5.png" />
 
@@ -456,7 +466,7 @@ Puisque nous ne redirigeons pas l'utilisateur une fois le formulaire envoyé, no
 
 `react-hook-form` possède un 'hook' appelé `useForm()` qui est en principe invoquéé pour nous à l'intérieur de `<Form>`. De façon à réinitialiser le formulaire nous devons invoquer ce 'hook' manuellement. Mais la fonctionnalité que `useForm()` fournit doit tout de même être utilisée dans `Form`. Voici comment faire:
 
-Puis invoquons ce 'hook' dans notre composant:
+Commençons par importer `useForm`:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
@@ -464,7 +474,7 @@ Puis invoquons ce 'hook' dans notre composant:
 import { useForm } from "react-hook-form";
 ```
 
-Enfin, donnons pour instruction explicite à `<Form>` d'utiliser `formMethods`, au lieu de le laisser le faire lui-même:
+Puis invoquons ce 'hook' dans notre composant:
 
 ```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
@@ -474,14 +484,14 @@ const ContactPage = () => {
   //...
 ```
 
-Maintenant nous pouvons invoquer manuellement `reset()` depuis `formMethods()` juste après que le message de confirmation soit affiché:
+Enfin, donnons pour instruction explicite à `<Form>` d'utiliser `formMethods`, au lieu de le laisser le faire lui-même:
 
 ```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
 
 return (
-  <BlogLayout>
-    <Flash timeout={1000}>
+  <>
+    <Toaster />
     <Form
       onSubmit={onSubmit}
       validation={{ mode: 'onBlur' }}
@@ -491,93 +501,114 @@ return (
     // ...
 ```
 
-Maintenant nous pouvons invoquer manuellement `reset()` depuis `formMethods()` juste après que le message de confirmation soit affiché:
+Maintenant nous pouvons appeler `reset()` sur `formMethods` après avoir appelé `toast()` :
 
-```javascript
+```javascript{6}
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-    onCompleted: () => {
-        // addMessage...
+  onCompleted: () => {
+    toast.success('Thank you for your submission!')
     formMethods.reset();
     },
 });
 ```
 
-<img alt="Capture écran du formulaire de Contact avec message de confirmation Flash" src="https://user-images.githubusercontent.com/44448047/93649232-1be9a700-f9d1-11ea-821c-7a69c626f50c.png" />
+<img alt="Capture d'écran du formulaire de Contact avec message de confirmation Toast" src="https://user-images.githubusercontent.com/300/112360362-7a008b00-8c8f-11eb-8649-76d00be920b7.png" />
 
 > Vous pouvez maintenant réactiver la validation email côté client sur le `<TextField>`, tout en conservant la validation côté serveur.
 
 Voici le contenu final de la page `ContactPage.js`:
 
 ```javascript
-import { Form, TextField, TextAreaField, Submit, FieldError, Label, FormError } from "@redwoodjs/forms";
-import { Flash, useFlash, useMutation } from "@redwoodjs/web";
-import { useForm } from "react-hook-form";
-import BlogLayout from "src/layouts/BlogLayout";
+import {
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+  FieldError,
+  Label,
+  FormError,
+} from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
+import { useForm } from 'react-hook-form'
 
 const CREATE_CONTACT = gql`
-    mutation CreateContactMutation($input: CreateContactInput!) {
-        createContact(input: $input) {
-            id
-        }
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    createContact(input: $input) {
+      id
     }
-`;
+  }
+`
 
 const ContactPage = () => {
-    const formMethods = useForm();
-    const { addMessage } = useFlash();
+  const formMethods = useForm()
 
-    const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-        onCompleted: () => {
-            addMessage("Thank you for your submission!", {
-                style: { backgroundColor: "green", color: "white", padding: "1rem" },
-            });
-            formMethods.reset();
-        },
-    });
+  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+    onCompleted: () => {
+      toast.success('Thank you for your submission!')
+      formMethods.reset()
+    },
+  })
 
-    const onSubmit = (data) => {
-        create({ variables: { input: data } });
-        console.log(data);
-    };
+  const onSubmit = (data) => {
+    create({ variables: { input: data } })
+    console.log(data)
+  }
 
-    return (
-        <BlogLayout>
-            <Flash timeout={1000} />
-            <Form onSubmit={onSubmit} validation={{ mode: "onBlur" }} error={error} formMethods={formMethods}>
-                <FormError error={error} wrapperStyle={{ color: "red", backgroundColor: "lavenderblush" }} />
-                <Label name="name" errorClassName="error">
-                    Name
-                </Label>
-                <TextField name="name" validation={{ required: true }} errorClassName="error" />
-                <FieldError name="name" className="error" />
+  return (
+    <>
+      <Toaster />
+      <Form
+        onSubmit={onSubmit}
+        validation={{ mode: 'onBlur' }}
+        error={error}
+        formMethods={formMethods}
+      >
+        <FormError
+          error={error}
+          wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
+        />
+        <Label name="name" errorClassName="error">
+          Name
+        </Label>
+        <TextField
+          name="name"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="name" className="error" />
 
-                <Label name="name" errorClassName="error">
-                    Email
-                </Label>
-                <TextField
-                    name="email"
-                    validation={{
-                        required: true,
-                    }}
-                    errorClassName="error"
-                />
-                <FieldError name="email" className="error" />
+        <Label name="email" errorClassName="error">
+          Email
+        </Label>
+        <TextField
+          name="email"
+          validation={{
+            required: true,
+          }}
+          errorClassName="error"
+        />
+        <FieldError name="email" className="error" />
 
-                <Label name="name" errorClassName="error">
-                    Message
-                </Label>
-                <TextAreaField name="message" validation={{ required: true }} errorClassName="error" />
-                <FieldError name="message" className="error" />
+        <Label name="message" errorClassName="error">
+          Message
+        </Label>
+        <TextAreaField
+          name="message"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="message" className="error" />
 
-                <Submit disabled={loading}>Save</Submit>
-            </Form>
-        </BlogLayout>
-    );
-};
+        <Submit disabled={loading}>Save</Submit>
+      </Form>
+    </>
+  )
+}
 
-export default ContactPage;
+export default ContactPage
 ```
 
 C'est terminé! [React Hook Form](https://react-hook-form.com/) propose pas mal de fonctionalités que `<Form>` n'expose pas. Lorsque vous souhaitez les utiliser, appelez juste le 'hook' `useForm()` vous-même, en vous assurant de bien passer en argument l'objet retourné (`formMethods`) comme propriété de `<Form>` de façon à ce que la validation et les autres fonctionalités puissent continuer à fonctionner.
@@ -589,4 +620,3 @@ const formMethods = useForm({ mode: "onBlur" });
 ```
 
 La partie publique du site a bon aspect. Que faire maintenant de la partie administration qui nous permet de créer et éditer les articles? Nous devrions la déplacer dans une partie réservée et la placer derrière un login, de façon à ce des utilisateurs mal intentionnés ne puissent pas créer en chaîne, par exemple, des publicités pour l'achat de médicaments en ligne...
-
