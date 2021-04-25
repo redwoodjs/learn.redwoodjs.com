@@ -30,7 +30,7 @@ We're going to demo a Netlify Identity integration in this tutorial since we're 
 > * **Authentication** deals with determining whether someone is who they say they are, generally by "logging in" with an email and password, or a third party OAuth provider like Google.
 > * **Authorization** is whether a user (who has usually already been authenticated) is allowed to do something they want to do. This generally involves some combination of roles and permission checking before allowing access to a URL or feature of your site.
 >
-> This section of the tutorial focuses on **Authentication** only. See [part 2 of the tutorial](https://redwoodjs.com/tutorial2) to learn about Authorization in Redwood!
+> This section of the tutorial focuses on **Authentication** only. See [part 2 of the tutorial](https://learn.redwoodjs.com/docs/tutorial2/role-based-authorization-control-rbac) to learn about Authorization in Redwood!
 
 ### Netlify Setup
 
