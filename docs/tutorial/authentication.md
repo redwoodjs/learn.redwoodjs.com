@@ -162,12 +162,12 @@ Now we'll restrict access to the admin pages completely unless you're logged in.
 // web/src/Routes.js
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'
-import BlogPostLayout from 'src/layouts/BlogPostLayout'
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Set wrap={BlogPostLayout}>
+      <Set wrap={BlogLayout}>
         <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
         <Route path="/contact" page={ContactPage} name="contact" />
         <Route path="/about" page={AboutPage} name="about" />
@@ -344,4 +344,3 @@ export default BlogLayout
 > Check out the settings (or [docs](https://docs.netlify.com/visitor-access/identity/)) for Identity over at Netlify for more options, including allowing users to create accounts rather than having to be invited, add third party login buttons for Bitbucket, GitHub, GitLab and Google, receive webhooks when someone logs in, and more!
 
 Believe it or not, that's it! Authentication with Redwood is a breeze and we're just getting started. Now let's get this site working in production.
-

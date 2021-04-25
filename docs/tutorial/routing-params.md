@@ -42,7 +42,7 @@ If you click the link on the title of the blog post you should see the boilerpla
 <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
 ```
 
-Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogPostLayout`.
+Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogLayout`.
 
 ```javascript {5}
 // web/src/Routes.js
@@ -261,4 +261,3 @@ Let's summarize:
 3. We created a cell to fetch and display the post.
 4. Redwood made the world a better place by making that `id` available to us at several key junctions in our code and even turning it into a number automatically.
 5. We turned the actual post display into a standard React component and used it in both the homepage and new detail page.
-
