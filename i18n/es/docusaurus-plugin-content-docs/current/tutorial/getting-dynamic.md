@@ -34,7 +34,7 @@ Primero definamos la estructura de datos para un post. Abra `api/db/schema.prism
 ```plaintext {13-18}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -168,4 +168,3 @@ Puesto que de ahora en más querremos una forma de crear y editar posts, manteng
 Ya tenemos `HomePage` así que no necesitaremos crear eso. Para mostrar una lista de posts al visitante tendremos que añadir lógica. Necesitamos obtener el contenido de la base de datos y como no queremos que el usuario sólo vea una pantalla en blanco mientras lo hacemos (según condiciones de red, ubicación del servidor, etc), mostraremos un mensaje de cargando o una animación. Y si hay un error al traer los datos también deberemos manejarlo. ¿Y qué pasa cuando hacemos código libre el fuente de este blog y alguien lo pone en producción con la base de datos vacía? Sería bueno que hubiera algún tipo de mensaje en blanco.
 
 Oh muchacho, nuestra primera página con datos y ya tenemos que preocuparnos por cargar estados, errores, páginas en blanco...o ¿no?
-
