@@ -1,7 +1,7 @@
 ---
 id: adding-comments-to-the-schema
-title: 'Adding Comments to the Schema'
-sidebar_label: 'Adding Comments to the Schema'
+title: "Adding Comments to the Schema"
+sidebar_label: "Adding Comments to the Schema"
 ---
 
 Let's take a moment to appreciate how amazing this is—we built, designed and tested a completely new component for our app, which displays data from an API call (which would pull that data from a database) without actually having to build any of that backend functionality! Redwood let us provide fake data to Storybook and Jest so we could get our component working.
@@ -21,7 +21,7 @@ Let's do that now:
 ```javascript {17,29-36}
 // api/db/schema.prisma
 
-datasource db {
+datasource DS {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -59,8 +59,8 @@ model Comment {
 
 Most of these lines look very similar to what we've already seen, but this is the first instance of a [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) between two models. `Comment` gets two entries:
 
-- `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`
-- `postId` is just a regular `Int` column which contains the `id` of the `Post` that this comment is referencing
+* `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`
+* `postId` is just a regular `Int` column which contains the `id` of the `Post` that this comment is referencing
 
 This gives us a classic database model:
 
@@ -79,13 +79,13 @@ This gives us a classic database model:
 Note that there is no real database column named `post` in `Comment`—this is special syntax for Prisma to know how to connect the models together and for you to reference that connection. When you query for a `Comment` using Prisma you can get access to the attached `Post` using that name:
 
 ```javascript
-db.comment.findUnique({ where: { id: 1 } }).post();
+db.comment.findUnique({ where: { id: 1 }}).post()
 ```
 
 Prisma also added a convenience `comments` field to `Post` which gives us the same capability in reverse:
 
 ```javascript
-db.post.findUnique({ where: { id: 1 } }).comments();
+db.post.findUnique({ where: { id: 1 }}).comments()
 ```
 
 ### Running the Migration
@@ -118,8 +118,8 @@ That command will create both the SDL and the service. And if you take a look ba
 // web/src/components/CommentsCell/CommentsCell.js
 
 export const Empty = () => {
-  return <div className="text-center text-gray-500">No comments yet</div>;
-};
+  return <div className="text-center text-gray-500">No comments yet</div>
+}
 ```
 
 That's better. Let's update the test that covers the Empty component render as well:
@@ -128,9 +128,9 @@ That's better. Let's update the test that covers the Empty component render as w
 // web/src/components/CommentsCell/CommentsCell.test.js
 
 test('Empty renders a "no comments" message', () => {
-  render(<Empty />);
-  expect(screen.getByText('No comments yet')).toBeInTheDocument();
-});
+  render(<Empty />)
+  expect(screen.getByText('No comments yet')).toBeInTheDocument()
+})
 ```
 
 Okay, let's focus on the service for bit. We'll need to add a function to let users create a new comment and we'll add a test that covers the new functionality.
@@ -143,11 +143,11 @@ By virtue of using the generator we've already got the function we need to selec
 // api/src/services/comments/comments.js
 
 export const comments = () => {
-  return db.comment.findMany();
-};
+  return db.comment.findMany()
+}
 ```
 
-> Have you noticed that something may be amiss? This function returns _all_ comments, and all comments only. Could this come back to bite us?
+> Have you noticed that something may be amiss? This function returns *all* comments, and all comments only. Could this come back to bite us?
 >
 > Hmmm...
 
@@ -159,8 +159,8 @@ We need to be able to create a comment as well. We'll use the same convention th
 export const createComment = ({ input }) => {
   return db.comment.create({
     data: input,
-  });
-};
+  })
+}
 ```
 
 We'll also need to expose this function via GraphQL so we'll add a Mutation to the SDL:
@@ -212,8 +212,8 @@ What about deleting a comment? We won't let a user delete their own comment, but
 export const deleteComment = ({ id }) => {
   return db.comment.delete({
     where: { id },
-  });
-};
+  })
+}
 ```
 
 ```graphql {5}
@@ -236,15 +236,15 @@ If you open up `api/src/services/comments/comments.test.js` you'll see there's o
 ```javascript
 // api/src/services/comments/comments.test.js
 
-import { comments } from './comments';
+import { comments } from './comments'
 
 describe('comments', () => {
   scenario('returns a list of comments', async (scenario) => {
-    const list = await comments();
+    const list = await comments()
 
-    expect(list.length).toEqual(Object.keys(scenario.comment).length);
-  });
-});
+    expect(list.length).toEqual(Object.keys(scenario.comment).length)
+  })
+})
 ```
 
 What is this `scenario()` function? That's made available by Redwood that mostly acts like Jest's built-in `it()` and `test()` functions, but with one important difference: it pre-seeds a test database with data that is then passed to you in the `scenario` argument. You can count on this data existing in the database and being reset between tests in case you make changes to it.
@@ -253,7 +253,7 @@ What is this `scenario()` function? That's made available by Redwood that mostly
 >
 > Yes, all things being equal it would be great to not have these tests depend on a piece of software outside of our control.
 >
-> However, the difference here is that in a service almost all of the logic you write will depend on moving data in and out of a database and it's much simpler to just let that code run and _really_ access the database, rather than trying to mock and intercept each and every possible call that Prisma could make.
+> However, the difference here is that in a service almost all of the logic you write will depend on moving data in and out of a database and it's much simpler to just let that code run and *really* access the database, rather than trying to mock and intercept each and every possible call that Prisma could make.
 >
 > Not to mention that Prisma itself is currently under heavy development and implementations could change at any time. Trying to keep pace with those changes and constantly keep mocks in sync would be a nightmare!
 >
@@ -275,7 +275,7 @@ export const standard = defineScenario({
       post: { create: { title: 'String', body: 'String' } },
     },
   },
-});
+})
 ```
 
 This calls a `defineScenario()` function which will check that your data structure matches what's defined in Prisma. This is purely a type-checking feature, it doesn't change the object at all—it just returns the same object you give it.
@@ -286,9 +286,9 @@ This calls a `defineScenario()` function which will check that your data structu
 
 The nested structure of a scenario is defined like this:
 
-- **comment**: the name of the model this data is for
-  - **one, two**: a friendly name given to the scenario data which you can reference in your tests
-    - **name, message, post**: the actual data that will be put in the database. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
+* **comment**: the name of the model this data is for
+  * **one, two**: a friendly name given to the scenario data which you can reference in your tests
+    * **name, message, post**: the actual data that will be put in the database. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
 
 When you receive the `scenario` argument in your test you can follow the same object nesting in order to reference the fields, like `scenario.comment.one.name`.
 
@@ -309,9 +309,9 @@ export const standard = defineScenario({
       post: {
         create: {
           title: 'Redwood Leaves',
-          body: 'The quick brown fox jumped over the lazy dog.',
-        },
-      },
+          body: 'The quick brown fox jumped over the lazy dog.'
+        }
+      }
     },
     john: {
       name: 'John Doe',
@@ -319,12 +319,12 @@ export const standard = defineScenario({
       post: {
         create: {
           title: 'Root Systems',
-          body: 'The five boxing wizards jump quickly.',
-        },
-      },
-    },
-  },
-});
+          body: 'The five boxing wizards jump quickly.'
+        }
+      }
+    }
+  }
+})
 ```
 
 The test created by the service generator simply checks to make sure the same number of records are returned so changing the content of the data here won't affect the test.
@@ -338,16 +338,16 @@ Let's add our first service test by making sure that `createComment()` actually 
 
 export const standard = defineScenario({
   // ...
-});
+})
 
 export const postOnly = defineScenario({
   post: {
     bark: {
       title: 'Bark',
-      body: "A tree's bark is worse than its bite",
-    },
-  },
-});
+      body: "A tree's bark is worse than its bite"
+    }
+  }
+})
 ```
 
 Now we can pass the `postOnly` scenario name as the first argument to a new `scenario()` test:
@@ -355,48 +355,49 @@ Now we can pass the `postOnly` scenario name as the first argument to a new `sce
 ```javascript {3,12-25}
 // api/src/services/comments/comments.test.js
 
-import { comments, createComment } from './comments';
+import { comments, createComment } from './comments'
 
 describe('comments', () => {
   scenario('returns a list of comments', async (scenario) => {
-    const list = await comments();
+    const list = await comments()
 
-    expect(list.length).toEqual(Object.keys(scenario.comment).length);
-  });
+    expect(list.length).toEqual(Object.keys(scenario.comment).length)
+  })
 
   scenario('postOnly', 'creates a new comment', async (scenario) => {
     const comment = await createComment({
       input: {
         name: 'Billy Bob',
         body: 'What is your favorite tree bark?',
-        postId: scenario.post.bark.id,
-      },
-    });
+        postId: scenario.post.bark.id
+      }
+    })
 
-    expect(comment.name).toEqual('Billy Bob');
-    expect(comment.body).toEqual('What is your favorite tree bark?');
-    expect(comment.postId).toEqual(scenario.post.bark.id);
-    expect(comment.createdAt).not.toEqual(null);
-  });
-});
+    expect(comment.name).toEqual('Billy Bob')
+    expect(comment.body).toEqual('What is your favorite tree bark?')
+    expect(comment.postId).toEqual(scenario.post.bark.id)
+    expect(comment.createdAt).not.toEqual(null)
+  })
+})
 ```
 
 We pass an optional first argument to `scenario()` which is the named scenario to use, instead of the default of "standard."
 
 We were able to use the `id` of the post that we created in our scenario because the scenarios contain the actual database data after being inserted, not just the few fields we defined in the scenario itself. In addition to `id` we could access `createdAt` which is defaulted to `now()` in the database.
 
-We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test that the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare the value to `new Date` which is right _now_, down to the millisecond. While possible, it's beyond the scope of our easy, breezy tutorial since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
+We'll test that all the fields we give to the `createComment()` function are actually created in the database, and for good measure just make sure that `createdAt` is set to a non-null value. We could test that the actual timestamp is correct, but that involves freezing the Javascript Date object so that no matter how long the test takes, you can still compare the value to `new Date` which is right *now*, down to the millisecond. While possible, it's beyond the scope of our easy, breezy tutorial since it gets [very gnarly](https://codewithhugo.com/mocking-the-current-date-in-jest-tests/)!
 
 > **What's up with the names for scenario data? posts.bark? Really?**
 >
 > This makes reasoning about your tests much nicer! Which of these would you rather work with:
 >
-> "`claire` paid for an `ebook` using her `visa` credit card."
+>   "`claire` paid for an `ebook` using her `visa` credit card."
 >
 > or:
 >
-> "`user[3]` paid for `product[0]` using their `cards[2]` credit card?
+>   "`user[3]` paid for `product[0]` using their `cards[2]` credit card?
 >
 > If you said the second one, then you probably hate kittens and sleep on broken glass.
 
 Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
+
