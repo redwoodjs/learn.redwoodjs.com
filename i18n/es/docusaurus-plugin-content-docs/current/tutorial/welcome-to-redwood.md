@@ -10,7 +10,7 @@ En este tutorial vamos a construir un sistema de blogs. En sí un blog no es un 
 
 ¿Quiere ver un vídeo de este tutorial en lugar de leerlo? Comience aquí:
 
-> **Aviso de contenido desactualizado**
+> **Aviso de contenido obsoleto**
 > 
 > Estos videos fueron grabados con una versión anterior de Redwood y muchos comandos están ahora desactualizados. Si realmente quiere construir el blog necesitará acompañar el vídeo junto con el texto que está actualizado con las últimas versiones.
 
