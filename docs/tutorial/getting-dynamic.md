@@ -1,7 +1,7 @@
 ---
 id: getting-dynamic
-title: "Getting Dynamic"
-sidebar_label: "Getting Dynamic"
+title: 'Getting Dynamic'
+sidebar_label: 'Getting Dynamic'
 ---
 
 Part 2 of the video tutorial picks up here:
@@ -34,7 +34,7 @@ First let's define the data structure for a post in the database. Open up `api/d
 ```plaintext {13-18}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -81,7 +81,7 @@ That was simple. Now we'll want to snapshot this as a migration:
 
 You'll be prompted to give this migration a name. Something that describes what it does is ideal, so how about "create posts" (without the quotes, of course). This is for your own benefit—Redwood doesn't care about the migration's name, it's just a reference when looking through old migrations and trying to find when you created or modified something specific.
 
-After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a single file named `migration.sql` that contains the SQL necessary to bring the database structure up-to-date with whatever `schema.prisma` looked like at the time the migration was created. So you have a single `schema.prisma` file that describes what the database structure should look like right *now* and the migrations trace the history of the changes that took place to get to the current state. It's kind of like version control for your database structure, which can be pretty handy.
+After the command completes you'll see a new subdirectory created under `api/db/migrations` that has a timestamp and the name you gave the migration. It will contain a single file named `migration.sql` that contains the SQL necessary to bring the database structure up-to-date with whatever `schema.prisma` looked like at the time the migration was created. So you have a single `schema.prisma` file that describes what the database structure should look like right _now_ and the migrations trace the history of the changes that took place to get to the current state. It's kind of like version control for your database structure, which can be pretty handy.
 
 In addition to creating the migration file, the above command will also execute the SQL against the database, which "applies" the migration. The final result is a new database table called `Post` with the fields we defined above.
 
@@ -168,4 +168,3 @@ Since we'll probably want a way to create and edit posts going forward let's kee
 We already have `HomePage` so we won't need to create that. We want to display a list of posts to the user so we'll need to add that logic. We need to get the content from the database and we don't want the user to just see a blank screen in the meantime (depending on network conditions, server location, etc), so we'll want to show some kind of loading message or animation. And if there's an error retrieving the data we should handle that as well. And what about when we open source this blog engine and someone puts it live without any content in the database? It'd be nice if there was some kind of blank slate message.
 
 Oh boy, our first page with data and we already have to worry about loading states, errors, and blank slates...or do we?
-

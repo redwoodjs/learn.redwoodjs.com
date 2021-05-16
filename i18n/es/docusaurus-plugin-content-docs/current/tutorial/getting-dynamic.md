@@ -1,13 +1,13 @@
 ---
 id: getting-dynamic
-title: "Haciendo el blog dinámico"
-sidebar_label: "Haciendo el blog dinámico"
+title: 'Haciendo el blog dinámico'
+sidebar_label: 'Haciendo el blog dinámico'
 ---
 
 La segunda parte del video tutorial continúa aquí:
 
 > **Aviso de contenido antiguo**
-> 
+>
 > Estos videos fueron grabados con una versión anterior de Redwood y muchos comandos están desactualizados. Si quiere construir el blog necesitará acompañar el vídeo con este texto, que está actualizado a la última versión.
 
 <div class="video-container">
@@ -34,7 +34,7 @@ Primero definamos la estructura de datos para un post. Abra `api/db/schema.prism
 ```plaintext {13-18}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -60,13 +60,13 @@ Esto dice que queremos una tabla llamada `Post` con las siguientes columnas:
 - Una columna `createdAt` de tipo `DateTime` y `@default` que tome el tiempo actual `now()` al crear el registro (lo que nos evita hacerlo manualmente en la aplicación)
 
 > **Identificadores Int o String**
-> 
+>
 > Para este tutorial mantendremos las cosas simples usando un entero como ID. Las aplicaciones pueden usar otros tipos soportados por Prisma como CUID o UUID. En cuyo caso sería `String` en lugar de `Int` y se usaría `cuid()` o `uuid()` en lugar de `autoincrement()`:
-> 
+>
 > `id String @id @default(cuid())`
-> 
+>
 > Los Ints simplifican las URLs por ejemplo https://redwoodblog.com/posts/123 en lugar de https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13.
-> 
+>
 > Para más información sobre IDs vea [la documentación oficial de Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field).
 
 ### Migraciones
@@ -76,12 +76,12 @@ Eso fue sencillo. Ahora querremos capturar ese cambio como una migración:
     yarn rw prisma migrate dev
 
 > **Atajo `redwood`**
-> 
+>
 > A partir de ahora usamos el alias `rw` en lugar de `redwood` por brevedad.
 
 Se le pedirá darle un nombre a esta migración. Algo que describa lo que hace, por ejemplo "cómo crear posts" (sin comillas). Esto es para su propio beneficio—a Redwood no le importa el nombre de la migración, es sólo una referencia al buscar viejas migraciones y facilita encontrar cuando creó o modificó algo específico.
 
-Cuando termine el comando, verá un nuevo subdirectorio dentro de `api/db/migrations` que tiene una marca de tiempo y el nombre de la migración. Contendrá un único archivo `migration.sql` con el SQL necesario para actualizar la estructura de base de datos con la versión de `schema.prisma` que tenía en el momento en que se creó. Por lo que tendremos un `schema.prisma` que describe la estructura de la base de datos *actualmente* y las migraciones tienen el historial de cambios antes de llegar al estado actual. Es una forma de hacer control de versiones para la estructura de base de datos, que puede ser bastante útil.
+Cuando termine el comando, verá un nuevo subdirectorio dentro de `api/db/migrations` que tiene una marca de tiempo y el nombre de la migración. Contendrá un único archivo `migration.sql` con el SQL necesario para actualizar la estructura de base de datos con la versión de `schema.prisma` que tenía en el momento en que se creó. Por lo que tendremos un `schema.prisma` que describe la estructura de la base de datos _actualmente_ y las migraciones tienen el historial de cambios antes de llegar al estado actual. Es una forma de hacer control de versiones para la estructura de base de datos, que puede ser bastante útil.
 
 Además de crear el archivo de migración, el comando anterior también ejecutará SQL en base de datos, para "efectuar" la migración. Al final tendremos una nueva tabla en la base de datos llamada `Post` con las columnas que definimos anteriormente.
 
@@ -140,20 +140,20 @@ Esto es lo que pasó al ejecutar el comando `yarn rw g scaffold post`:
   - `Posts` muestra una table con todos los posts
 
 > **Convenciones de nomenclatura**
-> 
+>
 > Notará que algunas de las partes generadas usan plural y otras singular. Esta convención está tomada de Ruby on Rails que usa una convención "humana": si se trata de múltiples instancias de algo (como la lista de los Posts) usará plural. Si trata con algo único (como crear un post) usará singular. También vuelve natural el hablar: "muéstreme una lista de todos los Posts" o "voy a crear un nuevo Post"
-> 
+>
 > En lo que respecta a los generadores:
-> 
+>
 > - Los servicios van siempre en plural.
 > - Los métodos del servicio son singulares o plural dependiendo de lo que devuelvan: múltiples Posts o solo uno (`posts` vs. `createPost`).
 > - Los archivos SDL usan plural.
 > - Las "pages" que vienen con los "scaffolds" son plurales o singulares según si se ocupan de muchos posts o de uno solo. El generador de `page` usará el nombre que le dé por argumento al comando.
 > - Los "layouts" también usan el nombre del argumento del comando.
 > - Componentes y células, serán plurales o singulares dependiendo del contexto usado por el generador "scaffold", o bien usarán el argumento del comando.
-> 
+>
 > Tenga en cuenta que el nombre de la tabla de base de datos determina el singular o plural, no toda la palabra. Por ejemplo `PostsCell`, en lugar de `PostCells`.
-> 
+>
 > No tienes que seguir esta convención cuando cree sus propias partes, pero le recomendamos que lo haga. La comunidad de Ruby on Rails ama esta nomenclatura pese a que mucha gente se quejó de cuando se usó por primera vez. [Dele cinco minutos](https://signalvnoise.com/posts/3124-give-it-five-minutes).
 
 ### Crear una página de inicio
@@ -168,4 +168,3 @@ Puesto que de ahora en más querremos una forma de crear y editar posts, manteng
 Ya tenemos `HomePage` así que no necesitaremos crear eso. Para mostrar una lista de posts al visitante tendremos que añadir lógica. Necesitamos obtener el contenido de la base de datos y como no queremos que el usuario sólo vea una pantalla en blanco mientras lo hacemos (según condiciones de red, ubicación del servidor, etc), mostraremos un mensaje de cargando o una animación. Y si hay un error al traer los datos también deberemos manejarlo. ¿Y qué pasa cuando hacemos código libre el fuente de este blog y alguien lo pone en producción con la base de datos vacía? Sería bueno que hubiera algún tipo de mensaje en blanco.
 
 Oh muchacho, nuestra primera página con datos y ya tenemos que preocuparnos por cargar estados, errores, páginas en blanco...o ¿no?
-

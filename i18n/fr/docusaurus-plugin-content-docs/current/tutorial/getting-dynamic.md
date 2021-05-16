@@ -1,13 +1,13 @@
 ---
 id: getting-dynamic
-title: "Devenir Dynamique"
-sidebar_label: "Devenir Dynamique"
+title: 'Devenir Dynamique'
+sidebar_label: 'Devenir Dynamique'
 ---
 
 La seconde partie du didacticiel est disponible en video ici:
 
 > **Avis : contenu ancien**
-> 
+>
 > Ces vidéos ont été enregistrées avec une version antérieure de Redwood et de nombreuses commandes sont maintenant obsolètes. Si vous voulez vraiment construire l'application de blog, vous devrez suivre avec le texte que nous gardons à jour avec les dernières versions.
 
 <div class="video-container">
@@ -34,7 +34,7 @@ Tout d'abord, définissons la structure d'un article de notre blog dans la base 
 ```plaintext {13-18}
 // api/prisma/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -60,13 +60,13 @@ Cette série d'instructions signifie que nous voulons créer une table `Post` av
 - Un champ `createdAt` de type `DateTime` avec une valeur par `@default` égale à `now()` pour chaque nouvel enregistrement (ainsi nous n'avons pas à nous en charger dans l'application, la base de données le fera pour nous)
 
 > **Raccourçi `redwood`**
-> 
+>
 > Pour le didacticiel, nous resterons simple et utiliserons un identifiant de type Integer. Ceci étant, une application plus évoluée pourra utiliser un identifiant de type CUID ou UUID. Tous deux sont pris en charge par Prisma. Dans ce cas, vous utiliseriez un champ de type `String` au lieu de `Int`, et `cuid()` ou `uuid()` au lieu de `autoincrement()`:
-> 
+>
 > `id String @id @default(cuid())`
-> 
+>
 > Notez que l'utilisation d'un identifiant de type Integer permet d'obtenir des url plus simples comme https://redwoodblog.com/posts/123 instead of https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13.
-> 
+>
 > Allez voir la [documentation officielle de Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field) pour plus de détails sur les champs identifiants.
 
 ### Migrations
@@ -76,12 +76,12 @@ C'était simple. Maintenant nous souhaitons faire un snapshot de notre migration
     yarn redwood db save create posts
 
 > **Générateurs et conventions de nommage**
-> 
+>
 > Désormais, nous utiliserons dans nos commandes la forme courte `rw` à la place de `redwood`.
 
 Vous serez invité à donner un nom à cette migration. Idéalement le nom décrira ce qu'il se passe, en l'occurrence "créer des publications" (sans les guillemets, bien sûr). C'est à votre avantage : Redwood ne se soucie pas du nom de la migration, c'est juste une référence lorsque vous regardez les anciennes migrations et essayez de trouver quand vous avez créé ou modifié quelque chose de spécifique.
 
-Une fois la commande exécutée, vous pourrez constater la création d'un nouveau sous-répertoire dans `api/prisma/migrations` avec un _timestamp_ et le nom que vous avez donné votre migration. Il contiendra un seul fichier nommé `migration.sql` qui contient le SQL nécessaire pour mettre à jour la structure de la base de données pour correspondre au `schema.prisma` au moment où la migration a été créée. Vous avez donc un seul fichier `schema.prisma` qui décrit la structure de la base de données telle qu'elle est *sur l'instant* et les migrations qui retracent l'historique des modifications pour parvenir à cette structure. C'est une sorte de contrôle de version pour la structure de votre base de données, qui peut être assez pratique.
+Une fois la commande exécutée, vous pourrez constater la création d'un nouveau sous-répertoire dans `api/prisma/migrations` avec un _timestamp_ et le nom que vous avez donné votre migration. Il contiendra un seul fichier nommé `migration.sql` qui contient le SQL nécessaire pour mettre à jour la structure de la base de données pour correspondre au `schema.prisma` au moment où la migration a été créée. Vous avez donc un seul fichier `schema.prisma` qui décrit la structure de la base de données telle qu'elle est _sur l'instant_ et les migrations qui retracent l'historique des modifications pour parvenir à cette structure. C'est une sorte de contrôle de version pour la structure de votre base de données, qui peut être assez pratique.
 
 En plus de créer le fichier de migration, la commande ci-dessus exécutera également le SQL sur la base de données, appliquant ainsi la migration. L'exécution de cette commande permet à Prisma d'appliquer les changements sur la base de données, en l'espèce la création d'une nouvelle table `Post` avec les champs définis plus haut.
 
@@ -140,20 +140,20 @@ Voici dans le détail ce qui arrive lorsqu'on execute la commande `yarn rw g sca
   - `Posts` affiche la table avec l'ensemble des articles
 
 > **Générateurs et conventions de nommage**
-> 
+>
 > Vous remarquerez que certains fichiers générés ont un nom au pluriel, et d'autres au singulier. Cette convention est empruntée au framework Ruby on Rails. Lorsque vous avez à traiter d'un multiple de quelque chose (comme par exemple une liste d'articles), on utilisera le pluriel. Dans le cas contraire (par exemple la création d'un nouvel article), on utilisera le singulier. C'est aussi plus naturel lorsque l'on parle: "montre moi une liste d'articles" vs. "je vais créer un nouvel article".
-> 
+>
 > Pour ce qui concerne les générateurs:
-> 
+>
 > - Les fichiers de Services sont toujours au pluriel.
 > - Les méthodes dans les Services sont au singulier ou au pluriel selon qu'ils retournent plusieurs articles ou un seul article (`posts` vs. `createPost`).
 > - les fichiers SDL sont toujours au pluriel.
 > - Les pages générées par une commande de scaffold sont au pluriel ou au singulier selon que la page manipule plusieurs ou un seul article. Notez que lorsque vous utilisez vous-même un commande `page` en dehors d'un scaffold, le nom utilisé sera simplement celui que vous donnerez.
 > - Les Layouts utilisent le nom que vous leur donnez
 > - Les composants et les cellules sont au pluriel ou au singulier selon le contexte lorsqu'ils sont générés par scaffolding.
-> 
+>
 > Remarquez également que seul le nom de la table en base de données et au singulier ou au pluriel, et pas le mot complet. Ainsi on a `PostsCell`, et non `PostCells`.
-> 
+>
 > Vous n'avez pas à suivre cette convention de façon obligatoire lorsque vous créez vos propres composants, pages, etc... Ceci étant nous vous le recommandons chaudement. Au bout du compte, la communauté Ruby on Rails a fini par s'attacher à cette convention, et ce même si au départ de nombreuses personnes s'y étaient opposées. "[Give it five minutes](https://signalvnoise.com/posts/3124-give-it-five-minutes)" comme disent les anglo-saxons.
 
 ### Créer la page d'accueil
@@ -168,4 +168,3 @@ Puisque nous voudront probablement conserver un moyen de créer et éditer des a
 Nous avons déjà la `HomePage`, pas besoin de créer celle-ci donc. Nous souhaitons afficher une liste d'articles à l'utilisateur donc nous allons devoir ajouter ça. Nous avons besoin de récupérer le contenu depuis la base de données, et nous ne voulons pas que l'utilisateur soit face à une page blanche le temps du chargement (conditions réseau dégradées, serveur géographiquement distant, etc...), donc nous voudrons montrer une sorte de message de chargement et/ou une animation. D'autre part, si une erreur se produit, nous devrons faire en sorte de la prendre en charge. D'autre part, que va-t-il se passer lorsque nous publierons ce moteur de blog en open-source et qu'une personne l'initialisera sans aucun contenu dans la base de données? Ce serait sympa s'il y avait une sorte de message indiquant que le blog ne comporte encore aucun article.
 
 notre première page avec des données et il semble que nous ayons déjà à nous soucier du chargement des états, des erreurs…
-
