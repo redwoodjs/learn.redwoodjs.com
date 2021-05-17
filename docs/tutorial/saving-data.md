@@ -503,7 +503,7 @@ return (
 
 Now we can call `reset()` on `formMethods` after we call `toast()`:
 
-```javascript{6}
+```javascript {6}
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
