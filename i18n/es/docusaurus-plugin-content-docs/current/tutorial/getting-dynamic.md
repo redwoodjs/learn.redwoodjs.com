@@ -34,7 +34,7 @@ Primero definamos la estructura de datos para un post. Abra `api/db/schema.prism
 ```plaintext {13-18}
 // api/db/schema.prisma
 
-datasource db {
+datasource DS {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }

@@ -34,7 +34,7 @@ Tout d'abord, définissons la structure d'un article de notre blog dans la base 
 ```plaintext {13-18}
 // api/prisma/schema.prisma
 
-datasource db {
+datasource DS {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
