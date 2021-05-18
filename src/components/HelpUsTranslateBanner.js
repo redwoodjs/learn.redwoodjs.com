@@ -8,14 +8,14 @@ const { translationGuideUrl } = config.customFields;
 // TODO: centralize these custom component string translations in /i18n
 const t = {
   message: {
-    fr:
-      'Voyez-vous des traductions manquantes ou incorrectes ? Aidez-nous à traduire! Consultez notre guide de traduction:',
-    en:
-      'See any missing or incorrect translations? Help us translate! See our translation guide:',
+    fr: 'Voyez-vous des traductions manquantes ou incorrectes ? Aidez-nous à traduire! Consultez notre guide de traduction:',
+    en: 'See any missing or incorrect translations? Help us translate! See our translation guide:',
+    es: '¡Ayúdanos a traducir! Vea nuestra guía de traducción:',
   },
   hrefLabel: {
     fr: 'Guide de traduction',
     en: 'Translation Guide',
+    es: 'Guía de traducción',
   },
 };
 
