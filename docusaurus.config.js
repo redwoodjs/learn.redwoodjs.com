@@ -1,14 +1,17 @@
 const translationGuideUrl =
   'https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md'; // replaces editUrl on localized Pages
 
-const locales = ['en', 'fr'];
+const locales = ['en', 'fr', 'es'];
 
 const localeConfigs = {
   en: {
     label: 'English',
   },
   fr: {
-    label: 'Français',
+    label: 'français',
+  },
+  es: {
+    label: 'español',
   },
 };
 
@@ -42,7 +45,7 @@ module.exports = {
     announcementBar: {
       id: 'support_us', // Any value that will identify this message.
       content:
-        'We are looking for help translating this site into <b>French</b> and <b>Spanish</b>! <a target="_blank" rel="noopener noreferrer" href="https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md">See our guide</a>',
+        'We are looking for help translating this site into <b>French</b>, <b>Spanish</b>, <b>Portuguese</b>, and <b>Italian</b>! <a target="_blank" rel="noopener noreferrer" href="https://github.com/redwoodjs/learn.redwoodjs.com/blob/main/README_TRANSLATION_GUIDE.md">See our guide</a>',
       // NOTE: setting colors in custom.css instead as text color below was not rendering
       // backgroundColor: '#120401',
       // textColor: '##ffffff',
