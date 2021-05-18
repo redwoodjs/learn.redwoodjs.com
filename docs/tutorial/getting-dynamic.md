@@ -34,7 +34,7 @@ First let's define the data structure for a post in the database. Open up `api/d
 ```plaintext {13-18}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -168,4 +168,3 @@ Since we'll probably want a way to create and edit posts going forward let's kee
 We already have `HomePage` so we won't need to create that. We want to display a list of posts to the user so we'll need to add that logic. We need to get the content from the database and we don't want the user to just see a blank screen in the meantime (depending on network conditions, server location, etc), so we'll want to show some kind of loading message or animation. And if there's an error retrieving the data we should handle that as well. And what about when we open source this blog engine and someone puts it live without any content in the database? It'd be nice if there was some kind of blank slate message.
 
 Oh boy, our first page with data and we already have to worry about loading states, errors, and blank slates...or do we?
-

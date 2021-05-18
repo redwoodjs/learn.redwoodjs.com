@@ -21,7 +21,7 @@ Let's do that now:
 ```javascript {17,29-36}
 // api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -400,4 +400,3 @@ We'll test that all the fields we give to the `createComment()` function are act
 > If you said the second one, then you probably hate kittens and sleep on broken glass.
 
 Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
-
