@@ -16,7 +16,7 @@ Hey polyglots, **want to help translate or proofread?** Check out the [Translati
 
 We are using a late stage Alpha release of [Docusuraus 2](https://v2.docusaurus.io/docs/next/) that includes experimental integration with l10n management service Crowdin. i18n is a bleeding edge feature of Docusaurus and official documentation has not been released yet. However, there is [unofficial documentation here](https://deploy-preview-4014--docusaurus-2.netlify.app/classic/docs/next/i18n/introduction/), and we also have [this PR](https://github.com/facebook/docusaurus/pull/3325) and [this explanatory comment](https://github.com/facebook/docusaurus/issues/3317#issuecomment-742589241) to reference.
 
-We are also learning from the source code for [Jest website migration on `docusaurus-2` branch](https://github.com/jest-website-migration/jest/tree/docusaurus-2/website-v2), which is using this same undocumented setup for thier localized docs. See their test site here: https://jest-v2.netlify.app/
+We are also learning from the source code for [Jest website migration on `docusaurus-2` branch](https://github.com/jest-website-migration/jest/tree/docusaurus-2/website-v2), which is using this same undocumented setup for their localized docs. See their test site here: https://jest-v2.netlify.app/
 
 ## Getting started
 
@@ -56,7 +56,7 @@ Source content markdown files are found in `docs/`, which map to locales in `i18
 
 Target language codes follow [ISO 639-1 codes](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
-Localized content without a "counterpart" for the source content fallsback to the source locale (English).
+Localized content without a "counterpart" for the source content fallbacks to the source locale (English).
 
 ### Do not directly edit translations in this repo!
 
@@ -73,7 +73,7 @@ Here's the lifecycle
 
 If a static asset is referenced in the source markdown with a relative path (ex: `[]!(../img/logo.svg)`), the path will break in the target locale document which is in a differently nested directory.
 
-**Use absolute paths** for local static assets that do not change accross locales.
+**Use absolute paths** for local static assets that do not change across locales.
 
 If it is an image that you feel absolutely inclined to localize, you can use relative paths and include files with the exact same name (with different image content) at the same relative path in all target dirs.
 ^ This is cumbersome - let's try to be as lazy as possible and not localize image assets unless totally necessary.
