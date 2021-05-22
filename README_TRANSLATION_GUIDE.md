@@ -23,8 +23,10 @@ To sign up for a role, simply request in Crowdin.
 
 | Language | Translators | Proofreaders |
 | -------- | ----------- | ------------ |
-| [French](https://crowdin.com/project/learn-redwoodjs/fr#)   | @Thieffen, @noire.munich, @simoncrypta  | @Thieffen    |
-| [Spanish](https://crowdin.com/project/learn-redwoodjs/es-ES#)   | @pdejuan  | @clairefro    |
+| [French](https://crowdin.com/project/learn-redwoodjs/fr#)   | @Thieffen, @noire.munich, @simoncrypta, @bugsfunny  | @Thieffen    |
+| [Spanish](https://crowdin.com/project/learn-redwoodjs/es-ES#)   | @pdejuan, @ brian.gastesi  | @clairefro, @pdejuan    |
+| [Italian](https://crowdin.com/project/learn-redwoodjs/it#)   | @mlabate  |    |
+| [Portuguese](https://crowdin.com/project/learn-redwoodjs/it#)   | @renansoares, @luispinto23  |  @renansoares   |
 
 Want to add yourself to a translator and/or proofreader role for a language? Don't see your language here and wish to contribute?
 
