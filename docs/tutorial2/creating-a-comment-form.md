@@ -100,7 +100,7 @@ You can even try submitting the form right in Storybook! If you leave "name" or 
 
 Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form. And since `createComment` could return an error we'll add the **FormError** component to display it:
 
-```javascript {5,11,13-22,25,27-29,35-39,65}
+```javascript {5,11,13-22,25,27-29,34,35-39,65}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
