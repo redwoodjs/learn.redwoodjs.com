@@ -128,7 +128,8 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
   - `NewPostPage` for creating a new post
   - `PostPage` for showing the detail of a post
   - `PostsPage` for listing all the posts
-- Created routes for those pages in `web/src/Routes.js`
+- Created a _layouts_ file in `web/src/layouts/PostsLayout.js` that serves as a container for pages with common elements like page heading and "New Posts" button
+- Created routes wrapped in the `Set` component with the layout as `PostsLayout` for those pages in `web/src/Routes.js`
 - Created three _cells_ in `web/src/components`:
   - `EditPostCell` gets the post to edit in the database
   - `PostCell` gets the post to display
