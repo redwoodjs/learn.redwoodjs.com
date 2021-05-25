@@ -371,7 +371,7 @@ Now when we create a comment it appears right away! It might be hard to tell bec
 
 We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
 
-```javascript {13,20-22,31,33-39,41}
+```javascript {13,18,20-22,31,33-39,41}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
