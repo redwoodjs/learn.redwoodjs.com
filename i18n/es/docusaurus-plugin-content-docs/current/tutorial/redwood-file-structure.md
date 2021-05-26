@@ -64,7 +64,7 @@ Eso es todo para el backend.
 ### El directorio /web
 
 - `src` contiene varios subdirectorios:
-  - `components` contiene los típicos componentes React, así como las _Cells_(células) de Redwood (en breve detallaremos).
+  - `components` contiene los típicos componentes React, así como las _Cells_ (células) de Redwood, que en breve detallaremos.
   - `layouts` contiene HTML o componentes que envuelven el contenido y son compartidos a través de múltiples páginas _Pages_.
   - `pages` contiene componentes que pueden estar envueltas dentro de _layouts_ y son por ejemplo "landing pages"(página de destino) para una URL (por ejemplo `/articles/hello-world` se mapeará a una página de destino y `/contact-us` se mapeará a otra). En una nueva aplicación hay dos páginas incluidas por omisión:
     - `NotFoundPage.js` será servida cuando no se encuentre la ruta requerida (véase `Routes.js` a continuación).
