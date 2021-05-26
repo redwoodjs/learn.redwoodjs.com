@@ -6,7 +6,7 @@ Deployment URL: https://learn.redwoodjs.com/
 
 ## Translation
 
-We currently support English and French, but wish to include more languages!
+We currently support English, French, Spanish, Portuguese and Italian, but wish to include more languages!
 
 Hey polyglots, **want to help translate or proofread?** Check out the [Translation Guide](./README_TRANSLATION_GUIDE.md) to find out how to get started
 
