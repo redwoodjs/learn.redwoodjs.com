@@ -1,6 +1,6 @@
 # learn.redwoodjs.com
 
-Deployment URL: https://learn-redwood.netlify.app
+Deployment URL: https://learn.redwoodjs.com/
 
 [![Crowdin](https://badges.crowdin.net/learn-redwoodjs/localized.svg)](https://crowdin.com/project/learn-redwoodjs)
 
