@@ -4,8 +4,6 @@ Deployment URL: https://learn.redwoodjs.com/
 
 [![Crowdin](https://badges.crowdin.net/learn-redwoodjs/localized.svg)](https://crowdin.com/project/learn-redwoodjs)
 
-This WIP site will be used to present multilingual tutorial docs for RedwoodJS at the subdomain `learn.redwoodjs.com`.
-
 ## Translation
 
 We currently support English and French, but wish to include more languages!
