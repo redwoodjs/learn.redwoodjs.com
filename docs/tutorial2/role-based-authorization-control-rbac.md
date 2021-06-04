@@ -386,8 +386,10 @@ export const deleteComment = ({ id }) => {
 
 We'll need a test to go along with that functionality. How do we test `requireAuth()`? The api side also has a `mockCurrentUser()` function which behaves the same as the one on the web side:
 
-```javascript{}
+```javascript {5-15}
 // api/src/services/comments/comments.test.js
+
+// ...
 
 scenario('deletes a comment', async (scenario) => {
   mockCurrentUser({ roles: ['moderator'] })

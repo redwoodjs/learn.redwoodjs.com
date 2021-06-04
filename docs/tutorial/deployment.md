@@ -28,7 +28,7 @@ provider = "postgresql"
 
 > **!!! Extremely Important Notice You Should Read !!!**
 >
-> Prisma only supports one database provider at a time, and since we can't use SQLite in production and *must* switch the Postgres or MySQL, that means we need to use the same database on our local development system after making this change. See our [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide to get you started.
+> Prisma only supports one database provider at a time, and since we can't use SQLite in production and *must* switch to Postgres or MySQL, that means we need to use the same database on our local development system after making this change. See our [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide to get you started.
 
 There are several hosting providers where you can quickly start up a Postgres instance:
 

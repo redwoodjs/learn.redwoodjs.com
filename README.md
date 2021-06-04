@@ -1,14 +1,12 @@
 # learn.redwoodjs.com
 
-Deployment URL: https://learn-redwood.netlify.app
+Deployment URL: https://learn.redwoodjs.com/
 
 [![Crowdin](https://badges.crowdin.net/learn-redwoodjs/localized.svg)](https://crowdin.com/project/learn-redwoodjs)
 
-This WIP site will be used to present multilingual tutorial docs for RedwoodJS at the subdomain `learn.redwoodjs.com`.
-
 ## Translation
 
-We currently support English and French, but wish to include more languages!
+We currently support English, French, Spanish, Portuguese and Italian, but wish to include more languages!
 
 Hey polyglots, **want to help translate or proofread?** Check out the [Translation Guide](./README_TRANSLATION_GUIDE.md) to find out how to get started
 

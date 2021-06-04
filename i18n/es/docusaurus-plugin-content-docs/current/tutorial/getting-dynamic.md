@@ -6,7 +6,7 @@ sidebar_label: "Haciendo el blog dinámico"
 
 La segunda parte del video tutorial continúa aquí:
 
-> **Aviso de contenido antiguo**
+> **Aviso de contenido obsoleto**
 > 
 > Estos videos fueron grabados con una versión anterior de Redwood y muchos comandos están desactualizados. Si quiere construir el blog necesitará acompañar el vídeo con este texto, que está actualizado a la última versión.
 

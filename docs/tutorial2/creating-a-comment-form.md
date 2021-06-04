@@ -100,7 +100,7 @@ You can even try submitting the form right in Storybook! If you leave "name" or 
 
 Submitting the form should use the `createComment` function we added to our services and GraphQL. We'll need to add a mutation to the form component and an `onSubmit` hander to the form so that the create can be called with the data in the form. And since `createComment` could return an error we'll add the **FormError** component to display it:
 
-```javascript {5,11,13-22,25,27-29,35-39,65}
+```javascript {5,11,13-22,25,27-29,34,35-39,65}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -371,7 +371,7 @@ Now when we create a comment it appears right away! It might be hard to tell bec
 
 We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
 
-```javascript {13,20-22,31,33-39,41}
+```javascript {13,18,20-22,31,33-39,41}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
