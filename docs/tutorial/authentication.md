@@ -48,7 +48,7 @@ This creates a file at `/netlify.toml` which contains the commands and file path
 
 Before we continue, make sure your app is fully committed and pushed to GitHub, GitLab, or Bitbucket. We're going to link Netlify directly to our git repo so that a simple push to `main` will re-deploy our site. If you haven't worked on the Jamstack yet you're in for a pleasant surprise!
 
-You'll need to [create a Netlify account](https://app.netlify.com/signup) if you don't have one already. Once you've signed up and verified your email done just click the **New site from Git** button at the upper right:
+You'll need to [create a Netlify account](https://app.netlify.com/signup) if you don't have one already. Once you've signed up and verified your email just click the **New site from Git** button at the upper right:
 
 <img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
 
