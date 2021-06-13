@@ -77,17 +77,17 @@ Take a look at the newly created `api/src/lib/auth.js` (usage comments omitted):
 ```javascript
 // api/src/lib/auth.js
 
-import { AuthenticationError } from '@redwoodjs/api';
+import { AuthenticationError } from '@redwoodjs/api'
 
 export const getCurrentUser = async (decoded, { token, type }) => {
-  return decoded;
-};
+  return decoded
+}
 
 export const requireAuth = () => {
   if (!context.currentUser) {
-    throw new AuthenticationError("You don't have permission to do that.");
+    throw new AuthenticationError("You don't have permission to do that.")
   }
-};
+}
 ```
 
 By default the authentication system will return only the data that the third-party auth handler knows about (that's what's inside the `jwt` object above). For Netlify Identity that's an email address, an optional name and optional array of roles. Usually you'll have your own concept of a user in your local database. You can modify `getCurrentUser` to return that user, rather than the details that the auth system stores. The comments at the top of the file give one example of how you could look up a user based on their email address. We also provide a simple implementation for requiring that a user be authenticated when trying to access a service: `requireAuth()`. It will throw an error that GraphQL knows what to do with if a non-authenticated person tries to get to something they shouldn't.
@@ -106,45 +106,45 @@ First let's lock down the API so we can be sure that only authorized users can c
 ```javascript {4,17,24,32}
 // api/src/services/posts/posts.js
 
-import { db } from 'src/lib/db';
-import { requireAuth } from 'src/lib/auth';
+import { db } from 'src/lib/db'
+import { requireAuth } from 'src/lib/auth'
 
 export const posts = () => {
-  return db.post.findMany();
-};
+  return db.post.findMany()
+}
 
 export const post = ({ id }) => {
   return db.post.findUnique({
     where: { id },
-  });
-};
+  })
+}
 
 export const createPost = ({ input }) => {
-  requireAuth();
+  requireAuth()
   return db.post.create({
     data: input,
-  });
-};
+  })
+}
 
 export const updatePost = ({ id, input }) => {
-  requireAuth();
+  requireAuth()
   return db.post.update({
     data: input,
     where: { id },
-  });
-};
+  })
+}
 
 export const deletePost = ({ id }) => {
-  requireAuth();
+  requireAuth()
   return db.post.delete({
     where: { id },
-  });
-};
+  })
+}
 
 export const Post = {
   user: (_obj, { root }) =>
     db.post.findUnique({ where: { id: root.id } }).user(),
-};
+}
 ```
 
 Now try creating, editing or deleting a post from our admin pages. Nothing happens! Should we show some kind of friendly error message? In this case, probably not—we're going to lock down the admin pages altogether so they won't be accessible by a browser. The only way someone would be able to trigger these errors in the API is if they tried to access the GraphQL endpoint directly, without going through our UI. The API is already returning an error message (open the Web Inspector in your browser and try that create/edit/delete again) so we are covered.
@@ -162,8 +162,8 @@ Now we'll restrict access to the admin pages completely unless you're logged in.
 ```javascript {3,15,20}
 // web/src/Routes.js
 
-import { Router, Route, Set, Private } from '@redwoodjs/router';
-import BlogLayout from 'src/layouts/BlogLayout';
+import { Router, Route, Set, Private } from '@redwoodjs/router'
+import BlogLayout from 'src/layouts/BlogLayout'
 
 const Routes = () => {
   return (
@@ -186,10 +186,10 @@ const Routes = () => {
       </Private>
       <Route notfound page={NotFoundPage} />
     </Router>
-  );
-};
+  )
+}
 
-export default Routes;
+export default Routes
 ```
 
 Surround the routes you want to be behind authentication and optionally add the `unauthenticated` attribute that lists the name of another route to redirect to if the user is not logged in. In this case we'll go back to the homepage.
@@ -201,11 +201,11 @@ Now all that's left to do is let the user actually log in! If you've built authe
 ```javascript {4,7,22-26}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router';
-import { useAuth } from '@redwoodjs/auth';
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 
 const BlogLayout = ({ children }) => {
-  const { logIn } = useAuth();
+  const { logIn } = useAuth()
 
   return (
     <div>
@@ -227,10 +227,10 @@ const BlogLayout = ({ children }) => {
       </nav>
       <main>{children}</main>
     </div>
-  );
-};
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 Try clicking the login link:
@@ -260,11 +260,11 @@ We've got no indication on our actual site that we're logged in, however. How ab
 ```javascript {7,23-24}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router';
-import { useAuth } from '@redwoodjs/auth';
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 
 const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated } = useAuth();
+  const { logIn, logOut, isAuthenticated } = useAuth()
 
   return (
     <div>
@@ -288,10 +288,10 @@ const BlogLayout = ({ children }) => {
       </nav>
       <main>{children}</main>
     </div>
-  );
-};
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 `useAuth()` provides a couple more helpers for us, in this case `isAuthenticated` which will return `true` or `false` based on your login status, and `logOut()` which will log the user out. Now clicking **Log Out** should log you out and change the link to **Log In** which you can click to open the modal and log back in again.
@@ -305,11 +305,11 @@ One more finishing touch: let's show the email address of the user that's logged
 ```javascript {7,27}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
-import { Link, routes } from '@redwoodjs/router';
-import { useAuth } from '@redwoodjs/auth';
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 
 const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated, currentUser } = useAuth();
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
 
   return (
     <div>
@@ -334,10 +334,10 @@ const BlogLayout = ({ children }) => {
       </nav>
       <main>{children}</main>
     </div>
-  );
-};
+  )
+}
 
-export default BlogLayout;
+export default BlogLayout
 ```
 
 ![Logged in email](https://user-images.githubusercontent.com/300/82389433-05b2e680-99f1-11ea-9d01-456cad508c80.png)
