@@ -42,7 +42,7 @@ If you click the link on the title of the blog post you should see the boilerpla
 <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
 ```
 
-Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogPostLayout`.
+Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogLayout`.
 
 ```javascript {5}
 // web/src/Routes.js
