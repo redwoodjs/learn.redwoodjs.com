@@ -54,7 +54,7 @@ model Post {
 
 Esto dice que queremos una tabla llamada `Post` con las siguientes columnas:
 
-- Una columna `id` del tipo `Int` (entero), le indicamos a Prisma que debe usar como esta columna como identificador `@id` (para asociarla con otras tablas) y que el valor por omisión `@default` debe ser el método `autoincrement()` de Prisma, el que indica a la base de datos que debe generarlo automáticamente al crear un registro nuevo
+- Una columna `id` de tipo `Int` (entero), le indica a Prisma que debe usarla como identificador `@id` (para asociarse con otras tablas) y que el valor por omisión `@default` debe ser el método `autoincrement()` provisto por Prisma que indica la base de datos debe autogenerarlo al crear un nuevo registro
 - Una columna "título" `title` que contendrá una "cadena de caracteres" `String`
 - Una columna para el contenido `body` también tipo `String`
 - Una columna `createdAt` de tipo `DateTime` y `@default` que tome el tiempo actual `now()` al crear el registro (lo que nos evita hacerlo manualmente en la aplicación)
@@ -128,16 +128,17 @@ Esto es lo que pasó al ejecutar el comando `yarn rw g scaffold post`:
   - `NewPostPage` para crear uno nuevo
   - `PostPage` para mostrar detalles
   - `PostsPage` para listar todos los posts
-- Se crearon rutas para esas páginas en `web/src/Routes.js`
-- Se crearon varias _cells_ en `web/src/components`:
-  - `EditPostCell` trae el post a editar de la base de datos
-  - `PostCell` trae el post a mostrar
+- Se creó una plantilla _layout_ en `web/src/layouts/PostsLayout/PostsLayout.js` que contiene las páginas con elementos comunes como el encabezado y el botón de nuevos Posts "New Posts"
+- Se crearon rutas en forma de `Set` dentro la plantilla `PostsLayout` para dichas páginas dentro de `web/src/Routes.js`
+- Se crearon tres _células_ en `web/src/components`:
+  - `EditPostCell` trae el post para editar desde la base de datos
+  - `PostCell` muestra el post
   - `PostsCell` trae todos los posts
-- Se crearon cuatro _components_ en `web/src/components`:
-  - `NewPost` muestra el post a crear
+- Se crearon _componentes_ en `web/src/components`:
+  - `NewPost` muestra el formulario para crear un post
   - `Post` muestra un post
-  - `PostForm` tiene el formulario para "New" y "Edit"
-  - `Posts` muestra una table con todos los posts
+  - `PostForm` contiene el form usado por los componentes "New" y "Edit"
+  - `Posts` muestra una tabla con todos los posts
 
 > **Convenciones de nomenclatura**
 > 

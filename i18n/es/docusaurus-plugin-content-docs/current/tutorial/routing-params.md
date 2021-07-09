@@ -42,7 +42,7 @@ Si cliquea en el enlace en el título del post, debería ver el texto de la plan
 <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
 ```
 
-Observe el `{id}`. Redwood les llama _parámetros de ruta_. Es decir, "cualquier valor que se encuentre en esta posición en el camino, podemos referenciarlo con el nombre entre corchetes". Y ya que estamos en el archivo de rutas, movamos la ruta dentro del `Set` del `BlogPostLayout`.
+Observe el `{id}`. Redwood les llama _parámetros de ruta_. Es decir, "cualquier valor que se encuentre en esta posición en el camino, podemos referenciarlo con el nombre entre corchetes". Y ya que estamos en el archivo de rutas, movamos la ruta dentro del `Set` de `BlogPostLayout`.
 
 ```javascript {5}
 // web/src/Routes.js
@@ -161,18 +161,18 @@ Voilà! Esto convertirá el parámetro `id` a un número al pasarlo a la págin
 > Todos las propiedades asignadas a la célula estarán disponibles como propiedades en los componentes de renderizado. Sólo las que coincidan con las variables GraphQL se pasarán a la consulta. ¡Obtiene lo mejor de ambos mundos! Asimismo, si quisiera mostrar un post al azar (rebuscado pero para ejemplificar) podría pasarlo como propiedad:
 > 
 > ```javascript
-<BlogPostCell id={id} rand={Math.random()} />
-```
-
-Dicho número se puede obtener junto al resultado de la consulta (e incluso el `id` original) en el componente:
-
-```javascript
-export const Success = ({ post, id, rand }) => {
-  //...
-}
-```
-
-¡Gracias de nuevo, Redwood!
+> <BlogPostCell id={id} rand={Math.random()} />
+> ```
+> 
+> Dicho número se puede obtener junto al resultado de la consulta (e incluso el `id` original) en el componente:
+> 
+> ```javascript
+> export const Success = ({ post, id, rand }) => {
+>   //...
+> }
+> ```
+> 
+> ¡Gracias de nuevo, Redwood!
 
 ### Mostrar un post
 

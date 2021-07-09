@@ -48,7 +48,7 @@ Esto crea un archivo `netlify.toml` con comandos y rutas de archivos que para qu
 
 Antes de continuar, asegúrese de que su aplicación está disponible en GitHub, GitLab, o Bitbucket. Vamos a asociar Netlify al repositorio git para que con un push al branch principal `main` se desplegar el sitio. Si usted no ha trabajado todavía con Jamstack ¡usted tendrá una agradable sorpresa!
 
-Cree [una cuenta de Netlify](https://app.netlify.com/signup) si no aún no tiene una. Luego de registrarse y verificar su correo, cliquee en el botón **New site from Git** en la parte superior derecha:
+Cree [una cuenta de Netlify](https://app.netlify.com/signup) si no aún no tiene una. Una vez registrado y verificado su correo, simplemente cliquee en el botón **New site from Git** en la parte superior derecha:
 
 <img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
 
@@ -162,22 +162,25 @@ Limitemos el acceso a las páginas de administración a menos que se haya inicia
 // web/src/Routes.js
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'
-import BlogPostLayout from 'src/layouts/BlogPostLayout'
+import BlogLayout from 'src/layouts/BlogLayout'
+import PostsLayout from 'src/layouts/PostsLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Set wrap={BlogPostLayout}>
+      <Set wrap={BlogLayout}>
         <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
         <Route path="/contact" page={ContactPage} name="contact" />
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
       </Set>
       <Private unauthenticated="home">
-        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
-        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
-        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
-        <Route path="/admin/posts" page={PostsPage} name="posts" />
+        <Set wrap={PostsLayout}>
+          <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+          <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+          <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+          <Route path="/admin/posts" page={PostsPage} name="posts" />
+        </Set>
       </Private>
       <Route notfound page={NotFoundPage} />
     </Router>

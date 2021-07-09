@@ -379,16 +379,16 @@ Ya capturamos cualquier error existente en la constante `error` que obtuvimos de
 > Para manejar errores manualmente, puede hacer lo siguiente:
 > 
 > ```javascript {3-8}
-// web/src/pages/ContactPage/ContactPage.js
-const onSubmit = async (data) => {
-  try {
-    await create({ variables: { input: data } })
-    console.log(data)
-  } catch (error) {
-    console.log(error)
-  }
-}
-```
+> // web/src/pages/ContactPage/ContactPage.js
+> const onSubmit = async (data) => {
+>   try {
+>     await create({ variables: { input: data } })
+>     console.log(data)
+>   } catch (error) {
+>     console.log(error)
+>   }
+> }
+> ```
 
 Para ver el error en el servidor, eliminamos la validación del formato de correo del lado del cliente:
 
@@ -615,7 +615,7 @@ export default ContactPage
 > Puede que haya notado que la validación del formulario en el evento onBlur dejó de funcionar al llamar explícitamente a `useForm()`. Eso es porque Redwood llama a `useForm()` detrás de las escenas y automáticamente pasa la propiedad de `validación` del `<Form>`. Redwood no llama más a `useForm()`, por lo que necesitará pasar opciones manualmente:
 > 
 > ```javascript
-const formMethods = useForm({ mode: 'onBlur' })
-```
+> const formMethods = useForm({ mode: 'onBlur' })
+> ```
 
 El sitio público se ve bastante bien. ¿Qué hay de las funciones administrativas para crear y editar posts? Deberíamos moverlos a una sección de administración y requerir del inicio de sesión para no venga un usuario cualquier y cambie las URLs para crear anuncios indeseables.
