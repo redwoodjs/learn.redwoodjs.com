@@ -170,16 +170,16 @@ El navegador mostrará un vector con una serie de posts (asumiendo que ha creado
 > Vemos que `QUERY` es la consulta que trae los `posts`. El nombre de la consulta se pasa como propiedad al componente `Success` con los datos. Puede usar de alias el nombre de la variable que contiene el resultado de la consulta GraphQL, y ese será el nombre de la propiedad:
 > 
 > ```javascript
-export const QUERY = gql`
-  query BlogPostsQuery {
-    postIds: posts {
-      id
-    }
-  }
-`
-```
-
-Ahora `postIds` estará disponible en `Success` en lugar de `posts`
+> export const QUERY = gql`
+>   query BlogPostsQuery {
+>     postIds: posts {
+>       id
+>     }
+>   }
+> `
+> ```
+> 
+> Ahora `postIds` estará disponible en `Success` en lugar de `posts`
 
 Además de que `id` que el generador creó en la consulta `query` podemos agrear title, body y createdAt:
 
