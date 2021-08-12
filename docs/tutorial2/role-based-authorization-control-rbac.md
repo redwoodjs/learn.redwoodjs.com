@@ -1,14 +1,14 @@
 ---
 id: role-based-authorization-control-rbac
-title: "Role-Based Authorization Control (RBAC)"
-sidebar_label: "Role-Based Authorization Control (RBAC)"
+title: "Role-Based Access Control (RBAC)"
+sidebar_label: "Role-Based Access Control (RBAC)"
 ---
 
 Imagine a few weeks in the future of our blog when every post hits the front page of the New York Times and we're getting hundreds of comments a day. We can't be expected to come up with quality content each day *and* moderate the endless stream of (mostly well-meaning) comments! We're going to need help. Let's hire a comment moderator to remove obvious spam and bad intentioned posts and help make the internet a better place.
 
 We already have a login system for our blog (Netlify Identity, if you followed the first tutorial), but right now it's all-or-nothing: you either get access to create blog posts, or you don't. In this case our comment moderator(s) will need logins so that we know who they are, but we're not going let them create new blog posts. We need some kind of role that we can give to our two kinds of users so we can distinguish them from one another.
 
-Enter role-based authorization control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person is, authorization says what they can do. Currently the blog has the lowest common denominator of authorization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
+Enter role-based access control, thankfully shortened to the common phrase **RBAC**. Authentication says who the person is, authorization says what they can do. Access control is another way to say authorization. Currently the blog has the lowest common denominator of authorization: if they are logged in, they can do everything. Let's add a "less than everything, but more than nothing" level.
 
 ### Defining Roles
 
