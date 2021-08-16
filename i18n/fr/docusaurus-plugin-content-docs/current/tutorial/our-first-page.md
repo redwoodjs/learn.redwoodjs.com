@@ -25,7 +25,7 @@ En réalité, cette page est déjà active (et votre navigateur l’a rechargée
 
 D’accord, ça ne flatte pas encore la rétine mais c’est un début! Ouvrez cette page dans votre éditeur, modifiez un peu le texte et sauvegardez. Votre navigateur devrait recharger la page avec vos modifications.
 
-### Routing
+### Routage
 
 Ouvrez `web/src/Routes.js` et observez la route qui vient d’être créée :
 
