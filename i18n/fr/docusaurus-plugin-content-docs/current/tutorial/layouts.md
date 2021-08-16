@@ -1,7 +1,7 @@
 ---
 id: layouts
-title: "Layouts"
-sidebar_label: "Layouts"
+title: "Mises en pages"
+sidebar_label: "Mises en page"
 ---
 
 Une façon de résoudre la duplication du `<header>` aurait pu être de créer un composant `<Header>` et l'inclure à la fois dans `HomePage` et `AboutPage`. Cela fonctionne, mais y a-t-il une meilleure solution? Dans l'idéal, votre code ne devrait comporter qu'une seule et unique balise `<header>`.

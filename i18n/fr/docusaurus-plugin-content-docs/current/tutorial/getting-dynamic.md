@@ -32,9 +32,9 @@ Nous utilisons [Prisma Client JS](https://github.com/prisma/prisma-client-js) po
 Tout d'abord, définissons la structure d'un article de notre blog dans la base de données. Ouvrez `api/prisma/schema.prisma` et ajoutez la définition de la table `Post` (supprimez au passage tous les modèles présents par défaut dans ce fichier). Une fois terminé, le fichier se présente ainsi:
 
 ```plaintext {13-18}
-// api/prisma/schema.prisma
+// api/db/schema.prisma
 
-datasource DS {
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
@@ -54,7 +54,7 @@ model Post {
 
 Cette série d'instructions signifie que nous voulons créer une table `Post` avec les éléments suivants:
 
-- Un champ `id` de type `Int`, nous précisions à Prisma que cette colonne constitue un identifiant `@id` (de façon à pouvoir créer des relations avec d'autres tables) et que la valeur par `@default` correspond à la fonction Prisma `autoincrement()` impliquant que la base de données insèrera une nouvelle valeur automatiquement lorsqu'un enregistrement est créé.
+- Un champ `id` de type `Int`, nous précisions à Prisma que cette colonne constitue un identifiant `@id` (de façon à pouvoir créer des relations avec d'autres tables) et que la valeur par `@default` correspond à la fonction Prisma `autoincrement()` impliquant que la base de données insèrera une nouvelle valeur automatiquement lorsqu'un enregistrement est créé
 - Un champ `title` de type `String`
 - Un champ `body` également de type `String`
 - Un champ `createdAt` de type `DateTime` avec une valeur par `@default` égale à `now()` pour chaque nouvel enregistrement (ainsi nous n'avons pas à nous en charger dans l'application, la base de données le fera pour nous)
@@ -87,7 +87,7 @@ En plus de créer le fichier de migration, la commande ci-dessus exécutera éga
 
 ### Créer une Interface d'Édition d'un Article
 
-Nous n'avons pas encore décidé du look de notre site, mais ne serait-il pas extra si nous pouvions commencer à manipuler nos articles de blog, commencer à créer quelques pages rapidement le temps que l'équipe chargée du design rende sa copie? Heureusement pour nous, "Incroyable" est le petit nom de Redwood :)
+Nous n'avons pas encore décidé du look de notre site, mais ne serait-il pas extra si nous pouvions commencer à manipuler nos articles de blog, commencer à créer quelques pages rapidement le temps que l'équipe chargée du design rende sa copie? Heureusement pour nous, "Incroyable" est le petit nom de Redwood :) Il n'a pas de nom de famille.
 
 Générons tout ce sont nous avons besoin pour réaliser un CRUD (Create, Retrieve, Update, Delete) (Créer, Récupérer, Mettre à jour, Supprimer) sur nos articles. Redwood a justement un generateur spécialement fait pour ça :
 
@@ -128,16 +128,17 @@ Voici dans le détail ce qui arrive lorsqu'on execute la commande `yarn rw g sca
   - `NewPostPage` pour créer un nouvel article
   - `PostPage` pour montrer les détails d'un article
   - `PostsPage` pour lister tous les articles
-- Ajout de _routes_ pour ces nouvelles pages dans `web/src/Routes.js`
+- Crée un fichier _layouts_dans `web/src/layouts/PostsLayout/PostsLayout.js` qui sert de conteneur pour les pages avec des éléments communs comme le titre de la page et le bouton "Nouveaux posts"
+- Routes créées encapsulées dans le composant `Set` avec la mise en page comme `PostsLayout` pour ces pages dans `web/src/Routes.js`
 - Ajout de trois _cells_ dans `web/src/components`:
-  - `EditPostCell` cellule permettant de récupérer un article pour l'éditer
-  - `PostCell` cellule permettant de récupérer un article pour l'afficher
-  - `PostsCell` cellule permettant de récupérer tous les articles
-- Ajout de quatre _composants_ également dans `web/src/components`:
+  - `EditPostCell` reçoit le message à éditer dans la base de données
+  - `PostCell` reçoit le message à afficher
+  - `PostsCell` reçoit tous les messages
+- Quatre composants _créés_ également dans `web/src/composants`:
   - `NewPost` affiche le formulaire permettant la création d'un nouvel article
-  - `Post` affiche un article en particulier
-  - `PostForm` le formulaire utilisé à la fois par les composants de création et d'édition d'un aricle
-  - `Posts` affiche la table avec l'ensemble des articles
+  - `Le message` affiche un seul message
+  - `PostForm` le formulaire utilisé à la fois par les composants de création et d'édition d'un article
+  - `Les messages` affichent la table de tous les messages
 
 > **Générateurs et conventions de nommage**
 > 
@@ -168,4 +169,3 @@ Puisque nous voudront probablement conserver un moyen de créer et éditer des a
 Nous avons déjà la `HomePage`, pas besoin de créer celle-ci donc. Nous souhaitons afficher une liste d'articles à l'utilisateur donc nous allons devoir ajouter ça. Nous avons besoin de récupérer le contenu depuis la base de données, et nous ne voulons pas que l'utilisateur soit face à une page blanche le temps du chargement (conditions réseau dégradées, serveur géographiquement distant, etc...), donc nous voudrons montrer une sorte de message de chargement et/ou une animation. D'autre part, si une erreur se produit, nous devrons faire en sorte de la prendre en charge. D'autre part, que va-t-il se passer lorsque nous publierons ce moteur de blog en open-source et qu'une personne l'initialisera sans aucun contenu dans la base de données? Ce serait sympa s'il y avait une sorte de message indiquant que le blog ne comporte encore aucun article.
 
 notre première page avec des données et il semble que nous ayons déjà à nous soucier du chargement des états, des erreurs…
-

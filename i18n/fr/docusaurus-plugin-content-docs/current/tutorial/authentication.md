@@ -30,7 +30,7 @@ Puisque nous avons déjà commecé à déployer notre application sur Netlify, n
 > * **Authentification** se rapporte au fait de savoir dans quelle mesure une personne est bien celle qu'elle prétend être. Celà prend généralement la forme d'un formulaire de Login avec un email et un mot de passe, ou un fournisseurs OAuth tiers comme Google.
 > * **Autorisation** se rapporte au fait de savoir si un utilisateur (qui en général s'est déjà authentifié) est autorisé à effectuer ou non une action. Celà recouvre en général une combinaison de roles et de permissions qui sont évaluées avant de donner ou refuser l'accès à une URL du site.
 > 
-> Cette section du didacticiel se concentre en particulier sur l'**authentification**. Voir [la partie 2 du tutoriel](https://redwoodjs.com/tutorial2) pour en apprendre plus sur l'Autorisation dans Redwood !
+> Cette section du didacticiel se concentre en particulier sur l'**authentification**. Voir [la partie 2 du tutoriel](https://learn.redwoodjs.com/docs/tutorial2/role-based-authorization-control-rbac) pour en apprendre plus sur l'Autorisation dans Redwood !
 
 ### Netlify Identity Setup
 
@@ -48,7 +48,7 @@ L'exécution de cette commande va créer un fichier `/netlify.toml` contenant le
 
 Avant que nous ne poursuivions, assurez-vous que tous les commits soient faits et bien envoyés sur GitHub, GitLab or BitBucket. En effet, nous allons lier Netlify à notre dépôt Git de façon à ce tout nouveau push sur la branch `main` permette de re-déployer le site. Si vous n'avez jamais travaillé auparavant avec une application Jamstack, préparez-vous à une sympatique expérience!
 
-En supposant que vous avez complété toutes les étapes précédentes, vous disposez déjà d'un compte Netlify ainsi que d'une application fonctionelle. Dans ce cas, rendez-vous sur l'onglet **Identity** et cliquez sur le boutton **Enable Identity**:
+En supposant que vous avez complété toutes les étapes précédentes, vous disposez déjà d'un compte Netlify ainsi que d'une application fonctionelle. Une fois que vous vous êtes inscrit et vérifié, il vous suffit de cliquer sur le bouton **New site from Git** en haut à droite :
 
 <img src="https://user-images.githubusercontent.com/300/73697486-85f84a80-4693-11ea-922f-0f134a3e9031.png" />
 
@@ -141,26 +141,29 @@ Essayez maintenant de créer, de modifier ou de supprimer un article de nos page
 
 Nous allons maintenant restreindre complètement l'accès aux pages d'administration, sauf si vous êtes connecté. La première étape consistera à indiquer les itinéraires qui nécessiteront que vous soyez connecté. Pour ce faire, ajouter la balise `<Private>`:
 
-```javascript {3,15,20}
+```javascript {3,16,23}
 // web/src/Routes.js
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'
-import BlogPostLayout from 'src/layouts/BlogPostLayout'
+import BlogLayout from 'src/layouts/BlogLayout'
+import PostsLayout from 'src/layouts/PostsLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Set wrap={BlogPostLayout}>
+      <Set wrap={BlogLayout}>
         <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
         <Route path="/contact" page={ContactPage} name="contact" />
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
       </Set>
       <Private unauthenticated="home">
-        <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
-        <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
-        <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
-        <Route path="/admin/posts" page={PostsPage} name="posts" />
+        <Set wrap={PostsLayout}>
+          <Route path="/admin/posts/new" page={NewPostPage} name="newPost" />
+          <Route path="/admin/posts/{id:Int}/edit" page={EditPostPage} name="editPost" />
+          <Route path="/admin/posts/{id:Int}" page={PostPage} name="post" />
+          <Route path="/admin/posts" page={PostsPage} name="posts" />
+        </Set>
       </Private>
       <Route notfound page={NotFoundPage} />
     </Router>
