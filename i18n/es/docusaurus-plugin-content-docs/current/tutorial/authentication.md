@@ -158,7 +158,7 @@ Ahora intente crear, editar o eliminar un mensaje de nuestras páginas de admini
 
 Limitemos el acceso a las páginas de administración a menos que se haya iniciado sesión. El primer paso será indicar qué rutas requieren inicio de sesión. Agregue la etiqueta `<Private>`:
 
-```javascript {3,15,20}
+```javascript {3,16,23}
 // web/src/Routes.js
 
 import { Router, Route, Set, Private } from '@redwoodjs/router'

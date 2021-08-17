@@ -42,7 +42,7 @@ Si vous cliquez sur le lien, vous deviez voir s'afficher un peu de texte issu de
 <Route path="/blog-post/{id}" page="{BlogPostPage}" name="blogPost" />
 ```
 
-Notez l'ajout de `{id}` dans notre route. Redwood nomme ceci un _paramètre de route_. Les paramètres de route sont identifiés par leur notation entre accolades, qui donnent la position du paramètre et leur contenu, qui correspond au nom des paramètres. Et tant que nous sommes dans le fichier routes, déplaçons la route à l'intérieur du `Set` qui contient le `BlogPostLayout`.
+Notez l'ajout de `{id}` dans notre route. Redwood nomme ceci un _paramètre de route_. Les paramètres de route sont identifiés par leur notation entre accolades, qui donnent la position du paramètre et leur contenu, qui correspond au nom des paramètres. Et tant que nous sommes dans le fichier routes, déplaçons la route à l'intérieur du `Set` qui contient le `BlogLayout`.
 
 ```javascript {5}
 // web/src/Routes.js
@@ -146,7 +146,7 @@ Il s'avère que les paramètres de route sont extraits des URL sous la forme de 
 
 ### Paramètres de Route Typés
 
-Et si vous aviez la possibilité de demander cette conversion directement dans le chemin de la route? Well, guess what: you can! Introducing **route param types**. It's as easy as adding `:Int` to our existing route param:
+Et si vous aviez la possibilité de demander cette conversion directement dans le chemin de la route? Eh bien, devinez quoi: vous pouvez! Introduction des **types de param de route**. C'est aussi simple que d'ajouter `:Int` à notre paramètre de route existant:
 
 ```html
 // web/src/Routes.js
@@ -161,21 +161,21 @@ Voilà! Non seulement vous allez convertir sans effort le paramètre `id` en un 
 > Toutes les propriétés que vous donnez à votre Cell seront automatiquement disponibles pour ses composants internes. Seuls ceux qui se se trouvent dans la liste des variables GraphQL seront transmises à la requête. Vous avez ainsi le meilleur des deux mondes! Dans l'affichage de notre article ci-dessus, si vous désirez montrer par exemple un nombre au hasard (pour des raisons evidentes liées à ce didacticiel :D), il vous suffit de passer cette propriété à votre Cell:
 > 
 > ```javascript
-<BlogPostCell id={id} rand={Math.random()} />
-```
-
-```javascript 
-
-```javascript
-Et ensuite vous la récupérez avec le résulat de la requête ans le composant (et même avec l'identifiant de l'article si vous le souhaitez): And get it, along with the query result (and even the original `id` if you want) in the component:
-
-```javascript
-export const Success = ({ post, id, rand }) => {
-  //...
-}
-```
-
-Merci Redwood!
+> <BlogPostCell id={id} rand={Math.random()} />
+> ```
+> 
+> ```javascript 
+> 
+> ```javascript
+> Et ensuite vous la récupérez avec le résulat de la requête ans le composant (et même avec l'identifiant de l'article si vous le souhaitez): And get it, along with the query result (and even the original `id` if you want) in the component:
+> 
+> ```javascript
+> export const Success = ({ post, id, rand }) => {
+>   //...
+> }
+> ```
+> 
+> Merci Redwood!
 
 ### Afficher un Article
 
@@ -261,7 +261,7 @@ Et nous y sommes! Nous devrions maintenant pouvoir aller et venir à notre guise
 
 ### Résumé
 
-Un petit état des lieux de ce que nous avons réalisé:
+Résumons:
 
 1. Création d'une nouvelle page pour afficher un article
 2. Ajout d'une route prenant en char l'identifiant `id` d'un article sous la forme d'un paramètre de route

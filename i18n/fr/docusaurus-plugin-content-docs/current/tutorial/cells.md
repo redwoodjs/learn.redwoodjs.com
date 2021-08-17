@@ -162,16 +162,16 @@ Le navigateur devrait en principe montrer un tableau avec un peu de contenu (en 
 > Remarquez que dans le composant `QUERY`, nous avons nommée notre requête `posts`. Quelque soit le nom de la requête, ce sera le nom de la propriété qui sera transmise au composant `Success` et qui contiendra vos données. Vous pouvez toutefois créer un alias de la façon suivante:
 > 
 > ```javascript
-export const QUERY = gql`
-  query BlogPostsQuery {
-    postIds: posts {
-      id
-    }
-  }
-`
-```
-
-```javascript export const QUERY = gql`
+> export const QUERY = gql`
+>   query BlogPostsQuery {
+>     postIds: posts {
+>       id
+>     }
+>   }
+> `
+> ```
+> 
+> ```javascript export const QUERY = gql`
     query BlogPostsQuery {
         postIds: posts {
             id
@@ -200,11 +200,11 @@ export const QUERY = gql`
 `;
 ```
 
-La page devrait désormais afficher un dump de l'ensemble des données pour tous les articles enregistrés:
+La page devrait désormais afficher une décharge de l'ensemble des données pour tous les articles enregistrés:
 
 <img src="https://user-images.githubusercontent.com/300/73210715-abb7a980-40ff-11ea-82d6-61e6bdcd5739.png" />
 
-Pour résumer, qu'avons nous réalisé jusqu'ici ?
+Maintenant, nous sommes dans le royaume des bons composants de React, donc construisez simplement le composant `Succès` pour afficher le message de blog dans un format plus sympa :
 
 ```javascript {4-12}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
