@@ -75,7 +75,7 @@ As soon as you save the change the stories Storybook should refresh and show the
 
 Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the **BlogPost** component though, that's in the **BlogPostsCell**. We'll add the summary prop and then check the result in Storybook:
 
-```javascript {27}
+```javascript {26}
 // web/src/components/BlogPostsCell/BlogPostsCell.js
 
 import BlogPost from 'src/components/BlogPost'
