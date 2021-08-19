@@ -10,7 +10,7 @@ Questo tutorial presuppone che tu abbia già familiarità con alcuni concetti fo
 - [GraphQL](https://graphql.org/)
 - [Jamstack](https://jamstack.org/)
 
-Potresti prendere in mano questo tutorial senza conoscere nulla di queste tecnologie ma potresti ritrovarti spaesato sulla terminologia su cui non ci soffermiamo e per cui non prendiamo del tempo per una spiegazione. Risulta essere di aiuto anche sapere dove è il confine tra ciò che è realizzato in React e quali feature aggiuntive Redwood mette sul tavolo.
+Potresti affrontare questo tutorial senza conoscere nulla di queste tecnologie, ma è possibile che tu ti ritrovi spaesato con la terminologia utilizzata. Infatti, non ci soffermeremo per offrire spiegazioni al riguardo. Risulta essere di aiuto anche sapere dove è il confine tra ciò che è realizzato in React e quali feature aggiuntive Redwood mette sul tavolo.
 
 ### Versioni di Redwood
 
@@ -27,7 +27,7 @@ Durante l'installazione, RedwoodJS verifica se il sistema soddisfa i requisiti d
 - node: "=14.x"
 - yarn: ">=1.15"
 
-Se le versioni di sistema non soddisfano entrambie i requisiti, _il bootstrap di installazione terminerà con un ERROR._ Per verificare, eseguire quanto segue dalla riga di comando del terminale:
+Se le versioni di sistema non soddisfano entrambi i requisiti, _il bootstrap di installazione terminerà con un ERROR._ Per verificare, esegui quanto segue dalla riga di comando del terminale:
 
 ```
 node --version
