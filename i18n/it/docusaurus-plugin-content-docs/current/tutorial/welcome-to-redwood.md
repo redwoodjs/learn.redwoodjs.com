@@ -4,9 +4,9 @@ title: "Benvenuto in Redwood"
 sidebar_label: "Benvenuto in Redwood"
 ---
 
-Benvenuto in Redwood! Se non l'hai ancora fatto, dai un'occhiata al [README di Redwood](https://github.com/redwoodjs/redwood/blob/main/README.md) per avere un piccolo riepilogo del perché abbiamo creato Redwood e dei problemi cui intende porre rimedio. Redwood riunisce diverse tecnologie per la prima volta in quello che riteniamo essere il futuro delle single page application con supporto di database.
+Benvenuto in Redwood! Se non l'hai ancora fatto, dai un'occhiata al [README di Redwood](https://github.com/redwoodjs/redwood/blob/main/README.md) per avere un piccolo riepilogo del perché abbiamo creato Redwood e dei problemi cui intende porre rimedio. Per la prima volta, Redwood riunisce diverse tecnologie in quello che riteniamo essere il futuro delle database-backed single page applications.
 
-In questo tutorial andremo a costruire un engine per un blog. In realtà un blog probabilmente non è il candidato ideale per un'applicazione Redwood: gli articoli di un blog possono essere memorizzati in un CMS e generati staticamente in file HTML e messi a disposizione come file "flat" tramite una CDN (il classico caso d'uso Jamstack). Ma dal momento che molti sviluppatori hanno familiarità con un blog ed esso utilizza tutte le feature che vogliamo mostare, abbiamo deciso di crearne uno comunque.
+In questo tutorial andremo a costruire un engine per un blog. In realtà, un blog non è probabilmente il candidato ideale per un'applicazione Redwood: gli articoli di un blog possono essere memorizzati in un CMS e generati staticamente in file HTML e messi a disposizione come file "flat" tramite una CDN (il classico caso d'uso Jamstack). Ma dal momento che molti sviluppatori hanno familiarità con un blog ed esso utilizza tutte le feature che vogliamo mostare, abbiamo deciso di crearne uno comunque.
 
 Preferisci guardare questo tutorial invece? Comincia qui:
 
