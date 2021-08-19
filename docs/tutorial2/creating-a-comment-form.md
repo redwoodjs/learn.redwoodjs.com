@@ -334,7 +334,7 @@ Now fill out the comment form and submit! And...nothing happened! Believe it or 
 
 ![image](https://user-images.githubusercontent.com/300/100950150-98fcc680-34c0-11eb-8808-944637b5ca1f.png)
 
-Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages which isn't idea. But, we can fix both of those! One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely when a new comment is submitted.
+Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages which isn't ideal. But, we can fix both of those! One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely when a new comment is submitted.
 
 ### GraphQL Query Caching
 
@@ -573,7 +573,7 @@ Try running the test suite (or if it's already running take a peek at that termi
 >
 > There are no hard and fast rules here, but generally the farther down you put your business logic (the code that deals with moving and manipulating data) the easier it will be to build and maintain your application. Redwood encourages you to put your business logic in services since they're "closest" to the data and behind the GraphQL interface.
 
-Open up the **comments** service test and let's update it expect the `postId` argument to be passed to the `comments()` function like we tested out in the console:
+Open up the **comments** service test and let's update it to pass the `postId` argument to the `comments()` function like we tested out in the console:
 
 ```javascript {4}
 // api/src/services/comments/comments.test.js
