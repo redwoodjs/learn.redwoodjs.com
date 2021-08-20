@@ -159,7 +159,7 @@ Voici dans le détail ce qui arrive lorsqu'on execute la commande `yarn rw g sca
 
 ### Créer la page d'accueil
 
-Nous pouvons commencer à remplacer ces pages les unes après les autres au fur et à mesure que l'équipe chargée du design nous donne des éléments, ou bien nous pouvons simplement les déplacer dnas la partie "administration" de notre site, et commencer à créer nos propres pages. Ceci étant, la partie publique du site ne va certainement pas autoriser les utilisateurs à créer, éditer ou supprimer les articles. Que peuvent donc faire les utilisateurs?
+Nous pouvons commencer à remplacer ces pages les unes après les autres au fur et à mesure que l'équipe chargée du design nous donne des éléments, ou bien nous pouvons simplement les déplacer dans la partie "administration" de notre site, et commencer à créer nos propres pages. Ceci étant, la partie publique du site ne va certainement pas autoriser les utilisateurs à créer, éditer ou supprimer les articles. Que peuvent donc faire les utilisateurs?
 
 1. Voir la liste des articles (sans liens pour éditer ou supprimer)
 2. Voir le détail d'un article
@@ -168,4 +168,4 @@ Puisque nous voudront probablement conserver un moyen de créer et éditer des a
 
 Nous avons déjà la `HomePage`, pas besoin de créer celle-ci donc. Nous souhaitons afficher une liste d'articles à l'utilisateur donc nous allons devoir ajouter ça. Nous avons besoin de récupérer le contenu depuis la base de données, et nous ne voulons pas que l'utilisateur soit face à une page blanche le temps du chargement (conditions réseau dégradées, serveur géographiquement distant, etc...), donc nous voudrons montrer une sorte de message de chargement et/ou une animation. D'autre part, si une erreur se produit, nous devrons faire en sorte de la prendre en charge. D'autre part, que va-t-il se passer lorsque nous publierons ce moteur de blog en open-source et qu'une personne l'initialisera sans aucun contenu dans la base de données? Ce serait sympa s'il y avait une sorte de message indiquant que le blog ne comporte encore aucun article.
 
-notre première page avec des données et il semble que nous ayons déjà à nous soucier du chargement des états, des erreurs…
+Oh là là, notre première page avec des données et il semble que nous ayons déjà à nous soucier du chargement des états, des erreurs… ou peut-être pas?
