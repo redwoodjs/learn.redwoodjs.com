@@ -4,7 +4,7 @@ title: "Una seconda pagina e un link"
 sidebar_label: "Una seconda pagina e un link"
 ---
 
-Creiamo una pagina "About" per il nostro blog in modo che tutti sappiano chi siano i cervelloni dietro questo successo. Creeremo un'altra pagina utilizzando `redwood`:
+Creiamo una pagina "About" per il nostro blog in modo che tutti sappiano quali sono i geni dietro questo risultato. Creeremo un'altra pagina utilizzando `redwood`:
 
     yarn redwood generate page about
 
