@@ -17,7 +17,7 @@ Il comando qui sopra realizza quattro operazioni:
 
 > **Import automatico delle pagine nel file Routes**
 > 
-> Se guardi in Routes, noterai che stiamo facendo riferimento a un component, `HomePage`, che non è importato da nessuna parte. Redwood importa automaticamente tutte le pagine nel file Routes poiché avremo bisogno di referenziarle in ogni caso. Questo evita un potenzialmente enorme `import` che possa ingombrare il file delle route.
+> Se dai un'occhiata alle Routes, noterai che stiamo facendo riferimento ad un component, `HomePage`, che non è importato da nessuna parte. Redwood importa automaticamente tutte le pagine nel file Routes poiché avremo bisogno di referenziarle in ogni caso. Questo evita un `import` potenzialmente enorme che potrebbe ingombrare il file delle rotte.
 
 Infatti questa pagina è già live (il browser è stato ricaricato automaticamente):
 
