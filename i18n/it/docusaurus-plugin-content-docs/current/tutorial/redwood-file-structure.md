@@ -72,9 +72,9 @@ Questo è tutto per il backend.
   - `index.css` è un punto generico per inserire il tuo CSS, ma ci sono molte altre opzioni.
   - `index.html` è il punto di partenza standard di React per la nostra app.
   - `App.js` il codice di bootstrap per eseguire la nostra app Redwood.
-  - `Routes.js` definisce le route della nostra app che mappano un URL su una _Page_.
+  - `Routes.js` definisce le rotte della nostra app che mappano un URL su una _Page_.
 - `public` contiene asset non utilizzati da component React (verranno copiati nella root directory dell'app finale senza essere modificati):
-  - `favicon.png` è l'icona che va in un tab del browser quando la pagina è aperta (le app partono con il logo RedwoodJS di default).
+  - `favicon.png` è l'icona che sarà adottata da un tab del browser quando la pagina è aperta (le app mostreranno il logo RedwoodJS di default).
   - `robots.txt` può essere utilizzato per controllare quali indicizzatori web sono [autorizzati](https://www.robotstxt.org/robotstxt.html).
   - `README.md` spiega come, e quando, utilizzare la directory `public` per gli asset statici. Esso descrive anche le best practice per l'import di asset all'interno dei component tramite Webpack. Puoi anche [leggere questo file README.md su GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
 
