@@ -4,7 +4,7 @@ title: "Votre partie préférée: Les Formulaires"
 sidebar_label: "Votre partie préférée: Les Formulaires"
 ---
 
-Attendez, ne fermez pas votre navigateur ! Vous deviez bien vous douter que ça allait venir, non? Et vous vous êtes probablement rendu compte maintenant que nous n'aurions même pas cette section dans le tutoriel à moins que Redwood n'ait trouvé un moyen astucieux de faire les choses. En fait, Redwood pourrait même vous faire _aimer_ les formulaires. Bon, aimer est peut-être un peu fort. Disons _apprécier_ travailler avec les formulaires, ou à tout le moins les _tolérer_?
+Attendez, ne fermez pas votre navigateur ! Vous deviez bien vous douter que ça allait venir, non? Et vous vous êtes probablement rendu compte maintenant que nous n'aurions même pas cette section dans le tutoriel à moins que Redwood n'ait trouvé un moyen astucieux de faire les choses. En fait, Redwood pourrait même vous faire _aimer_ les formulaires. Bon, aimer est peut-être un peu fort. Disons _apprécier_ travailler avec les formulaires, ou à tout le moins les _tolérer_? Ou à tout le moins les _tolérer_?
 
 La troisième partie du didacticiel en video commence ici:
 
@@ -247,7 +247,7 @@ Essayez donc de soumettre à nouveau le formulaire, vous devriez obtenir dans la
 
 ### Validation
 
-"D'accord, cher auteur du tutoriel Redwood," dites-vous, "C'est quoi le truc? Il y a pléthore de bibliothèques qui me permettent de créer des champs dans un formulaire. So what?" Vous avez raison! N'importe qui peut remblir un formulaire _correctement_, mais que se passe-t-il lorsqu'un utilisateur fait une erreur, oubli un champ, voire tente de jouer les hackers? Qui va vous aider à gérer cette situation? Redwood va le faire.
+"D'accord, cher auteur du tutoriel Redwood," dites-vous, "C'est quoi le truc? Il y a pléthore de bibliothèques qui me permettent de créer des champs dans un formulaire. Et alors ?! Vous avez raison! N'importe qui peut remblir un formulaire _correctement_, mais que se passe-t-il lorsqu'un utilisateur fait une erreur, oubli un champ, voire tente de jouer les hackers? Qui va vous aider à gérer cette situation? Redwood va le faire.
 
 Tout d'abord, ce trois champs devraient être obligatoirement remplis pour pouvoir soumettre le formulaire. Rendons cette règle obligatoire en utilisant l'attribut HTML standard `required`:
 
@@ -470,7 +470,7 @@ export default ContactPage
 
 > **Validation instantanée des champs côté client**
 > 
-> En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs.
+> En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs. En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs.
 
 ### Validation du Format des Champs
 
