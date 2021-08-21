@@ -10,14 +10,14 @@ Diamo ai nostri utenti qualcosa da guardare oltre alla pagina di benvenuto di Re
 
 Il comando qui sopra realizza quattro operazioni:
 
-- Crea `web/src/pages/HomePage/HomePage.js`. Redwood adotta il nome che hai specificato come primo argomento, lo scrive in maiuscolo, ed accoda "Page" per costruire il tuo nuovo page component.
-- Crea un file di test che va insieme a questo nuovo page component su `web/src/pages/HomePage/HomePage.test.js`, con un singolo passing test. Tu _scrivi_ i passing test per i tuoi component, _no??_
+- Crea `web/src/pages/HomePage/HomePage.js`. Redwood adotta il nome che hai specificato come primo argomento (scrivendone la prima lettera in maiuscolo), ed accoda "Page" per costruire il tuo nuovo page component.
+- Crea un file di test che va insieme a questo nuovo page component su `web/src/pages/HomePage/HomePage.test.js`, contenente un semplice test d'esempio. Tu _scrivi_ i passing test per i tuoi component, _no??_
 - Crea un file Storybook per questo component `web/src/pages/HomePage/HomePage.stories.js`. Storybook è un meraviglioso strumento per l'efficiente sviluppo e organizzazione dei component dell'interfaccia utente. Se vuoi saperne di più, consulta questo topic [Redwood Forum](https://community.redwoodjs.com/t/how-to-use-the-new-storybook-integration-in-v0-13-0/873) per iniziare a usarlo nel tuo processo di sviluppo.
 - Aggiunge un `<Route>` in `web/src/Routes.js` che mappa il percorso `/` alla nuova pagina _HomePage_.
 
 > **Import automatico delle pagine nel file Routes**
 > 
-> Se guardi in Routes, noterai che stiamo facendo riferimento a un component, `HomePage`, che non è importato da nessuna parte. Redwood importa automaticamente tutte le pagine nel file Routes poiché avremo bisogno di referenziarle in ogni caso. Questo evita un `import` potenzialmente enorme che possa ingombrare il file delle routes.
+> Se guardi in Routes, noterai che stiamo facendo riferimento a un component, `HomePage`, che non è importato da nessuna parte. Redwood importa automaticamente tutte le pagine nel file Routes poiché avremo bisogno di referenziarle in ogni caso. Questo evita un potenzialmente enorme `import` che possa ingombrare il file delle route.
 
 Infatti questa pagina è già live (il browser è stato ricaricato automaticamente):
 
@@ -39,7 +39,7 @@ Prova a cambiare il percorso in qualcosa di simile:
 <Route path="/hello" page={HomePage} name="home" />
 ```
 
-Non appena aggiungi la prima route, non vedrai mai più lo splash screen iniziale di Redwood. D'ora in poi, quando non sarà possibile trovare una route che corrisponda all'URL richiesto, Redwood renderizzerà la `NotFoundPage`. Cambia il tuo URL in http://localhost:8910/hello e dovresti vedere di nuovo la homepage.
+Non appena aggiungi la prima route, non vedrai mai più lo splash screen iniziale di Redwood. D'ora in poi, quando non sarà possibile trovare una route che corrisponda all'URL richiesto, Redwood farà il rendering di `NotFoundPage`. Cambia il tuo URL in http://localhost:8910/hello e dovresti vedere di nuovo la homepage.
 
 Cambia il percorso nuovamente in `/` prima di continuare!
 
