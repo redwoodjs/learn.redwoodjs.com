@@ -10,7 +10,7 @@ Questo tutorial presuppone che tu abbia già familiarità con alcuni concetti fo
 - [GraphQL](https://graphql.org/)
 - [Jamstack](https://jamstack.org/)
 
-Potresti prendere in mano questo tutorial senza conoscere nulla di queste tecnologie ma potresti ritrovarti spaesato sulla terminologia, su cui non ci soffermeremo a spendere del tempo per una spiegazione. Risulta essere di aiuto anche sapere dove è il confine tra ciò che è realizzato in React e quali feature aggiuntive Redwood mette sul tavolo.
+Potresti affrontare questo tutorial senza conoscere nulla di queste tecnologie, ma è possibile che tu ti ritrovi spaesato con la terminologia utilizzata. Infatti, non ci soffermeremo per offrire spiegazioni al riguardo. Risulta essere di aiuto anche sapere dove è il confine tra ciò che è realizzato in React e quali feature aggiuntive Redwood mette sul tavolo.
 
 ### Versioni di Redwood
 
