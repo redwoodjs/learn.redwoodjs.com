@@ -468,7 +468,7 @@ export default ContactPage
 
 <img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
 
-> **Validation instantanée des champs côté client**
+> **Erreur de style**
 > 
 > En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs. En plus de `className` et `errorClassName` vous pouvez également utiliser `style` et `errorStyle` Consultez la [documentation portant sur les formulaires](https://redwoodjs.com/docs/form) pour plus de détails sur le style des erreurs.
 
