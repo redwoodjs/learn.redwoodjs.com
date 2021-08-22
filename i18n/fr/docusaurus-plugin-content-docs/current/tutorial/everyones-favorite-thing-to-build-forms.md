@@ -492,7 +492,7 @@ OK, ça n'est pas la validation ultime pour un champ email, mais pour le moment 
 
 Vous avez peut-être remarqué qu'essayer d'envoyer le formulaire alors que sont présentes des erreurs de validation n'affiche rien dans la console. C'est en réalité une bonne chose car celà vous indique que le formulaire n'a pas été envoyé. Corrigez la valeur des champs concernés, et tout fonctionne correctement.
 
-> **En savoir plus sur les formulaires dans Redwood**
+> **Validation instantanée des champs côté client**
 > 
 > Lorsqu'un message lié à une erreur lors de la validation d'un champ s'affiche, il disparaît dès que la valeur est corrigée. Vous n'avez pas à cliquer à nouveau sur "Submit" pour supprimer les messages d'erreur.
 
