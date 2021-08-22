@@ -8,7 +8,7 @@ Attendez, ne fermez pas votre navigateur ! Vous deviez bien vous douter que ça 
 
 La troisième partie du didacticiel en video commence ici:
 
-> **Style des erreurs**
+> **Avis : contenu ancien**
 > 
 > Ces vidéos ont été enregistrées avec une version antérieure de Redwood et de nombreuses commandes sont maintenant obsolètes. Si vous voulez vraiment construire l'application de blog, vous devrez suivre avec le texte que nous gardons à jour avec les dernières versions.
 
