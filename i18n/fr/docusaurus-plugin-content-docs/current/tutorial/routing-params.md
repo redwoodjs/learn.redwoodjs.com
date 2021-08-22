@@ -183,11 +183,7 @@ Maintenant, affichons le véritable article au lieu de simplement dumper le rés
 
     yarn rw g component BlogPost
 
-// web/src/components/BlogPost/BlogPost.js const BlogPost = () =&gt; { return (
-        &lt;div&gt;
-            &lt;h2&gt;{"BlogPost"}&lt;/h2&gt;
-            &lt;p&gt;{"Find me in ./web/src/components/BlogPost/BlogPost.js"}&lt;/p&gt;
-        &lt;/div&gt; ); }; export default BlogPost;
+Ce qui crée `web/src/components/BlogPost/BlogPost.js` (et test!) un composant React super simple :
 
 ```javascript
 // web/src/components/BlogPost/BlogPost.js
