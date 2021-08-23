@@ -248,7 +248,7 @@ Notre formulaire de contact fonctionne, mais il subsiste quelques problèmes:
 
 Essayons d'y apporter une solution.
 
-Le 'hook' `useMutation` retourne quelques autres éléments en plus de la fonction permettant de l'invoquer. Nous pouvons les détruire comme le deuxième élément du tableau qui est retourné. Nous pouvons déstructurer ceux-ci (`loading` et `error`) de la façon suivante:
+Le 'hook' `useMutation` retourne quelques autres éléments en plus de la fonction permettant de l'invoquer. Nous pouvons les détruire comme le deuxième élément du tableau qui est retourné. Les deux choses qui nous intéressent sont le `chargement` et `erreur`:
 
 ```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
