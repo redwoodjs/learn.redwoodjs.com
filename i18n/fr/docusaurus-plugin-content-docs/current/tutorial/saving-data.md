@@ -73,7 +73,7 @@ Que sont les "input" `CreateContactInput` et `UpdateContactInput`? Redwood suit 
 
 > Redwood suppose que votre code n'essaiera pas de définir une valeur sur un champ nommé `id` ou `createdAt` donc il les a laissés en dehors des types d'entrée, mais si votre base de données autorise l'un ou l'autre de ceux à définir manuellement, vous pouvez mettre à jour`CreateContactInput`ou `UpdateContactInput` et les ajouter.
 
-Puisque toutes les colonnes de la table étaient définies comme requises dans `schema.prisma`, elles sont également définies comme requises ici (notez le suffixe `!` sur les types de données) ). ).
+Puisque toutes les colonnes de la table étaient définies comme requises dans `schema.prisma`, elles sont également définies comme requises ici (notez le suffixe `!` sur les types de données).
 
 > **Syntaxe GraphQL pour les champs obligatoires**
 > 
@@ -215,7 +215,7 @@ create({
 });
 ```
 
-Si votre méémoire est bonne, vous vous souvenez sans doute que la balise `<Form>` nous donne accès à l'ensemble des champs du formulaire avec un objet bien pratique dans lequel chaque clef se trouve être le nom du champ. Celà signifie donc que l'objet `data`que nous recevons dans `onSubmit` est déjà dans le format adapté pour `input`!
+Si votre mémoire est bonne, vous vous souvenez sans doute que la balise `<Form>` nous donne accès à l'ensemble des champs du formulaire avec un objet bien pratique dans lequel chaque clef se trouve être le nom du champ. Cela signifie donc que l'objet `data`que nous recevons dans `onSubmit` est déjà dans le format adapté pour `input`!
 
 Maintenant nous pouvons mettre à jour la fonction `onSubmit` pour invoquer la mutation avec les données qu'elle reçoit:
 
@@ -248,7 +248,7 @@ Notre formulaire de contact fonctionne, mais il subsiste quelques problèmes:
 
 Essayons d'y apporter une solution.
 
-Le 'hook' `useMutation` retourne quelques autres éléments en plus de la fonction permettant de l'invoquer.   Nous pouvons déstructurer ceux-ci (`loading` et `error`) de la façon suivante:
+Le 'hook' `useMutation` retourne quelques autres éléments en plus de la fonction permettant de l'invoquer. Nous pouvons les détruire comme le deuxième élément du tableau qui est retourné. Nous pouvons déstructurer ceux-ci (`loading` et `error`) de la façon suivante:
 
 ```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
@@ -379,19 +379,19 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 > Si vous avez besoin de manipuler l'objet contenant les erreurs, vous pouvez procéder ainsi:
 > 
 > ```javascript {3-8}
-  // web/src/pages/ContactPage/ContactPage.js
-  const onSubmit = async (data) =&#062; {
-    try {
-      await create({ variables: { input: data } })
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-```
-```
+>   // web/src/pages/ContactPage/ContactPage.js
+>   const onSubmit = async (data) =&#062; {
+>     try {
+>       await create({ variables: { input: data } })
+>       console.log(data)
+>     } catch (error) {
+>       console.log(error)
+>     }
+>   }
+> ```
+> ```
 
-Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
+Pour obtenir une erreur de serveur à exécuter, nous allons supprimer la validation du format de courriel afin que l'erreur côté client ne soit pas affichée :
 
 ```html
 // web/src/pages/ContactPage/ContactPage.js 
@@ -405,15 +405,15 @@ Afin de tester ceci, provoquons une erreur en retirant temporairement la validat
 />
 ```
 
-Maintenant, essayons de remplir le formulaire avec un adresse invalide:
+Maintenant, essayez de remplir le formulaire avec une adresse e-mail invalide :
 
 <img src="https://user-images.githubusercontent.com/16427929/98918425-e394af80-24cd-11eb-9056-58c295cf0d5c.PNG" />
 
-Ce n'est pas d'une esthétique remarquable, mais ça marche. Ce serait sans doute mieux si le champ lui-même était mis en surbrillance comme quand la validation en ligne était en place...
+Ce n'est pas joli, mais ça marche. Ce serait sans doute mieux si le champ lui-même était mis en surbrillance comme quand la validation en ligne était en place...
 
-Vous rapellez-vous lorsque nous avons dit que `<Form>` avait plus d'un tour dans son sac? Voyons donc ça!
+Rappelez-vous quand nous avons dit que `<Form>` avait encore un tour dans sa manche ? Voilà qui vient !
 
-Supprimez l'affichage de l'erreur tel que nous venons de l'ajouter (`{ error && ...}`) , et remplacez-le avec `<FormError>` tout en passant en argument la constante `error` que nous récupérons depuis `useMutation`. Ajoutez également quelques ééléments de style à `wrapperStyle`, sans oublier les `import` associés.
+Supprimez l'affichage de l'erreur tel que nous venons de l'ajouter (`{ error && ...}`) , et remplacez-le avec `&lt;FormError&gt;` tout en passant en argument la constante `error` que nous récupérons depuis `useMutation`. Ajoutez également quelques éléments de style à `wrapperStyle`, sans oublier les `import` associés. Nous passerons également `erreur` à `<Form>` pour qu'il puisse configurer un contexte :
 
 ```javascript {10,20-24}
 // web/src/pages/ContactPage/ContactPage.js
@@ -445,11 +445,11 @@ return (
 )
 ```
 
-Désormais, l'envoi du formulaire avec une adresse invalide donne ceci:
+Maintenant, soumettez un message avec une adresse e-mail invalide :
 
 <img src="https://user-images.githubusercontent.com/300/80259553-c46e2780-863a-11ea-9441-54a9112b9ce5.png" />
 
-Nous obtenons un message d'erreur en haut du formulaire _et_ les champs concernés sont mis en avant! Le message en haut du formulaire peut apparaître un peu lourd pour un si petit formulaire, mais vous contaterez son utilité lorsque vous construirez des formulaires de plusieurs pages; de cette façon l'utilisateur peut voir imméédiatement ce qui ne fonctionne pas sans avoir à parcourir l'ensemble du formulaire. Si vous ne souhaitez pas utiliser cet affichage, il vous suffit de supprimer `<FormError>`, les champs seront toujours mis en avant.
+Nous obtenons ce message d'erreur en haut en disant que quelque chose s'est mal passé en anglais clair _et_ le champ réel est mis en surbrillance pour nous, tout comme la validation en ligne ! Le message en haut du formulaire peut apparaître un peu lourd pour un si petit formulaire, mais vous contaterez son utilité lorsque vous construirez des formulaires de plusieurs pages; de cette façon l'utilisateur peut voir imméédiatement ce qui ne fonctionne pas sans avoir à parcourir l'ensemble du formulaire. Si vous ne souhaitez pas utiliser cet affichage, il vous suffit de supprimer `&lt;FormError&gt;`, les champs seront toujours mis en avant.
 
 > **`<FormError>` a plusieurs options pour adapter le style d'affichage**
 > 
@@ -462,11 +462,11 @@ Nous obtenons un message d'erreur en haut du formulaire _et_ les champs concern�
 
 ### Une dernière chose...
 
-Puisque nous ne redirigeons pas l'utilisateur une fois le formulaire envoyé, nous devrions au moins remettre le formulaire à zéro. Pour celà nous devons utiliser la fonction `reset()` proposée par `react-hook-form`, mais nous n'y avons pas accès compte tenu de la manière dont nous utilisons `<Form>`.
+Puisque nous ne redirigeons pas l'utilisateur une fois le formulaire envoyé, nous devrions au moins remettre le formulaire à zéro. Pour celà nous devons utiliser la fonction `reset()` proposée par `react-hook-form`, mais nous n'y avons pas accès compte tenu de la manière dont nous utilisons `&lt;Form&gt;`.
 
-`react-hook-form` possède un 'hook' appelé `useForm()` qui est en principe invoquéé pour nous à l'intérieur de `<Form>`. De façon à réinitialiser le formulaire nous devons invoquer ce 'hook' manuellement. Mais la fonctionnalité que `useForm()` fournit doit tout de même être utilisée dans `Form`. Voici comment faire:
+`react-hook-form` possède un 'hook' appelé `useForm()` qui est en principe invoquée pour nous à l'intérieur de `&lt;Form&gt;`. De façon à réinitialiser le formulaire nous devons invoquer ce 'hook' manuellement. Mais la fonctionnalité que `useForm()` fournit doit tout de même être utilisée dans `Form`. Voici comment nous y parvenons.
 
-Commençons par importer `useForm`:
+Tout d'abord, nous allons importer `useForm`:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
@@ -484,7 +484,7 @@ const ContactPage = () => {
   //...
 ```
 
-Enfin, donnons pour instruction explicite à `<Form>` d'utiliser `formMethods`, au lieu de le laisser le faire lui-même:
+Enfin, nous allons dire à `<Form>` d'utiliser les `formMethods` que nous venons d'instancier au lieu de le faire lui-même :
 
 ```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
@@ -503,7 +503,7 @@ return (
 
 Maintenant nous pouvons appeler `reset()` sur `formMethods` après avoir appelé `toast()` :
 
-```javascript{6}
+```javascript {6}
 // web/src/pages/ContactPage/ContactPage.js
 
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
@@ -587,6 +587,10 @@ const ContactPage = () => {
           name="email"
           validation={{
             required: true,
+            pattern: {
+              value: /[^@]+@[^.]+\..+/,
+              message: 'Please enter a valid email address',
+            },
           }}
           errorClassName="error"
         />
@@ -611,12 +615,12 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-C'est terminé! [React Hook Form](https://react-hook-form.com/) propose pas mal de fonctionalités que `<Form>` n'expose pas. Lorsque vous souhaitez les utiliser, appelez juste le 'hook' `useForm()` vous-même, en vous assurant de bien passer en argument l'objet retourné (`formMethods`) comme propriété de `<Form>` de façon à ce que la validation et les autres fonctionalités puissent continuer à fonctionner.
+C'est tout! \[React Hook Form\](https://react-hook-form.com/) propose pas mal de fonctionalités que `&lt;Form&gt;` n'expose pas. Lorsque vous souhaitez les utiliser, appelez juste le 'hook' `useForm()` vous-même, en vous assurant de bien passer en argument l'objet retourné (`formMethods`) comme propriété de `&lt;Form&gt;` de façon à ce que la validation et les autres fonctionalités puissent continuer à fonctionner.
 
 > Vous avez peut-être remarqué que la validation onBlur a cessé de fonctionner lorsque vous avez commencé à appeler `userForm()` par vous-même. Ceci s'explique car Redwood invoque `userForm()` et lui passe automatiquement en argument ce que vous avez passé à `<Form>`. Puisque Redwood n'appelle plus automatiquement `useForm()` à votre place, vous devez de faire manuellement:
 > 
 > ```javascript
-const formMethods = useForm({ mode: "onBlur" });
-```
+> const formMethods = useForm({ mode: "onBlur" });
+> ```
 
 La partie publique du site a bon aspect. Que faire maintenant de la partie administration qui nous permet de créer et éditer les articles? Nous devrions la déplacer dans une partie réservée et la placer derrière un login, de façon à ce des utilisateurs mal intentionnés ne puissent pas créer en chaîne, par exemple, des publicités pour l'achat de médicaments en ligne...
