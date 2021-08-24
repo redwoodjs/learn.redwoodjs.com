@@ -13,13 +13,13 @@ model Contact {
   id        Int @id @default(autoincrement())
   name      String
   email     String
-  message   String
+  message   String   @db.Text
   createdAt DateTime @default(now())
 }
 ```
 
 > **Sintaxis de Prisma para campos opcionales**
-> 
+>
 > Indique un campo como opcional (que acepte `NULL` como valor) con un signo de interrogación luego del tipo de datos, ej. `String?`. Esto hace que `name` sea de tipo `String` o `NULL`.
 
 Luego creamos y aplicamos una migración:
@@ -76,7 +76,7 @@ export const schema = gql`
 Dado que todas las columnas en el archivo `schema.prisma` son requeridas, se marcan con el signo de exclamación `!` al final del tipo de datos (ej. `nombre: String!`). ).
 
 > **Sintaxis GraphQL para campos requeridos**
-> 
+>
 > La syntaxis de GraphQL's require un símbolo de exclamación `!` para indicar que el campo _es requerido_. Recuerde también: `schema.prisma` requiere un símbolo de pregunta `?` cuando un campo _es opcional_.
 
 Como se describe en [Misión secundaria: Cómo funciona Redwood con datos](side-quest-how-redwood-works-with-data), no hay resolutores explícitos definidos en el archivo SDL. Redwood usa una nomenclatura simple: cada campo listado en los tipos `Query` y `Mutation` en el archivo `sdl` (ej `api/src/graphql/contacts.sdl.js`) mapea una función con el mismo nombre en el archivo `services` (`api/src/services/contacts/contacts.js`).
@@ -325,9 +325,9 @@ A continuación informaremos al usuario de errores en el servidor. Hasta ahora s
 Tenemos una validación para correo en el cliente, pero todo buen desarrollador sabe [_que nunca debe confía en el cliente_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Añadamos la validación de correo en la API para estar seguros de los datos son válidos en nuestra base de datos, incluso cuando alguien pase por alto la validación del lado del cliente.
 
 > **¿No hay validación en el servidor?**
-> 
+>
 > ¿Por qué no validamos en el servidor la existencia de nombre, correo y mensaje? Porque la base de datos lo hace por nosotros. ¿Recuerdas el tipo `String!` en la definición SDL? Esto añade una restricción en la base de datos: el campo no puede ser `null`. Si un `null` llegara hasta la base de datos, se rechazaría el comando insert/update y GraphQL devolvería un error al cliente.
-> 
+>
 > ¡Como no hay un tipo `email` debemos validarlo por nuestra cuenta!
 
 Hemos hablado de lógica de negocios perteneciente a los servicios y este es un ejemplo perfecto. Añadamos una función `validate` al servicio `contacts`:
@@ -377,7 +377,7 @@ Ya capturamos cualquier error existente en la constante `error` que obtuvimos de
 ```
 
 > Para manejar errores manualmente, puede hacer lo siguiente:
-> 
+>
 > ```javascript {3-8}
 > // web/src/pages/ContactPage/ContactPage.js
 > const onSubmit = async (data) => {
@@ -451,9 +451,9 @@ Ahora envía un mensaje con una dirección de correo inválida:
 Obtenemos ese mensaje de error en la parte superior diciendo que algo salió mal en inglés y _el campo real se resalta_, ¡al igual que la validación en línea! El mensaje en la parte superior puede ser demasiado para un formulario tan breve, pero puede ser clave si el formulario comprende varias pantallas; el usuario tendrá un resumen de lo que salió mal en un solo lugar y sin recurrir a buscar por todos lados los campos en rojo. No tiene porque usar este cuadro de mensajes, bastará eliminar el `<FormError>` y cada campo será resaltado como se espera.
 
 > **Opciones de estilo para `<FormError>`**
-> 
+>
 > `<FormError>` tiene varias opciones de estilo asociadas a varias partes del mensaje:
-> 
+>
 > - `wrapperStyle` / `wrapperClassName`: para el contenedor del mensaje
 > - `titleStyle` / `titleClassName`: para el título "Can't create new contact"
 > - `listStyle` / `listClassName`: el elemento `<ul>` con la lista de errores
@@ -613,7 +613,7 @@ export default ContactPage
 ¡Eso es todo! [React Hook Form](https://react-hook-form.com/) proporciona un montón de [funcionalidades](https://react-hook-form.com/api) que un `<Form>` común no tiene. Para usar esas funcionalidades puede: llame a `useForm()` pero asegúrese de pasar el objeto (el que llamamos `formMethods`) como una propiedad al `<Form>` para que la validación y otras funcionalidades sigan funcionando.
 
 > Puede que haya notado que la validación del formulario en el evento onBlur dejó de funcionar al llamar explícitamente a `useForm()`. Eso es porque Redwood llama a `useForm()` detrás de las escenas y automáticamente pasa la propiedad de `validación` del `<Form>`. Redwood no llama más a `useForm()`, por lo que necesitará pasar opciones manualmente:
-> 
+>
 > ```javascript
 > const formMethods = useForm({ mode: 'onBlur' })
 > ```
