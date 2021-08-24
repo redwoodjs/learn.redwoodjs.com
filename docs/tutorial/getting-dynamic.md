@@ -47,7 +47,7 @@ generator client {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  body      String
+  body      String   @db.Text
   createdAt DateTime @default(now())
 }
 ```
@@ -56,7 +56,7 @@ This says that we want a table called `Post` and it should have:
 
 - An `id` column of type `Int` lets Prisma know this is the column it should use as the `@id` (for it to create relationships to other tables) and that the `@default` value should be Prisma's special `autoincrement()` method letting it know that the DB should set it automatically when new records are created
 - A `title` field that will contain a `String`
-- A `body` field that will contain a `String`
+- A `body` field that will contain a `String`, but will be stored as `Text` in the database, which allows an arbitrarily large amount of text to be entered, instead of the traditional max 255 bytes for most database's `Varchar` types (SQLite defaults to allowing 1 billion bytes in a `TEXT` field, or just under a gigabyte)
 - A `createdAt` field that will be a `DateTime` and will `@default` to `now()` when we create a new record (so we don't have to set the time manually in our app)
 
 > **Integer vs. String IDs**
