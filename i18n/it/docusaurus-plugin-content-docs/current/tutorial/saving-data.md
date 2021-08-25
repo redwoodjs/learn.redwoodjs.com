@@ -13,7 +13,7 @@ model Contact {
   id        Int @id @default(autoincrement())
   name      String
   email     String
-  message   String
+  message   String   @db.Text
   createdAt DateTime @default(now())
 }
 ```
