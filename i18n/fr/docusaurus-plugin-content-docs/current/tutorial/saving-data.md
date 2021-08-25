@@ -13,13 +13,13 @@ model Contact {
   id        Int @id @default(autoincrement())
   name      String
   email     String
-  message   String   @db.Text
+  message   String
   createdAt DateTime @default(now())
 }
 ```
 
 > **Syntaxe Prisma pour les champs facultatifs**
->
+> 
 > Pour définir une colonne comme optionnelle (c'est à dire permettre que sa valeur soit `NULL`), il suffit de suffixer le type de la donnée avec un point d'interrogation: `name String?` Cela permettra `name` d'accepter une valeur de type chaîne de caractères, ou `NULL`. Cela permettra à la valeur de `name` d'être soit de type `string`, soit `NULL`.
 
 Nous créons ensuite notre nouvelle migration:
@@ -76,7 +76,7 @@ Que sont les "input" `CreateContactInput` et `UpdateContactInput`? Redwood suit 
 Puisque toutes les colonnes de la table étaient définies comme requises dans `schema.prisma`, elles sont également définies comme requises ici (notez le suffixe `!` sur les types de données) ). ).
 
 > **Syntaxe GraphQL pour les champs obligatoires**
->
+> 
 > La syntaxe SDL de GraphQL nécessite un `supplémentaire !` lorsqu'un champ _est_ requis. **important:** la syntaxe de `schema.prisma` requiert l'ajout d'un caractère `?` lorsqu'un champ _n'est pas_ requis, tandis que la syntaxe GraphQL requiert l'ajout d'un caractère `!` lorsqu'un champ _est_ requis.
 
 Comme décrit dans [Quête secondaire: Fonctionnement de Redwood avec les Données](./side-quest-how-redwood-works-with-data), il n'y a pas de "resolver" définit explicitement dans le fichier SDL. Redwood suit une convention de nommage simple: chaque champ listé dans les types `Query` et `Mutation` correspondent à une fonction avec un nom identique dans les fichiers `service` et `sdl` associés (`api/src/graphql/contacts.sdl.js -> api/src/services/contacts/contacts.js`)
@@ -325,9 +325,9 @@ Nous allons maintenant informer l'utilisateur des éventuelles erreurs côté se
 Ainsi, nous avons une validateur de l'email côté client, mais tout bon développeur web sait qu'il ne faut [_jamais faire confiance au client_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Ajoutons une validation de l'email côté serveur de façon à être certain qu'aucune donnée erronée ne soit ajoutée dans la base, et ce même si un utilisateur parvenait à contourner le fonctionnement de l'application côté client.
 
 > **Pas de validation côté serveur ?**
->
+> 
 > Pourquoi n'avons-nous pas besoin de validation côté serveur pour s'assurer que les champs name, email et message sont bien remplis? Car la base de données le fait pour nous. Vous rappellez-vous `String!` dans notre fichier SDL? Celà ajoute une contrainte en base de données de telle façon que ce champ ne puisse être `null`. Une valeur `null` serait rejetée par la base et GraphQL renverrait une erreur à la partie client.
->
+> 
 > Cependant, il n'existe pas de type `Email!`, raison pour laquelle nous devons assurer la validation nous même
 
 Nous avons déjà évoqué le fait que la logique métier de notre application se trouve dans nos services, et il s'agit ici d'un parfait exemple. Ajoutons une fonction `validate` à notre service `contacts`:
@@ -377,7 +377,7 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 ```
 
 > Si vous avez besoin de manipuler l'objet contenant les erreurs, vous pouvez procéder ainsi:
->
+> 
 > ```javascript {3-8}
   // web/src/pages/ContactPage/ContactPage.js
   const onSubmit = async (data) =&#062; {
@@ -394,7 +394,7 @@ Nous capturons déjà toutes les erreurs dans la constante `error` que nous obte
 Afin de tester ceci, provoquons une erreur en retirant temporairement la validation côté client de l'adresse email:
 
 ```html
-// web/src/pages/ContactPage/ContactPage.js
+// web/src/pages/ContactPage/ContactPage.js 
 
 <TextField
   name="email"
@@ -452,9 +452,9 @@ Désormais, l'envoi du formulaire avec une adresse invalide donne ceci:
 Nous obtenons un message d'erreur en haut du formulaire _et_ les champs concernés sont mis en avant! Le message en haut du formulaire peut apparaître un peu lourd pour un si petit formulaire, mais vous contaterez son utilité lorsque vous construirez des formulaires de plusieurs pages; de cette façon l'utilisateur peut voir imméédiatement ce qui ne fonctionne pas sans avoir à parcourir l'ensemble du formulaire. Si vous ne souhaitez pas utiliser cet affichage, il vous suffit de supprimer `<FormError>`, les champs seront toujours mis en avant.
 
 > **`<FormError>` a plusieurs options pour adapter le style d'affichage**
->
->
->
+> 
+> 
+> 
 > - `wrapperStyle` / `wrapperClassName`: le conteneur pour l'ensemble du message
 > - `titleStyle` / `titleClassName`: le titre "Can't create new contact"
 > - `listStyle` / `listClassName`: le `<ul>` qui contient la liste des erreurs
@@ -614,7 +614,7 @@ export default ContactPage
 C'est terminé! [React Hook Form](https://react-hook-form.com/) propose pas mal de fonctionalités que `<Form>` n'expose pas. Lorsque vous souhaitez les utiliser, appelez juste le 'hook' `useForm()` vous-même, en vous assurant de bien passer en argument l'objet retourné (`formMethods`) comme propriété de `<Form>` de façon à ce que la validation et les autres fonctionalités puissent continuer à fonctionner.
 
 > Vous avez peut-être remarqué que la validation onBlur a cessé de fonctionner lorsque vous avez commencé à appeler `userForm()` par vous-même. Ceci s'explique car Redwood invoque `userForm()` et lui passe automatiquement en argument ce que vous avez passé à `<Form>`. Puisque Redwood n'appelle plus automatiquement `useForm()` à votre place, vous devez de faire manuellement:
->
+> 
 > ```javascript
 const formMethods = useForm({ mode: "onBlur" });
 ```
