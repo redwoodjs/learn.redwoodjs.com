@@ -85,7 +85,7 @@ Si votre déploiement n'a pas fonctionné, consultez le log dans Netlify et voye
 
 Une autre fonctionnalité bien pratique de Netlify est appelée _branch deploys_. Lorsque vous créez une branche et effectuez un push sur votre dépôt Git, Netlify va contruire votre application depuis cette branche et vous retourner une URL unique de telle manière que vous puissiez tester vos modifications tout en laissant intacte le déploiement effectué depuis la branche `main`. Une fois que votre branche alternative a été _merged_ dans la branche `main`, une nouvelle construction de votre application sera effectuée en prenant en compte les modifications apportées par la branche alternative. Pour activer le déploiement de branches, allez dans **Settings**>**Continuous Deployment** puis sous la section **Deploy context** cliquez sur **Edit Settings** et modifiez **Branch Deploys** to "All". Vous pouvez également activer _Deploy previews_ qui va créer une préview pour toute _pull-request_ effectuée sur votre dépôt.
 
-![Netlify settings screenshot](https://user-images.githubusercontent.com/30793/90886476-c1016780-e3b2-11ea-851a-3014257484fd.png)
+![Capture d'écran des paramètres de Netlify](https://user-images.githubusercontent.com/30793/90886476-c1016780-e3b2-11ea-851a-3014257484fd.png)
 
 > Vous avez également la possibilité de "vérouiller" la branche `main` de telle manière que chaque push ne déclanche pas automatiquement une reconstruction de l'application. Vous devez alors demander à Netlify manuellement de déployer la dernière version présente sur le dépôt, soit en vous rendant sur le site, soit en utilisant [la CLI Netlify](https://cli.netlify.com/).
 

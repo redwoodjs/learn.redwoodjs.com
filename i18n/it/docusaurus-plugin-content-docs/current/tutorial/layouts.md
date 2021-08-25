@@ -73,7 +73,7 @@ export default Routes
 
 > **L'alias `src`**
 > 
-> Notare che la dichiarazione import usa `src/layouts/BlogLayout` e non `../src/layouts/BlogLayout` o `./src/layouts/BlogLayout`. Essere in grado di usare soltanto `src` è una funzionalità fornita da Redwood con lo scopo di comodità: `src` è un alias del percorso `src` nello spazio di lavoro corrente. Quindi, se stai lavorando in `web` allora `src` punta a `web/src` e in `api` punta a `api/src`.
+> Si noti che la dichiarazione import utilizza `src/layouts/BlogLayout` e non `../src/layouts/BlogLayout` o `./src/layouts/BlogLayout`. Essere in grado di usare soltanto `src` è una funzionalità fornita da Redwood con lo scopo di comodità: `src` è un alias del percorso `src` nello spazio di lavoro corrente. Quindi, se stai lavorando in `web` allora `src` punta a `web/src` e in `api` punta a `api/src`.
 
 Tornando sul browser dovresti vedere... nulla di diverso. Ma questo è un bene, significa che il nostro layout sta funzionando.
 
@@ -83,7 +83,7 @@ Tornando sul browser dovresti vedere... nulla di diverso. Ma questo è un bene, 
 > 
 > Quando si hanno dozzine di file aperti nell'editor è facile perdersi, soprattutto quando si dispone di file con nomi simili o anche uguali (può capitare quando risiedono in directory diverse). Immagina una dozzina di file nominati `index.js` e poi prova a trovare quello che stai cercando in quelli che hai aperto! Pensiamo che la doppia nomenclatura valga la pena, soprattutto riguardo al vantaggio che porta in termini produttività durante la ricerca di uno specifico file aperto.
 > 
-> Se utilizzi il plugin [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en), anche questo può aiutarti ad evitare ambiguità durante la navigazione grazie alla schemata degli stack dei component:
+> Nel caso utilizzassi il plugin [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en), anch'esso può aiutarti ad evitare ambiguità durante la navigazione grazie alla schemata degli stack dei component:
 > 
 > <img src="https://user-images.githubusercontent.com/300/73025189-f970a100-3de3-11ea-9285-15c1116eb59a.png" width="400" />
 

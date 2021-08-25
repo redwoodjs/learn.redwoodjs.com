@@ -4,7 +4,7 @@ title: "Una seconda pagina e un link"
 sidebar_label: "Una seconda pagina e un link"
 ---
 
-Creiamo una pagina "About" per il nostro blog in modo che tutti sappiano chi siano i cervelloni dietro questo successo. Creeremo un'altra pagina utilizzando `redwood`:
+Creiamo una pagina "About" per il nostro blog in modo che tutti sappiano chi siano i geni dietro questo successo. Creeremo un'altra pagina utilizzando `redwood`:
 
     yarn redwood generate page about
 
@@ -14,7 +14,7 @@ Notare che non abbiamo specificato un percorso questa volta. Infatti, se lo escl
 > 
 > Man mano che aggiungi pagine alla tua applicazione, potresti iniziare a temere che sempre più codice debba essere scaricato dal client ad ogni caricamento delle pagine. Non temere! Redwood dividerà automaticamente il codice di ogni Page, risultando in caricamenti incredibilmente veloci, e potrai creare tutte le pagine che vuoi senza doverti preoccupare del loro impatto sulla dimensione complessiva del bundle webpack. Se, tuttavia, si desidera che specifiche Page siano incluse nel bundle principale, è possibile sovrascrivere il comportamento predefinito.
 
-http://localhost:8910/about dovrebbe mostrare la nostra nuova pagina. Tuttavia, nessuno la troverà cambiando manualmente l'URL. Quindi, aggiungiamo un link dalla nostra homepage alla pagina About e viceversa. Inizieremo a creare un semplice header e nav bar allo stesso tempo sulla HomePage:
+http://localhost:8910/about dovrebbe mostrare la nostra nuova pagina. Tuttavia nessuno la troverà cambiando manualmente l'URL, quindi aggiungiamo un link dalla nostra homepage alla pagina About e viceversa. Inizieremo a creare un semplice header e nav bar allo stesso tempo sulla HomePage:
 
 ```javascript {3,7-19}
 // web/src/pages/HomePage/HomePage.js
@@ -87,7 +87,7 @@ const AboutPage = () => {
 export default AboutPage
 ```
 
-Ottimo! Ora apri questa pagina nel browser e verifica che la navigazione funzioni correttamente sia avanti che indietro.
+Ottimo! Ora apri questa pagina nel browser e verifica che la navigazione funzioni correttamente sia in avanti che indietro.
 
-Come sviluppatore di fama mondiale, hai probabilmente notato quel `<header>` copiato e incollato e ne sei rimasto disgustato. Ti capiamo. Ecco perché Redwood ha una cosuccia chiamata _Layout_.
+Come sviluppatore di fama mondiale, hai probabilmente notato quel `<header>` copiato ed incollato e ne sei probabilmente rimasto disgustato. Ti capiamo. Ecco perché Redwood ha una cosuccia chiamata _Layout_.
 
