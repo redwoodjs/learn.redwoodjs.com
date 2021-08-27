@@ -47,7 +47,7 @@ generator client {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  body      String
+  body      String   @db.Text
   createdAt DateTime @default(now())
 }
 ```
@@ -56,7 +56,7 @@ Questo indica che desideriamo una tabella chiamata `Post` che dovrebbe avere:
 
 - Una colonna `id` di tipo `Int` permette a Prisma di sapere che è questa la colonna che dovrebbe usare come `@id` (per creare relazioni con altre tabelle) e che il valore `@default` dovrebbe essere lo special method di Prisma `autoincrement()` che consente di sapere che il DB dovrebbe impostarlo automaticamente quando vengono creati nuovi record
 - Un campo `title` che conterrà un valore `String`
-- Un campo `body` che conterrà un valore `String`
+- Un campo `body` che conterrà una `String` (salvata come `text` nel database), che permetterà di inserire un testo di lunghezza arbitraria invece dei solito massimo di 255 bytes caratteristico della tipo `varchar` della maggior parte dei database (SQLite permette di default 1 miliardo di bytes nei campi `TEXT`, poco meno di un gigabyte)
 - Un campo `createdAt` che sarà un `DateTime` e avrà come `@default` un `now()` che corrisponde al momento nel quale creiamo un nuovo record (quindi non sarà necessario impostarlo manualmente nella nostra app)
 
 > **ID Integer versus IDs String**
