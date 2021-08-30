@@ -47,7 +47,7 @@ generator client {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  body      String   @db.Text
+  body      String
   createdAt DateTime @default(now())
 }
 ```

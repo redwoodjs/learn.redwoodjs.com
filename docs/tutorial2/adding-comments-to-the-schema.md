@@ -34,7 +34,7 @@ generator client {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  body      String   @db.Text
+  body      String
   comments  Comment[]
   createdAt DateTime @default(now())
 }
@@ -43,14 +43,14 @@ model Contact {
   id        Int      @id @default(autoincrement())
   name      String
   email     String
-  message   String   @db.Text
+  message   String
   createdAt DateTime @default(now())
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   name      String
-  body      String   @db.Text
+  body      String
   post      Post     @relation(fields: [postId], references: [id])
   postId    Int
   createdAt DateTime @default(now())

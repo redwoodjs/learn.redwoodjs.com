@@ -7,7 +7,7 @@ sidebar_label: "Dinamismo"
 La seconda parte del video tutorial riprende da qui:
 
 > **Avviso di contenuto obsoleto**
-> 
+>
 > Questi video sono stati realizzati con una versione precedente di Redwood e molti comandi sono ormai obsoleti. Se vuoi veramente creare l'applicazione per il blog dovrai proseguire con il testo che manteniamo aggiornato con le versioni correnti.
 
 <div class="video-container">
@@ -47,7 +47,7 @@ generator client {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  body      String   @db.Text
+  body      String
   createdAt DateTime @default(now())
 }
 ```
@@ -60,13 +60,13 @@ Questo indica che desideriamo una tabella chiamata `Post` che dovrebbe avere:
 - Un campo `createdAt` che sarà un `DateTime` e avrà come `@default` un `now()` che corrisponde al momento nel quale creiamo un nuovo record (quindi non sarà necessario impostarlo manualmente nella nostra app)
 
 > **ID Integer versus IDs String**
-> 
+>
 > Per il tutorial manteniamo le cose semplici utilizzando un numero intero per la nostra colonna ID. Tuttavia, alcune app potrebbero voler utilizzare un CUID o un UUID che Prisma supporta. In tal caso, si utilizzerebbe `String` per il datatype invece di `Int` e `cuid()` o `uuid()` invece di `autoincrement()`:
-> 
+>
 > `id String @id @default(cuid())`
-> 
+>
 > Gli integer risultano anche in URL più leggibili come https://redwoodblog.com/posts/123 invece di https://redwoodblog.com/posts/eebb026c-b661-42fe-93bf-f1a373421a13.
-> 
+>
 > Dai un'occhiata alla documentazione ufficiale [Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model#defining-an-id-field) per ulteriori informazioni sui campi ID.
 
 ### Migrazioni
@@ -76,7 +76,7 @@ Bene, questo è stato semplice. Ora desideriamo salvare un snapshot tramite una 
     yarn rw prisma migrate dev
 
 > **Abbreviazione `redwood`**
-> 
+>
 > D'ora in poi, utilizzeremo l'abbreviazione `rw` invece di `redwood`.
 
 Ti verrà chiesto di dare un nome a questa migrazione. Sarebbe l'ideale utilizzare qualcosa che la descrive, per esempio "create posts" (senza le virgolette, naturalmente). Questa operazione è pensata per te: a Redwood non interessa il nome delle migrazioni. È semplicemente un riferimento da utilizzare quando si sta cercando fra le vecchie migrazioni, nel tentativo di trovare quella relativa ad una creazione o modifica particolare che hai effettuato in passato.
@@ -141,20 +141,20 @@ Ecco cosa è successo quando abbiamo eseguito il commando `yarn rw g scaffold po
   - `Posts` visualizza la table di tutti i post
 
 > **Convenzioni di denominazione dei Generator**
-> 
+>
 > Noterai che alcune delle parti generate hanno nomi in plurale ed altre in singolare. Questa convenzione è presa in prestito da Ruby on Rails, che utilizza una convenzione di nomi più "umana": se hai a che fare con un multiplo di qualcosa (come l'elenco di tutti i post) verrà utilizzato un nome plurale. Se hai a che fare con una cosa singola (come creare un nuovo post), il nome sarà singolare. Infatti, se ci fai caso, questo schema suona naturale anche quando parliamo: "mostrami una lista di tutti i posts" e "Creerò un nuovo post."
-> 
+>
 > Per quanto riguarda i generatori:
-> 
+>
 > - I nomi dei file dei servizi sono sempre plurali.
 > - I metodi nei servizi saranno al singolare o al plurale a seconda se si prevede che restituiscano più post o un singolo post (`posts` vs. `createPost`).
 > - I nomi dei file SDL sono plurali.
 > - Le pagine fornite con scaffolds sono al plurale or al singolare, a seconda se hanno ha che fare un singolo o molteplici posts. Quando si utilizza il generatore `page`, si affiderà al nome che specificherai nel comando stesso.
 > - I layout usano il nome che gli assegni nella riga di comando.
 > - Componenti e celle, come le pagine, saranno al plurali o al singolare a seconda del contesto utilizzato dal generatore di scaffold, altrimenti useranno il nome assegnatoli dalla riga di comando.
-> 
+>
 > Inoltre, nota anche che è la parte del nome della tabella del database che è singolare o plurale, non l'intera parola. Quindi è `PostsCell`, non `PostCells`.
-> 
+>
 > Anche se non è necessario che tu segua questa convenzione una volta che inizi a creare le tue proprie componenti, si consiglia comunque di farlo. La comunità di Ruby on Rails ha imparato ad adorare questa nomenclatura, anche se molte persone si sono inizialmente lamentate quando l'hanno sperimentata per la prima volta. [Give it five minutes](https://signalvnoise.com/posts/3124-give-it-five-minutes).
 
 ### Creare una Homepage
