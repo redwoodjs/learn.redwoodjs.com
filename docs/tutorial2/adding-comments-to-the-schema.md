@@ -282,7 +282,7 @@ export const standard = defineScenario({
 })
 ```
 
-This calls a `defineScenario()` function which will check that your data structure matches what's defined in Prisma. Each scenario data object, for example - `scenario.comment.one`, is passed as is to Prisma's [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create), that way you can additionally customize the scenario object using supported Prisma's options. 
+This calls a `defineScenario()` function which checks that your data structure matches what's defined in Prisma. Each scenario data object (for example, `scenario.comment.one`) is passed as-is to Prisma's [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). That way you can customize the scenario object using any of Prisma's supported options. 
 
 > **The "standard" scenario**
 >
@@ -296,7 +296,7 @@ The nested structure of a scenario is defined like this:
       * **name, message, post**: fields that correspond to the schema. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
     * **select, include**: optionally, to customize the object to `select` or `include` related fields [using Prisma's syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record)
 
-When you receive the `scenario` argument in your test, input just unwraps from the parent `data` key and you can follow the similar object nesting in order to reference the fields, like `scenario.comment.one.name`.
+When you receive the `scenario` argument in your test, the `data` key gets unwrapped so that you can reference fields like `scenario.comment.one.name`.
 
 > **Why does every field just contain the string "String"?**
 >
