@@ -62,8 +62,11 @@ And then use the `BlogLayout` for the `ContactPage` by making sure its wrapped b
 ```javascript {5}
 // web/src/Routes.js
 
+// ...
+
 <Router>
   <Set wrap={BlogLayout}>
+    <Route path="/blog-post/{id}" page={BlogPostPage} name="blogPost" />
     <Route path="/contact" page={ContactPage} name="contact" />
     <Route path="/about" page={AboutPage} name="about" />
     <Route path="/" page={HomePage} name="home" />
