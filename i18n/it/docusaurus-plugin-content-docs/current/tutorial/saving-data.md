@@ -335,7 +335,7 @@ Abbiamo già parlato di business logic in precedenza, in particolare al riguardo
 ```javascript {3,7-15,22}
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from '@redwoodjs/api'
+import { UserInputError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
