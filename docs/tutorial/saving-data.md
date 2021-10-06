@@ -344,7 +344,7 @@ We talked about business logic belonging in our services files and this is a per
 ```javascript {3,7-15,22}
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from '@redwoodjs/api'
+import { UserInputError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
