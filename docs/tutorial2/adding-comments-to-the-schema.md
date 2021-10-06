@@ -108,7 +108,40 @@ Next we'll create the SDL (that defines the GraphQL interface) and a service (to
 yarn rw g sdl comment
 ```
 
-That command will create both the SDL and the service. And if you take a look back in the browser you should see a different message than the GraphQL error we were seeing before:
+That command will create both the SDL and the service. One change we'll need to make to the generated code is to allow access to anonymous users to view all comments. Change the `@requireAuth` directive to `@skipAuth` instead:
+
+```javascript{14}
+// api/src/graphql/contacts.sdl.js
+
+export const schema = gql`
+  type Comment {
+    id: Int!
+    name: String!
+    body: String!
+    post: Post!
+    postId: Int!
+    createdAt: DateTime!
+  }
+
+  type Query {
+    comments: [Comment!]! @skipAuth
+  }
+
+  input CreateCommentInput {
+    name: String!
+    body: String!
+    postId: Int!
+  }
+
+  input UpdateCommentInput {
+    name: String
+    body: String
+    postId: Int
+  }
+`
+```
+
+Now if you take a look back in the browser you should see a different message than the GraphQL error we were seeing before:
 
 ![image](https://user-images.githubusercontent.com/300/101552505-d1405100-3967-11eb-883f-1227689e5f88.png)
 
@@ -163,7 +196,7 @@ export const createComment = ({ input }) => {
 }
 ```
 
-We'll also need to expose this function via GraphQL so we'll add a Mutation to the SDL:
+We'll also need to expose this function via GraphQL so we'll add a Mutation to the SDL and use `@skipAuth` since, again, it can be accessed by everyone:
 
 ```graphql {29-31}
 // api/src/graphql/comments.sdl.js
@@ -179,7 +212,7 @@ export const schema = gql`
   }
 
   type Query {
-    comments: [Comment!]!
+    comments: [Comment!]! @skipAuth
   }
 
   input CreateCommentInput {
@@ -195,7 +228,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createComment(input: CreateCommentInput!): Comment!
+    createComment(input: CreateCommentInput!): Comment! @skipAuth
   }
 `
 ```
@@ -282,7 +315,7 @@ export const standard = defineScenario({
 })
 ```
 
-This calls a `defineScenario()` function which checks that your data structure matches what's defined in Prisma. Each scenario data object (for example, `scenario.comment.one`) is passed as-is to Prisma's [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). That way you can customize the scenario object using any of Prisma's supported options. 
+This calls a `defineScenario()` function which checks that your data structure matches what's defined in Prisma. Each scenario data object (for example, `scenario.comment.one`) is passed as-is to Prisma's [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). That way you can customize the scenario object using any of Prisma's supported options.
 
 > **The "standard" scenario**
 >
