@@ -518,7 +518,7 @@ Finally, you know what would _really_ be nice? If the fields were validated as s
 ```html
 // web/src/pages/ContactPage/ContactPage.js
 
-<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+<Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
 ```
 
 Well, what do you think? Was it worth the hype? A couple of new components and you've got forms that handle validation and wrap up submitted values in a nice data object, all for free.
