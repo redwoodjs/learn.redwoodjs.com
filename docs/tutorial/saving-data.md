@@ -37,7 +37,9 @@ Just like the `scaffold` command, this will create two new files under the `api`
 1. `api/src/graphql/contacts.sdl.js`: defines the GraphQL schema in GraphQL's schema definition language
 2. `api/src/services/contacts/contacts.js`: contains your app's business logic.
 
-Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateContactInput` and `UpdateContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types:
+Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateContactInput` and `UpdateContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types.
+
+The `@requireAuth` is a [schema directive](https://www.graphql-tools.com/docs/schema-directives) which says that in order to access this GraphQL query the user is required to be authenticated. We haven't added authentication yet, so this won't have any effect—anyone will be able to query it, logged in or not:
 
 ```javascript
 // api/src/graphql/contacts.sdl.js
@@ -52,7 +54,7 @@ export const schema = gql`
   }
 
   type Query {
-    contacts: [Contact!]!
+    contacts: [Contact!]! @requireAuth
   }
 
   input CreateContactInput {
