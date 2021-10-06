@@ -99,7 +99,7 @@ export const schema = gql`
   }
 
   type Query {
-    contacts: [Contact!]!
+    contacts: [Contact!]! @requireAuth
   }
 
   input CreateContactInput {
@@ -115,12 +115,14 @@ export const schema = gql`
   }
 
   type Mutation {
-    createContact(input: CreateContactInput!): Contact
+    createContact(input: CreateContactInput!): Contact @skipAuth
   }
 `
 ```
 
-The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
+The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`. We've also added on a new directive: `@skipAuth`. This one says that authentication is *not* required and will allow anyone to anonymously send us a message, which is exactly what we want! Note that having at least one schema directive is required for each `Query` and `Mutation` or you'll get an error: Redwood embraces the idea of "secure by default" meaning that we try and keep your application safe, even if you do nothing special to prevent access. In this case it's much safer to throw an error than to accidentally expose all of your users' data to the internet!
+
+> Serendipitously, the default schema directive of `@requireAuth` is exactly what we want for the `contacts` query that returns ALL contacts—only we, the owners of the blog, should have access to read them all.
 
 That's it for the SDL file, let's define the service that will actually save the data to the database. The service includes a default `contacts` function for getting all contacts from the database. Let's add our mutation to create a new contact:
 
