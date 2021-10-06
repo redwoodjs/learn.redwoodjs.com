@@ -265,20 +265,24 @@ Where does that data come from? Take a look at the `comments.scenarios.js` file 
 export const standard = defineScenario({
   comment: {
     one: {
-      name: 'String',
-      body: 'String',
-      post: { create: { title: 'String', body: 'String' } },
+      data: {
+        name: 'String',
+        body: 'String',
+        post: { create: { title: 'String', body: 'String' } },
+      },
     },
     two: {
-      name: 'String',
-      body: 'String',
-      post: { create: { title: 'String', body: 'String' } },
+      data: {
+        name: 'String',
+        body: 'String',
+        post: { create: { title: 'String', body: 'String' } },
+      },
     },
   },
 })
 ```
 
-This calls a `defineScenario()` function which will check that your data structure matches what's defined in Prisma. This is purely a type-checking feature, it doesn't change the object at all—it just returns the same object you give it.
+This calls a `defineScenario()` function which checks that your data structure matches what's defined in Prisma. Each scenario data object (for example, `scenario.comment.one`) is passed as-is to Prisma's [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create). That way you can customize the scenario object using any of Prisma's supported options. 
 
 > **The "standard" scenario**
 >
@@ -288,9 +292,11 @@ The nested structure of a scenario is defined like this:
 
 * **comment**: the name of the model this data is for
   * **one, two**: a friendly name given to the scenario data which you can reference in your tests
-    * **name, message, post**: the actual data that will be put in the database. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
+    * **data**: contains the actual data that will be put in the database
+      * **name, message, post**: fields that correspond to the schema. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
+    * **select, include**: optionally, to customize the object to `select` or `include` related fields [using Prisma's syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record)
 
-When you receive the `scenario` argument in your test you can follow the same object nesting in order to reference the fields, like `scenario.comment.one.name`.
+When you receive the `scenario` argument in your test, the `data` key gets unwrapped so that you can reference fields like `scenario.comment.one.name`.
 
 > **Why does every field just contain the string "String"?**
 >
@@ -298,28 +304,32 @@ When you receive the `scenario` argument in your test you can follow the same ob
 
 Let's replace that scenario data with something more like what we expect to see in our app:
 
-```javascript {4-25}
+```javascript {4-29}
 // api/src/services/comments/comments.scenarios.js
 
 export const standard = defineScenario({
   comment: {
     jane: {
-      name: 'Jane Doe',
-      body: 'I like trees',
-      post: {
-        create: {
-          title: 'Redwood Leaves',
-          body: 'The quick brown fox jumped over the lazy dog.'
+      data: {
+        name: 'Jane Doe',
+        body: 'I like trees',
+        post: {
+          create: {
+            title: 'Redwood Leaves',
+            body: 'The quick brown fox jumped over the lazy dog.'
+          }
         }
       }
     },
     john: {
-      name: 'John Doe',
-      body: 'Hug a tree today',
-      post: {
-        create: {
-          title: 'Root Systems',
-          body: 'The five boxing wizards jump quickly.'
+      data: {
+        name: 'John Doe',
+        body: 'Hug a tree today',
+        post: {
+          create: {
+            title: 'Root Systems',
+            body: 'The five boxing wizards jump quickly.'
+          }
         }
       }
     }
@@ -333,7 +343,7 @@ The test created by the service generator simply checks to make sure the same nu
 
 Let's add our first service test by making sure that `createComment()` actually stores a new comment in the database. When creating a comment we're not as worried about existing data in the database so let's create a new scenario which only contains a post—the post we'll be linking the new comment to through the comment's `postId` field:
 
-```javascript {7-14}
+```javascript {7-16}
 // api/src/services/comments/comments.scenarios.js
 
 export const standard = defineScenario({
@@ -343,8 +353,10 @@ export const standard = defineScenario({
 export const postOnly = defineScenario({
   post: {
     bark: {
-      title: 'Bark',
-      body: "A tree's bark is worse than its bite"
+      data: {
+        title: 'Bark',
+        body: "A tree's bark is worse than its bite"
+      }
     }
   }
 })
