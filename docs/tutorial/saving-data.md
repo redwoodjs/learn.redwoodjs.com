@@ -472,14 +472,14 @@ We get that error message at the top saying something went wrong in plain Englis
 
 Since we're not redirecting after the form submits we should at least clear out the form fields. This requires we get access to a `reset()` function that's part of `react-hook-form` but we don't have access to it when using the simplest usage of `<Form>` (like we're currently using).
 
-`react-hook-form` has a hook called `useForm()` which is normally called for us within `<Form>`. In order to reset the form we need to invoke that hook ourselves. But the functionality that `useForm()` provides still needs to be used in `Form`. Here's how we do that.
+Redwood includes a hook called `useForm()` (from the underlying [React Hook Form](https://react-hook-form.com/) library) which is normally called for us within `<Form>`. In order to reset the form we need to invoke that hook ourselves. But the functionality that `useForm()` provides still needs to be used in `Form`. Here's how we do that.
 
 First we'll import `useForm`:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { useForm } from 'react-hook-form'
+import { useForm } from '@redwoodjs/forms'
 ```
 
 And now call it inside of our component:
@@ -540,7 +540,7 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
-import { useForm } from 'react-hook-form'
+import { useForm } from '@redwoodjs/forms'
 
 const CREATE_CONTACT = gql`
   mutation CreateContactMutation($input: CreateContactInput!) {
