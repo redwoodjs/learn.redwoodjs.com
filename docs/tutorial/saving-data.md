@@ -243,6 +243,10 @@ Try filling out the form and submitting—you should have a new Contact in the d
 
 ![image](https://user-images.githubusercontent.com/300/76250632-ed5d6900-6202-11ea-94ce-bd88e3a11ade.png)
 
+> **Wait, I thought you said this was secure by default and someone couldn't view all contacts without being logged in?**
+>
+> Remember: we haven't added authentication yet, so the concept of someone being logged in is meaningless right now. In order to prevent frustrating errors in a new application, the `@requireAuth` directive simply returns `true` until you setup an authentication system. At that point the directive will use real logic for determining if the user is logged in or not and behave accordingly.
+
 ### Improving the Contact Form
 
 Our contact form works but it has a couple of issues at the moment:
