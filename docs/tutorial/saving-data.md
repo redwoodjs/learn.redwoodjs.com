@@ -319,7 +319,7 @@ const ContactPage = () => {
   return (
     <>
       <Toaster />
-      <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+      <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
       // ...
     </>
   )
@@ -375,7 +375,7 @@ We already capture any existing error in the `error` constant that we got from `
 ```html {4-9}
 // web/src/pages/ContactPage/ContactPage.js
 
-<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+<Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
   {error && (
     <div style={{ color: 'red' }}>
       {"We couldn't send your message: "}
@@ -443,7 +443,7 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 return (
   <>
     <Toaster />
-    <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
+    <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
         wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
@@ -470,9 +470,9 @@ We get that error message at the top saying something went wrong in plain Englis
 
 ### One more thing...
 
-Since we're not redirecting after the form submits we should at least clear out the form fields. This requires we get access to a `reset()` function that's part of `react-hook-form` but we don't have access to it when using the simplest usage of `<Form>` (like we're currently using).
+Since we're not redirecting after the form submits we should at least clear out the form fields. This requires we get access to a `reset()` function that's part of [React Hook Form](https://react-hook-form.com/), but we don't have access to it when using the simplest usage of `<Form>` (like we're currently using).
 
-Redwood includes a hook called `useForm()` (from the underlying [React Hook Form](https://react-hook-form.com/) library) which is normally called for us within `<Form>`. In order to reset the form we need to invoke that hook ourselves. But the functionality that `useForm()` provides still needs to be used in `Form`. Here's how we do that.
+Redwood includes a hook called `useForm()` (from React Hook Form) which is normally called for us within `<Form>`. In order to reset the form we need to invoke that hook ourselves. But the functionality that `useForm()` provides still needs to be used in `Form`. Here's how we do that.
 
 First we'll import `useForm`:
 
@@ -492,7 +492,7 @@ const ContactPage = () => {
   //...
 ```
 
-Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instead of doing it itself:
+Finally we'll tell `<Form>` to use the `formMethods` we just got from `useForm()` instead of doing it itself:
 
 ```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
@@ -502,7 +502,7 @@ return (
     <Toaster />
     <Form
       onSubmit={onSubmit}
-      validation={{ mode: 'onBlur' }}
+      config={{ mode: 'onBlur' }}
       error={error}
       formMethods={formMethods}
     >
@@ -570,7 +570,7 @@ const ContactPage = () => {
       <Toaster />
       <Form
         onSubmit={onSubmit}
-        validation={{ mode: 'onBlur' }}
+        config={{ mode: 'onBlur' }}
         error={error}
         formMethods={formMethods}
       >
@@ -625,7 +625,7 @@ export default ContactPage
 
 That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [functionality](https://react-hook-form.com/api) that `<Form>` doesn't expose. When you want to get to that functionality you can: just call `useForm()` yourself but make sure to pass the returned object (we called it `formMethods`) as a prop to `<Form>` so that the validation and other functionality keeps working.
 
-> You may have noticed that the onBlur form validation stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `validation` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
+> You may have noticed that the onBlur form config stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `config` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
 >
 > ```javascript
 > const formMethods = useForm({ mode: 'onBlur' })
