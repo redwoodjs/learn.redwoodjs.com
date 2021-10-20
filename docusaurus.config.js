@@ -153,7 +153,7 @@ module.exports = {
     ],
   ],
   scripts: [
-    { src: 'https://plausible.io/js/plausible.js', async: true, defer: true, 'data-domain': 'learn.redwoodjs.com' }
+    { src: 'https://plausible.io/js/plausible.js', defer: true, 'data-domain': 'learn.redwoodjs.com' }
   ],
   stylesheets: [
     'https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap',
