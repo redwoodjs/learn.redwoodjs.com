@@ -24,7 +24,7 @@ yarn redwood upgrade
 
 Durante l'installazione, RedwoodJS verifica se il sistema soddisfa i requisiti di versione per Node e Yarn:
 
-- node: "=14.x"
+- node: ">=14.x <=16.x"
 - yarn: ">=1.15"
 
 Se le versioni di sistema non soddisfano entrambi i requisiti, _il bootstrap di installazione terminerà con un ERROR._ Per verificare, esegui quanto segue dalla riga di comando del terminale:
