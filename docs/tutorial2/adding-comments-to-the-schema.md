@@ -111,7 +111,7 @@ yarn rw g sdl comment
 That command will create both the SDL and the service. One change we'll need to make to the generated code is to allow access to anonymous users to view all comments. Change the `@requireAuth` directive to `@skipAuth` instead:
 
 ```javascript{14}
-// api/src/graphql/contacts.sdl.js
+// api/src/graphql/comments.sdl.js
 
 export const schema = gql`
   type Comment {
