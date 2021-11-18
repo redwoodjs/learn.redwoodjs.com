@@ -51,5 +51,5 @@ Si prega di eseguire l'aggiornamento di conseguenza. Quindi procedi all'installa
 >     - Per gli utenti **Linux** puoi seguire le [istruzioni di installazione da `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 > - Consigliamo agli utenti di **Windows** di visitare [Nodejs.org](https://nodejs.org/en/) per l'installazione.
 > 
-> Se sei confuso su quale delle due versioni attuali di Node usare, ti consigliamo di utilizzare la più recente "even" LTS, che è attualmente la v14.
+> Se sei confuso su quale delle due attuali versione di Node da usare, si consiglia di utilizzare la LTS più recente, che al momento è la [16. 3.0](https://nodejs.org/download/release/v16.13.0/).
 
