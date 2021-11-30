@@ -34,12 +34,14 @@ If you started with your own blog code from Part 1 of the tutorial and already h
 
 First we'll want to create a new user that will represent the comment moderator. You can use a completely different email address (if you have one), but if not you can use **The Plus Trick** to create a new, unique email address as far as Netlify is concerned, but that is actually the same as your original email address! **Note that not all email providers support this syntax, but the big ones like Gmail do.**
 
-> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other incoming boxes besides one just named "Inbox" and by adding +something to your email address you can specify which box the mail should be sorted into. They don't appear to be in common usage these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing!
+> The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other incoming boxes besides one just named "Inbox" and by adding `+something` to your email address you can specify which box the mail should be sorted into. They don't appear to be in common use these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing: it gives us an infinite number of *valid* email addresses—they all come to your regular inbox!
 >
 > Just append +something to your email address before the @:
 >
-> * jane.doe+testing@example.com
-> * john-doe+sample@example.com
+> * `jane.doe+testing@example.com` will go to `jane.doe@example.com`
+> * `dom+20210909@example.com` will go to `dom@example.com`
+>
+> Note that not all providers support this plus-based syntax, but the major ones (Gmail, Yahoo, Microsoft, Apple) do. If you find that you're not receiving emails at your own domain, you may want to create a free account at one of these providers just to use for testing.
 
 Add your user and then edit them, adding a role of "moderator" in the Roles input box:
 
