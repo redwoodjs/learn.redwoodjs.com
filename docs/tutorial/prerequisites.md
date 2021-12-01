@@ -24,7 +24,7 @@ yarn redwood upgrade
 
 During installation, RedwoodJS checks if your system meets version requirements for Node and Yarn:
 
-- node: "=14.x"
+- node: ">=14.x <=16.x"
 - yarn: ">=1.15"
 
 If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
@@ -51,5 +51,5 @@ Please do upgrade accordingly. Then proceed to the Redwood installation when you
 >   - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
 >
-> If you're confused about which of the two current Node versions to use, we recommend using the most recent "even" LTS, which is currently v14.
+> If you're confused about which of the two current Node versions to use, we recommend using the most recent LTS, which is currently [16.13.0](https://nodejs.org/download/release/v16.13.0/).
 

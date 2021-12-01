@@ -39,7 +39,9 @@ Just like the `scaffold` command, this will create two new files under the `api`
 1. `api/src/graphql/contacts.sdl.js`: defines the GraphQL schema in GraphQL's schema definition language
 2. `api/src/services/contacts/contacts.js`: contains your app's business logic.
 
-Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateContactInput` and `UpdateContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types:
+Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateContactInput` and `UpdateContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types.
+
+The `@requireAuth` is a [schema directive](https://www.graphql-tools.com/docs/schema-directives) which says that in order to access this GraphQL query the user is required to be authenticated. We haven't added authentication yet, so this won't have any effect—anyone will be able to query it, logged in or not:
 
 ```javascript
 // api/src/graphql/contacts.sdl.js
@@ -54,7 +56,7 @@ export const schema = gql`
   }
 
   type Query {
-    contacts: [Contact!]!
+    contacts: [Contact!]! @requireAuth
   }
 
   input CreateContactInput {
@@ -99,7 +101,7 @@ export const schema = gql`
   }
 
   type Query {
-    contacts: [Contact!]!
+    contacts: [Contact!]! @requireAuth
   }
 
   input CreateContactInput {
@@ -115,12 +117,14 @@ export const schema = gql`
   }
 
   type Mutation {
-    createContact(input: CreateContactInput!): Contact
+    createContact(input: CreateContactInput!): Contact @skipAuth
   }
 `
 ```
 
-The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`.
+The `createContact` mutation will accept a single variable, `input`, that is an object that conforms to what we expect for a `CreateContactInput`, namely `{ name, email, message }`. We've also added on a new directive: `@skipAuth`. This one says that authentication is *not* required and will allow anyone to anonymously send us a message, which is exactly what we want! Note that having at least one schema directive is required for each `Query` and `Mutation` or you'll get an error: Redwood embraces the idea of "secure by default" meaning that we try and keep your application safe, even if you do nothing special to prevent access. In this case it's much safer to throw an error than to accidentally expose all of your users' data to the internet!
+
+> Serendipitously, the default schema directive of `@requireAuth` is exactly what we want for the `contacts` query that returns ALL contacts—only we, the owners of the blog, should have access to read them all.
 
 That's it for the SDL file, let's define the service that will actually save the data to the database. The service includes a default `contacts` function for getting all contacts from the database. Let's add our mutation to create a new contact:
 
@@ -250,6 +254,10 @@ Try filling out the form and submitting—you should have a new Contact in the d
 
 ![image](https://user-images.githubusercontent.com/300/76250632-ed5d6900-6202-11ea-94ce-bd88e3a11ade.png)
 
+> **Wait, I thought you said this was secure by default and someone couldn't view all contacts without being logged in?**
+>
+> Remember: we haven't added authentication yet, so the concept of someone being logged in is meaningless right now. In order to prevent frustrating errors in a new application, the `@requireAuth` directive simply returns `true` until you setup an authentication system. At that point the directive will use real logic for determining if the user is logged in or not and behave accordingly.
+
 ### Improving the Contact Form
 
 Our contact form works but it has a couple of issues at the moment:
@@ -326,7 +334,7 @@ const ContactPage = () => {
   return (
     <>
       <Toaster />
-      <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+      <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
       // ...
     </>
   )
@@ -351,7 +359,7 @@ We talked about business logic belonging in our services files and this is a per
 ```javascript {3,7-15,22}
 // api/src/services/contacts/contacts.js
 
-import { UserInputError } from '@redwoodjs/api'
+import { UserInputError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
@@ -382,7 +390,7 @@ We already capture any existing error in the `error` constant that we got from `
 ```html {4-9}
 // web/src/pages/ContactPage/ContactPage.js
 
-<Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+<Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
   {error && (
     <div style={{ color: 'red' }}>
       {"We couldn't send your message: "}
@@ -450,7 +458,7 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 return (
   <>
     <Toaster />
-    <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }} error={error}>
+    <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }} error={error}>
       <FormError
         error={error}
         wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
@@ -477,16 +485,16 @@ We get that error message at the top saying something went wrong in plain Englis
 
 ### One more thing...
 
-Since we're not redirecting after the form submits we should at least clear out the form fields. This requires we get access to a `reset()` function that's part of `react-hook-form` but we don't have access to it when using the simplest usage of `<Form>` (like we're currently using).
+Since we're not redirecting after the form submits we should at least clear out the form fields. This requires we get access to a `reset()` function that's part of [React Hook Form](https://react-hook-form.com/), but we don't have access to it when using the simplest usage of `<Form>` (like we're currently using).
 
-`react-hook-form` has a hook called `useForm()` which is normally called for us within `<Form>`. In order to reset the form we need to invoke that hook ourselves. But the functionality that `useForm()` provides still needs to be used in `Form`. Here's how we do that.
+Redwood includes a hook called `useForm()` (from React Hook Form) which is normally called for us within `<Form>`. In order to reset the form we need to invoke that hook ourselves. But the functionality that `useForm()` provides still needs to be used in `Form`. Here's how we do that.
 
 First we'll import `useForm`:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
 
-import { useForm } from 'react-hook-form'
+import { useForm } from '@redwoodjs/forms'
 ```
 
 And now call it inside of our component:
@@ -499,7 +507,7 @@ const ContactPage = () => {
   //...
 ```
 
-Finally we'll tell `<Form>` to use the `formMethods` we just instantiated instead of doing it itself:
+Finally we'll tell `<Form>` to use the `formMethods` we just got from `useForm()` instead of doing it itself:
 
 ```javascript {10}
 // web/src/pages/ContactPage/ContactPage.js
@@ -509,7 +517,7 @@ return (
     <Toaster />
     <Form
       onSubmit={onSubmit}
-      validation={{ mode: 'onBlur' }}
+      config={{ mode: 'onBlur' }}
       error={error}
       formMethods={formMethods}
     >
@@ -551,7 +559,7 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
-import { useForm } from 'react-hook-form'
+import { useForm } from '@redwoodjs/forms'
 
 const CREATE_CONTACT = gql`
   mutation CreateContactMutation($input: CreateContactInput!) {
@@ -581,7 +589,7 @@ const ContactPage = () => {
       <Toaster />
       <Form
         onSubmit={onSubmit}
-        validation={{ mode: 'onBlur' }}
+        config={{ mode: 'onBlur' }}
         error={error}
         formMethods={formMethods}
       >
@@ -636,7 +644,7 @@ export default ContactPage
 
 That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [functionality](https://react-hook-form.com/api) that `<Form>` doesn't expose. When you want to get to that functionality you can: just call `useForm()` yourself but make sure to pass the returned object (we called it `formMethods`) as a prop to `<Form>` so that the validation and other functionality keeps working.
 
-> You may have noticed that the onBlur form validation stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `validation` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
+> You may have noticed that the onBlur form config stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `config` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
 >
 > ```javascript
 > // web/src/pages/ContactPage/ContactPage.js
