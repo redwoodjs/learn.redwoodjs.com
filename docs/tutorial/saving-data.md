@@ -227,7 +227,7 @@ create({
 })
 ```
 
-If you'll [recall](/everyones-favorite-thing-to-build-forms#onsubmit) `<Form>` gives us all of the fields in a nice object where the key is the name of the field, which means the `data` object we're receiving in `onSubmit` is already in the proper format that we need for the `input`!
+If you'll recall `<Form>` gives us all of the fields in a nice object where the key is the name of the field, which means the `data` object we're receiving in `onSubmit` is already in the proper format that we need for the `input`!
 
 Now we can update the `onSubmit` function to invoke the mutation with the data it receives:
 
