@@ -1,7 +1,7 @@
 ---
 id: prerequisites
-title: 'Prerequisites'
-sidebar_label: 'Prerequisites'
+title: "Prerequisites"
+sidebar_label: "Prerequisites"
 ---
 
 This tutorial assumes you are already familiar with a few core concepts:
