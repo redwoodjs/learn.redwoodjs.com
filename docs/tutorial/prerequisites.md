@@ -4,17 +4,18 @@ title: "Prerequisites"
 sidebar_label: "Prerequisites"
 ---
 
-This tutorial assumes you are already familiar with a few core concepts:
+Redwood is composed of several popular libraries to make full-stack web development easier. Unfortunately, we can't teach all of those technologies from scratch during this tutorial, so we're going to assume you are already familiar with a few core concepts:
 
 - [React](https://reactjs.org/)
 - [GraphQL](https://graphql.org/)
-- [The Jamstack](https://jamstack.org/)
+- [Prisma](https://prisma.io/)
+- [Jamstack Deployment](https://jamstack.org/)
 
-You could work through this tutorial without knowing anything about these technologies but you may find yourself getting lost in terminology that we don't stop and take the time to explain. It also helps knowing where the line is between what is built into React and what additional features Redwood brings to the table.
+Now, you *can* work through this tutorial without knowing much of anything about these technologies, but you may find yourself getting lost in terminology that we don't stop and take the time to explain. Knowing these technologies helps you see the lines between Redwood and the stock implementations of these technologies. You can try to learn them all at once, but it will be harder to determine where one ends and another begins, which makes it more difficult to find help once you're past the tutorial and want to dive deeper into one technology or another.
 
 ### Redwood Versions
 
-You will need to be on v0.25 or greater of Redwood to complete the tutorial. If this is your first time using Redwood then no worries: the latest version will be installed automatically when you create your app skeleton! If you have an existing site created with a version prior to 0.25 you'll need to upgrade. Run this command in the root of your app and follow the prompts:
+You will need to be on v1.0 or greater of Redwood to complete the tutorial. If this is your first time using Redwood then no worries: the latest version will be installed automatically when you create your app skeleton! If you have an existing site created with a version prior to 0.25 you'll need to upgrade. Run this command in the root of your app and follow the prompts:
 
 ```bash
 yarn redwood upgrade
@@ -42,14 +43,14 @@ Please do upgrade accordingly. Then proceed to the Redwood installation when you
 >
 > **Yarn**
 >
-> - We recommend following the [instructions via Yarnpkg.com](https://classic.yarnpkg.com/en/docs/install/).
+> - Follow the [instructions via Yarnpkg.com](https://classic.yarnpkg.com/en/docs/install/).
 >
 > **Node.js**
 >
-> - For **Linux** and **Mac** users, `nvm` is a great tool for managing multiple versions of Node on one system. It takes a bit more effort to set up and learn, however, in which case getting the latest [installation from Nodejs.org](https://nodejs.org/en/) works just fine.
+> - For **Linux** and **Mac** users, `nvm` is a great tool for managing multiple versions of Node on one system. It takes a bit more effort to set up and learn, however. (If that seems too daunting, getting the latest installation [directly from Nodejs.org](https://nodejs.org/en/) works just fine.)
 >   - For **Mac** users, if you already have Homebrew installed, you can use it to [install `nvm`](https://formulae.brew.sh/formula/nvm) as well. Otherwise, follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 >   - For **Linux** users, you can follow the [installation instructions from `nvm`](https://github.com/nvm-sh/nvm#installing-and-updating).
 > - We recommend **Windows** users visit [Nodejs.org](https://nodejs.org/en/) for installation.
 >
-> If you're confused about which of the two current Node versions to use, we recommend using the most recent LTS, which is currently [16.13.0](https://nodejs.org/download/release/v16.13.0/).
+> If you're confused about which of the two current Node versions to use, we recommend using the most recent LTS, which is currently [16.13.1](https://nodejs.org/download/release/v16.13.1/).
 
