@@ -152,6 +152,7 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
 > - Pages that come with the scaffolds are plural or singular depending on whether they deal with many or one post. When using the `page` generator it will stick with whatever name you give the command.
 > - Layouts use the name you give them on the command line.
 > - Components and cells, like pages, will be plural or singular depending on context when created by the scaffold generator, otherwise they'll use the given name on the command line.
+> - Routes are plural.
 >
 > Also note that it's the database table name part that's singular or plural, not the whole word. So it's `PostsCell`, not `PostCells`.
 >
