@@ -31,10 +31,7 @@ import { MetaTags } from '@redwoodjs/web'
 const HomePage = () => {
   return (
     <>
-      <MetaTags
-        title="Home"
-        // description="Home description"
-      />
+      <MetaTags title="Home" description="Home description" />
 
       <header>
         <h1>Redwood Blog</h1>
@@ -76,10 +73,7 @@ import { MetaTags } from '@redwoodjs/web'
 const AboutPage = () => {
   return (
     <>
-      <MetaTags
-        title="About"
-        // description="About description"
-      />
+      <MetaTags title="About" description="About description" />
 
       <header>
         <h1>Redwood Blog</h1>
