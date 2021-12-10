@@ -53,6 +53,17 @@ Previous versions of this tutorial had you build everything without any styling,
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
+
+ul {
+  list-style-type: none;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 1rem 0 0 ;
+}
 ```
 
 These styles will switch to whatever your OS's system font is, put a little margin between things, and just generally clean things up. Feel free to tweak it to your liking (or ignore these styles completely and stick with the browser default) but keep in mind that the following screenshots are made against this base stylesheet so your experience may vary.
