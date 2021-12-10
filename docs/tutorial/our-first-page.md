@@ -6,7 +6,9 @@ sidebar_label: "Our First Page"
 
 Let's give our users something to look at besides the (awesome) Redwood welcome page (thanks [@alicelovescake](https://github.com/alicelovescake)!). We'll use the `redwood` command line tool to create a page for us:
 
-    yarn redwood generate page home /
+```bash
+yarn redwood generate page home /
+```
 
 The command above does four things:
 
@@ -53,6 +55,6 @@ body {
 }
 ```
 
-These styles will switch to whatever your OS's system font is, put a little margin between things, and just generally things up. Feel free to tweak it to your liking (or ignore these styles completely and stick with the browser default) but keep in mind that the following screenshots are made against this base stylesheet so your experience may vary.
+These styles will switch to whatever your OS's system font is, put a little margin between things, and just generally clean things up. Feel free to tweak it to your liking (or ignore these styles completely and stick with the browser default) but keep in mind that the following screenshots are made against this base stylesheet so your experience may vary.
 
 ![Default homepage with custom styles](https://user-images.githubusercontent.com/300/145497167-6344e9e6-8ac1-4960-a10e-f826a72febd7.png)

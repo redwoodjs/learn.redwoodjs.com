@@ -6,7 +6,9 @@ sidebar_label: "A Second Page and a Link"
 
 Let's create an "About" page for our blog so everyone knows about the geniuses behind this achievement. We'll create another page using `redwood`:
 
-    yarn redwood generate page about
+```bash
+yarn redwood generate page about
+```
 
 Notice that we didn't specify a route path this time. If you leave it off the `redwood generate page` command, Redwood will create a `Route` and give it a path that is the same as the page name you specified prepended with a slash. In this case it will be `/about`.
 

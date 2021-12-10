@@ -30,7 +30,7 @@ During installation, RedwoodJS checks if your system meets version requirements 
 
 If your system versions do not meet both requirements, _the installation bootstrap will result in an ERROR._ To check, please run the following from your terminal command line:
 
-```
+```bash
 node --version
 yarn --version
 ```

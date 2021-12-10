@@ -8,7 +8,7 @@ Let's take a look at the files and directories that were created for us (config 
 
 > Don't worry about trying to memorize this directory structure right now, it's just a brief overview to get you oriented. Seeing dozens of files before you've even written a single line of code can be daunting, but there's a great organizational structure here, promise. You can also ignore this all for now and we'll touch upon many of these files and directories as we go.
 
-```terminal
+```plaintext
 ├── api
 │   ├── db
 │   │   ├── schema.prisma
@@ -51,8 +51,10 @@ Let's take a look at the files and directories that were created for us (config 
 
 At the top level we have three directories, `api`, `scripts` and `web`. Redwood separates the backend (`api`) and frontend (`web`) concerns into their own paths in the codebase. ([Yarn refers to these as "workspaces"](https://yarnpkg.com/lang/en/docs/workspaces/). In Redwood, we refer to them as "sides.") When you add packages going forward you'll need to specify which workspace they should go in. For example (don't run these commands, we're just looking at the syntax):
 
-    yarn workspace web add marked
-    yarn workspace api add better-fs
+```bash
+yarn workspace web add marked
+yarn workspace api add better-fs
+```
 
 `scripts` is meant to hold any Node scripts you may need to run from the command line that aren't directly related to the api or web sides. The file that's in there, `seed.js` is used to populate your database with any data that needs to exist for your app to run at all (maybe an admin user or site configuration).
 
