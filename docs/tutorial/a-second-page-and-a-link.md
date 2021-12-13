@@ -101,6 +101,6 @@ export default AboutPage
 
 Great! Try that out in the browser and verify you can get back and forth.
 
-![About page with link back home](https://user-images.githubusercontent.com/300/145648850-59f72ab3-e8ac-4f2e-9b27-2cd93579e4c1.png)
+![image](https://user-images.githubusercontent.com/300/145899850-2906c2e3-4ec1-4f8a-9c95-e43b0f7da73f.png)
 
 As a world-class developer you probably saw that copy-and-pasted `<header>` and gasped in disgust. We feel you. That's why Redwood has a little something called _Layouts_.
