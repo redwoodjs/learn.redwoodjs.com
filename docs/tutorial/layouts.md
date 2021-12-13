@@ -12,7 +12,9 @@ When you look at these two pages what do they really care about? They have some 
 
 Let's create a layout to hold that `<header>`:
 
-    yarn redwood g layout blog
+```bash
+yarn redwood g layout blog
+```
 
 > **`generate` shorthand**
 >
@@ -48,7 +50,48 @@ const BlogLayout = ({ children }) => {
 export default BlogLayout
 ```
 
-`children` is where the magic will happen. Any page content given to the layout will be rendered here. And now the pages are back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead). To actually render our layout we'll need to make a change to our routes files. We'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`:
+```javascript
+// web/src/pages/AboutPage/AboutPage.js
+
+import { Link, routes } from '@redwoodjs/router'
+import { MetaTags } from '@redwoodjs/web'
+
+const AboutPage = () => {
+  return (
+    <>
+      <MetaTags title="About" description="About page" />
+
+      <p>
+        This site was created to demonstrate my mastery of Redwood: Look on my
+        works, ye mighty, and despair!
+      </p>
+      <Link to={routes.home()}>Return home</Link>
+    </>
+  )
+}
+
+export default AboutPage
+```
+
+```javascript
+// web/src/pages/HomePage/HomePage.js
+
+import { MetaTags } from '@redwoodjs/web'
+
+const HomePage = () => {
+  return (
+    <>
+      <MetaTags title="Home" description="Home page" />
+
+      Home
+    </>
+  )
+}
+
+export default HomePage
+```
+
+`children` is where the magic will happen. Any page content given to the layout will be rendered here. And now the pages are back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead). To actually render our layout we'll need to make a change to our routes files. We'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`. Unlike pages, we do actually need an `import` statement for layouts:
 
 ```javascript {3,4,9-12}
 // web/src/Routes.js
@@ -85,13 +128,13 @@ Back to the browser and you should see...nothing different. But that's good, it 
 >
 > If you're using the [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) plugin this also helps disambiguate when browsing through your component stack:
 >
-> <img src="https://user-images.githubusercontent.com/300/73025189-f970a100-3de3-11ea-9285-15c1116eb59a.png" width="400"/>
+> <img src="https://user-images.githubusercontent.com/300/145901282-e4b6ec92-8cee-42d0-97ea-1ffe99328e53.png" width="400"/>
 
 ### Back Home Again
 
-One more `<Link>`, let's have the title/logo link back to the homepage as per usual:
+A couple more `<Link>`s: let's have the title/logo link back to the homepage, and we'll add a nav link to Home as well:
 
-```javascript {9-11}
+```javascript {9-11,14-16}
 // web/src/layouts/BlogLayout/BlogLayout.js
 
 import { Link, routes } from '@redwoodjs/router'
@@ -105,6 +148,9 @@ const BlogLayout = ({ children }) => {
         </h1>
         <nav>
           <ul>
+            <li>
+              <Link to={routes.home()}>Home</Link>
+            </li>
             <li>
               <Link to={routes.about()}>About</Link>
             </li>
@@ -124,14 +170,22 @@ And then we can remove the extra "Return to Home" link (and Link/routes import) 
 ```javascript
 // web/src/pages/AboutPage/AboutPage.js
 
+import { MetaTags } from '@redwoodjs/web'
+
 const AboutPage = () => {
   return (
-    <p>
-      This site was created to demonstrate my mastery of Redwood: Look on my
-      works, ye mighty, and despair!
-    </p>
+    <>
+      <MetaTags title="About" description="About page" />
+
+      <p>
+        This site was created to demonstrate my mastery of Redwood: Look on my
+        works, ye mighty, and despair!
+      </p>
+    </>
   )
 }
 
 export default AboutPage
 ```
+
+![image](https://user-images.githubusercontent.com/300/145901020-1c33bb74-78f9-415e-a8c8-c8873bd6630f.png)
