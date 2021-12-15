@@ -1,20 +1,14 @@
 ---
-id: everyones-favorite-thing-to-build-forms
-title: "Everyone's Favorite Thing to Build: Forms"
-sidebar_label: "Everyone's Favorite Thing to Build: Forms"
+id: building-a-form
+title: "Building a Form"
+sidebar_label: "Building a Form"
 ---
 
-Wait, don't close your browser! You had to know this was coming eventually, didn't you? And you've probably realized by now we wouldn't even have this section in the tutorial unless Redwood had figured out a way to make forms less soul-sucking than usual. In fact Redwood might even make you _love_ building forms. Well, love is a strong word. _Like_ building forms? _Tolerate_ building them?
+Wait, don't close your browser! You had to know this was coming eventually, didn't you? And you've probably realized by now we wouldn't even have this section in the tutorial unless Redwood had figured out a way to make forms less soul-sucking than usual. In fact Redwood might even make you _love_ building forms.
 
-Part 3 of the video tutorial picks up here:
+Well, love is a strong word. _Like_ building forms?
 
-> **Ancient Content Notice**
->
-> These videos were recorded with an earlier version of Redwood and many commands are now out-of-date. If you really want to build the blog app you'll need to follow along with the text which we keep up-to-date with the latest releases.
-
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/eT7iIy0F8Tk?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; modestbranding; showinfo=0" allowfullscreen></iframe>
-</div>
+_Tolerate_ building them?
 
 We already have a form or two in our app; remember our posts scaffold? And those work pretty well! How hard can it be? (Hopefully you haven't sneaked a peek at that code—what's coming next will be much more impressive if you haven't.)
 
@@ -22,7 +16,9 @@ Let's build the simplest form that still makes sense for our blog, a "contact us
 
 ### The Page
 
-    yarn rw g page contact
+```bash
+yarn rw g page contact
+```
 
 We can put a link to Contact in our layout's header:
 
@@ -40,6 +36,9 @@ const BlogLayout = ({ children }) => {
         </h1>
         <nav>
           <ul>
+            <li>
+              <Link to={routes.home()}>Home</Link>
+            </li>
             <li>
               <Link to={routes.about()}>About</Link>
             </li>
@@ -59,17 +58,32 @@ export default BlogLayout
 
 And then use the `BlogLayout` for the `ContactPage` by making sure its wrapped by the same `<Set>` as the other pages in the routes file:
 
-```javascript {5}
+```javascript{15}
 // web/src/Routes.js
 
-<Router>
-  <Set wrap={BlogLayout}>
-    <Route path="/contact" page={ContactPage} name="contact" />
-    <Route path="/about" page={AboutPage} name="about" />
-    <Route path="/" page={HomePage} name="home" />
-  </Set>
-  <Route notfound page={NotFoundPage} />
-</Router>
+import BlogLayout from 'src/layouts/BlogLayout'
+
+const Routes = () => {
+  return (
+    <Router>
+      <Set wrap={PostsLayout}>
+        <Route path="/posts/new" page={PostNewPostPage} name="newPost" />
+        <Route path="/posts/{id:Int}/edit" page={PostEditPostPage} name="editPost" />
+        <Route path="/posts/{id:Int}" page={PostPostPage} name="post" />
+        <Route path="/posts" page={PostPostsPage} name="posts" />
+      </Set>
+      <Set wrap={BlogLayout}>
+        <Route path="/contact" page={ContactPage} name="contact" />
+        <Route path="/article/{id:Int}" page={ArticlePage} name="article" />
+        <Route path="/about" page={AboutPage} name="about" />
+        <Route path="/" page={HomePage} name="home" />
+      </Set>
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+
+export default Routes
 ```
 
 Double check that everything looks good and then let's get to the good stuff.
@@ -80,39 +94,21 @@ Forms in React are infamously annoying to work with. There are [Controlled Compo
 
 We think Redwood is a step or two in the right direction by not only freeing you from writing controlled component plumbing, but also dealing with validation and errors automatically. Let's see how it works.
 
-Before we start, let's add a couple of CSS classes to make the default form layout a little cleaner and save us from having to write a bunch of `style` attributes that will clutter up the examples and make them harder to follow. For now we'll just put these in the root `index.css` file in `web/src`:
-
-```css
-/* web/src/index.css */
-
-button, input, label, textarea {
-  display: block;
-  outline: none;
-}
-
-label {
-  margin-top: 1rem;
-}
-
-.error {
-  color: red;
-}
-
-input.error, textarea.error {
-  border: 1px solid red;
-}
-```
-
 For now we won't be talking to the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
 
 ```javascript {3,7}
 // web/src/pages/ContactPage/ContactPage.js
 
+import { MetaTags } from '@redwoodjs/web'
 import { Form } from '@redwoodjs/forms'
 
 const ContactPage = () => {
   return (
-    <Form></Form>
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form></Form>
+    </>
   )
 }
 
@@ -124,50 +120,63 @@ Well that was anticlimactic. You can't even see it in the browser. Let's add a f
 ```javascript {3,8}
 // web/src/pages/ContactPage/ContactPage.js
 
+import { MetaTags } from '@redwoodjs/web'
 import { Form, TextField } from '@redwoodjs/forms'
 
 const ContactPage = () => {
   return (
-    <Form>
-      <TextField name="input" />
-    </Form>
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form>
+        <TextField name="input" />
+      </Form>
+    </>
   )
 }
 
 export default ContactPage
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80258121-4f4d2300-8637-11ea-83f5-c667e05aaf74.png" />
+<img src="https://user-images.githubusercontent.com/300/146102866-a1adaad2-b0b3-4bd8-b42d-4ed918bd3c82.png" />
 
 Something is showing! Still, pretty boring. How about adding a submit button?
 
 ```javascript {3,9}
 // web/src/pages/ContactPage/ContactPage.js
 
+import { MetaTags } from '@redwoodjs/web'
 import { Form, TextField, Submit } from '@redwoodjs/forms'
 
 const ContactPage = () => {
   return (
-    <Form>
-      <TextField name="input" />
-      <Submit>Save</Submit>
-    </Form>
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form>
+        <TextField name="input" />
+        <Submit>Save</Submit>
+      </Form>
+    </>
   )
 }
 
 export default ContactPage
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80258188-7572c300-8637-11ea-9583-1b7636f93be0.png" />
+<img src="https://user-images.githubusercontent.com/300/146102817-e2f6c020-ef64-45bb-bdbb-48a484218678.png" />
 
-We have what might actually be considered a real, bonafide form here. Try typing something in and clicking "Save". Nothing blew up on the page but we have no indication that the form submitted or what happened to the data (although you may have noticed an error in the Web Inspector). Next we'll get the data in our fields.
+We have what might actually be considered a real, bonafide form here. Try typing something in and clicking "Save". Nothing blew up on the page but we have no indication that the form submitted or what happened to the data. Next we'll get the data from our fields.
 
 ### onSubmit
 
 Similar to a plain HTML form we'll give `<Form>` an `onSubmit` handler. That handler will be called with a single argument—an object containing all of the submitted form fields:
 
-```javascript {4-6,9}
+```javascript {4,7-9,15}
 // web/src/pages/ContactPage/ContactPage.js
+
+import { MetaTags } from '@redwoodjs/web'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 
 const ContactPage = () => {
   const onSubmit = (data) => {
@@ -175,23 +184,30 @@ const ContactPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <TextField name="input" />
-      <Submit>Save</Submit>
-    </Form>
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form onSubmit={onSubmit}>
+        <TextField name="input" />
+        <Submit>Save</Submit>
+      </Form>
+    </>
   )
 }
+
+export default ContactPage
 ```
 
-Now try filling in some data and submitting:
+Now try filling in some data and submitting, then checking out the console in Web Inspector:
 
-<img src="https://user-images.githubusercontent.com/300/80258293-c08cd600-8637-11ea-92fb-93d3ca1db3cf.png" />
+<img src="https://user-images.githubusercontent.com/300/146102943-dd0155e5-3bcb-45c5-b27f-65bfacb65c91.png" />
 
 Great! Let's turn this into a more useful form by adding a couple fields. We'll rename the existing one to "name" and add "email" and "message":
 
-```javascript {3,12-14}
+```javascript {4,16-18}
 // web/src/pages/ContactPage/ContactPage.js
 
+import { MetaTags } from '@redwoodjs/web'
 import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 
 const ContactPage = () => {
@@ -200,12 +216,16 @@ const ContactPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <TextField name="name" />
-      <TextField name="email" />
-      <TextAreaField name="message" />
-      <Submit>Save</Submit>
-    </Form>
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form onSubmit={onSubmit}>
+        <TextField name="name" />
+        <TextField name="email" />
+        <TextAreaField name="message" />
+        <Submit>Save</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -214,30 +234,45 @@ export default ContactPage
 
 See the new `<TextAreaField>` component here which generates an HTML `<textarea>` but that contains Redwood's form goodness:
 
-<img src="https://user-images.githubusercontent.com/300/80258346-e4e8b280-8637-11ea-908b-06a1160b932b.png" />
+<img src="https://user-images.githubusercontent.com/300/146103219-c8dc958d-ea2b-4bea-8cb8-62dcd0be6783.png" />
 
 Let's add some labels:
 
-```javascript {5,8,11}
+```javascript {16,19,22}
 // web/src/pages/ContactPage/ContactPage.js
 
-return (
-  <Form onSubmit={onSubmit}>
-    <label htmlFor="name">Name</label>
-    <TextField name="name" />
+import { MetaTags } from '@redwoodjs/web'
+import { Form, TextField, TextAreaField, Submit } from '@redwoodjs/forms'
 
-    <label htmlFor="email">Email</label>
-    <TextField name="email" />
+const ContactPage = () => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
 
-    <label htmlFor="message">Message</label>
-    <TextAreaField name="message" />
+  return (
+    <>
+      <MetaTags title="Contact" description="Contact page" />
 
-    <Submit>Save</Submit>
-  </Form>
-)
+      <Form onSubmit={onSubmit}>
+        <label htmlFor="name">Name</label>
+        <TextField name="name" />
+
+        <label htmlFor="email">Email</label>
+        <TextField name="email" />
+
+        <label htmlFor="message">Message</label>
+        <TextAreaField name="message" />
+
+        <Submit>Save</Submit>
+      </Form>
+    </>
+  )
+}
+
+export default ContactPage
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80258431-15c8e780-8638-11ea-8eca-0bd222b51d8a.png" />
+<img src="https://user-images.githubusercontent.com/300/146103401-b3d84a6c-091c-4ebc-a28c-f82c57561057.png" />
 
 Try filling out the form and submitting and you should get a console message with all three fields now.
 
@@ -266,7 +301,7 @@ return (
 )
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80258542-5163b180-8638-11ea-8450-8a727de177ad.png" />
+<img src="https://user-images.githubusercontent.com/300/146103473-ad762364-c456-49ae-8de7-3b26b10b38ff.png" />
 
 Now when trying to submit there'll be message from the browser noting that a field must be filled in. This is better than nothing, but these messages can't be styled. Can we do better?
 
@@ -297,15 +332,16 @@ And now when we submit the form with blank fields...the Name field gets focus. B
 
 Introducing `<FieldError>` (don't forget to include it in the `import` statement at the top):
 
-```javascript {8,20,24,28}
+```javascript {5,24,28,32}
 // web/src/pages/ContactPage/ContactPage.js
 
+import { MetaTags } from '@redwoodjs/web'
 import {
+  FieldError
   Form,
   TextField,
   TextAreaField,
   Submit,
-  FieldError,
 } from '@redwoodjs/forms'
 
 const ContactPage = () => {
@@ -314,21 +350,25 @@ const ContactPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <label htmlFor="name">Name</label>
-      <TextField name="name" validation={{ required: true }} />
-      <FieldError name="name" />
+    <>
+      <MetaTags title="Contact" description="Contact page" />
 
-      <label htmlFor="email">Email</label>
-      <TextField name="email" validation={{ required: true }} />
-      <FieldError name="email" />
+      <Form onSubmit={onSubmit}>
+        <label htmlFor="name">Name</label>
+        <TextField name="name" validation={{ required: true }} />
+        <FieldError name="name" />
 
-      <label htmlFor="message">Message</label>
-      <TextAreaField name="message" validation={{ required: true }} />
-      <FieldError name="message" />
+        <label htmlFor="email">Email</label>
+        <TextField name="email" validation={{ required: true }} />
+        <FieldError name="email" />
 
-      <Submit>Save</Submit>
-    </Form>
+        <label htmlFor="message">Message</label>
+        <TextAreaField name="message" validation={{ required: true }} />
+        <FieldError name="message" />
+
+        <Submit>Save</Submit>
+      </Form>
+    </>
   )
 }
 
@@ -337,84 +377,20 @@ export default ContactPage
 
 Note that the `name` attribute matches the `name` of the input field above it. That's so it knows which field to display errors for. Try submitting that form now.
 
-<img src="https://user-images.githubusercontent.com/300/80258694-ac95a400-8638-11ea-904c-dc034f07b12a.png" />
+<img src="https://user-images.githubusercontent.com/300/146103580-1ebff2bb-d51d-4087-95de-3230b304e65e.png" />
 
-But this is just the beginning. Let's make sure folks realize this is an error message. Remember the `.error` class we defined in `index.css`? Check out the `className` attribute on `<FieldError>`:
+But this is just the beginning. Let's make sure folks realize this is an error message. Remember the basic styles we added to `index.css` back at the start? There's an `.error` class in there that we can use. Set the `className` attribute on `<FieldError>`:
 
-```javascript {7,11,15}
+```javascript {24,28,32}
 // web/src/pages/ContactPage/ContactPage.js
 
-return (
-  <Form onSubmit={onSubmit}>
-    <label htmlFor="name">Name</label>
-    <TextField name="name" validation={{ required: true }} />
-    <FieldError name="name" className="error" />
-
-    <label htmlFor="email">Email</label>
-    <TextField name="email" validation={{ required: true }} />
-    <FieldError name="email" className="error" />
-
-    <label htmlFor="message">Message</label>
-    <TextAreaField name="message" validation={{ required: true }} />
-    <FieldError name="message" className="error" />
-
-    <Submit>Save</Submit>
-  </Form>
-)
-```
-
-<img src="https://user-images.githubusercontent.com/300/73306040-3cf65100-41d0-11ea-99a9-9468bba82da7.png" />
-
-You know what would be nice? If the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
-
-```javascript {9,17,25}
-// web/src/pages/ContactPage/ContactPage.js
-
-return (
-  <Form onSubmit={onSubmit}>
-    <label htmlFor="name">Name</label>
-    <TextField
-      name="name"
-      validation={{ required: true }}
-      errorClassName="error"
-    />
-    <FieldError name="name" className="error" />
-
-    <label htmlFor="email">Email</label>
-    <TextField
-      name="email"
-      validation={{ required: true }}
-      errorClassName="error"
-    />
-    <FieldError name="email" className="error" />
-
-    <label htmlFor="message">Message</label>
-    <TextAreaField
-      name="message"
-      validation={{ required: true }}
-      errorClassName="error"
-    />
-    <FieldError name="message" className="error" />
-
-    <Submit>Save</Submit>
-  </Form>
-)
-```
-
-<img src="https://user-images.githubusercontent.com/300/80258907-39d8f880-8639-11ea-8816-03a11c69e8ac.png" />
-
-Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `htmlFor` attribute of `<label>` becomes the `name` prop on `<Label>`, just like with the other Redwood form components. And don't forget the import:
-
-```javascript {9,19-21,29-31,39-41}
-// web/src/pages/ContactPage/ContactPage.js
-
+import { MetaTags } from '@redwoodjs/web'
 import {
+  FieldError,
   Form,
   TextField,
   TextAreaField,
   Submit,
-  FieldError,
-  Label,
 } from '@redwoodjs/forms'
 
 const ContactPage = () => {
@@ -423,46 +399,157 @@ const ContactPage = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <Label name="name" errorClassName="error">
-        Name
-      </Label>
-      <TextField
-        name="name"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="name" className="error" />
+    <>
+      <MetaTags title="Contact" description="Contact page" />
 
-      <Label name="email" errorClassName="error">
-        Email
-      </Label>
-      <TextField
-        name="email"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="email" className="error" />
+      <Form onSubmit={onSubmit}>
+        <label htmlFor="name">Name</label>
+        <TextField name="name" validation={{ required: true }} />
+        <FieldError name="name" className="error" />
 
-      <Label name="message" errorClassName="error">
-        Message
-      </Label>
-      <TextAreaField
-        name="message"
-        validation={{ required: true }}
-        errorClassName="error"
-      />
-      <FieldError name="message" className="error" />
+        <label htmlFor="email">Email</label>
+        <TextField name="email" validation={{ required: true }} />
+        <FieldError name="email" className="error" />
 
-      <Submit>Save</Submit>
-    </Form>
+        <label htmlFor="message">Message</label>
+        <TextAreaField name="message" validation={{ required: true }} />
+        <FieldError name="message" className="error" />
+
+        <Submit>Save</Submit>
+      </Form>
+    </>
   )
 }
 
 export default ContactPage
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80259003-70af0e80-8639-11ea-97cf-b6b816118fbf.png" />
+<img src="https://user-images.githubusercontent.com/300/146104378-1066882c-1fe7-49e1-9547-44437338155d.png" />
+
+You know what would be nice? If the input itself somehow displayed the fact that there was an error. Check out the `errorClassName` attributes on the inputs:
+
+```javascript {26,34,42}
+// web/src/pages/ContactPage/ContactPage.js
+
+import { MetaTags } from '@redwoodjs/web'
+import {
+  FieldError,
+  Form,
+  TextField,
+  TextAreaField,
+  Submit,
+} from '@redwoodjs/forms'
+
+const ContactPage = () => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+
+  return (
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form onSubmit={onSubmit}>
+        <label htmlFor="name">Name</label>
+        <TextField
+          name="name"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="name" className="error" />
+
+        <label htmlFor="email">Email</label>
+        <TextField
+          name="email"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="email" className="error" />
+
+        <label htmlFor="message">Message</label>
+        <TextAreaField
+          name="message"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="message" className="error" />
+
+        <Submit>Save</Submit>
+      </Form>
+    </>
+  )
+}
+
+export default ContactPage
+```
+
+<img src="https://user-images.githubusercontent.com/300/146104498-8b24ef5c-66e7-48a2-b4ad-0432fff181dd.png" />
+
+Oooo, what if the _label_ could change as well? It can, but we'll need Redwood's custom `<Label>` component for that. Note that the `htmlFor` attribute of `<label>` becomes the `name` prop on `<Label>`, just like with the other Redwood form components. And don't forget the import:
+
+```javascript {7,23-25,33-35,43-45}
+// web/src/pages/ContactPage/ContactPage.js
+
+import { MetaTags } from '@redwoodjs/web'
+import {
+  FieldError,
+  Form,
+  Label,
+  TextField,
+  TextAreaField,
+  Submit,
+} from '@redwoodjs/forms'
+
+const ContactPage = () => {
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+
+  return (
+    <>
+      <MetaTags title="Contact" description="Contact page" />
+
+      <Form onSubmit={onSubmit}>
+        <Label name="name" errorClassName="error">
+          Name
+        </Label>
+        <TextField
+          name="name"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="name" className="error" />
+
+        <Label name="email" errorClassName="error">
+          Email
+        </Label>
+        <TextField
+          name="email"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="email" className="error" />
+
+        <Label name="message" errorClassName="error">
+          Message
+        </Label>
+        <TextAreaField
+          name="message"
+          validation={{ required: true }}
+          errorClassName="error"
+        />
+        <FieldError name="message" className="error" />
+
+        <Submit>Save</Submit>
+      </Form>
+    </>
+  )
+}
+
+export default ContactPage
+```
+
+<img src="https://user-images.githubusercontent.com/300/146104647-25f1b2cf-a3cd-4737-aa2d-9aa984c08e39.png" />
 
 > **Error styling**
 >
@@ -480,7 +567,7 @@ We should make sure the email field actually contains an email:
   validation={{
     required: true,
     pattern: {
-      value: /[^@]+@[^.]+\..+/,
+      value: /^[^@]+@[^.]+\..+$/,
     },
   }}
   errorClassName="error"
@@ -497,7 +584,7 @@ That is definitely not the end-all-be-all for email address validation, but pret
   validation={{
     required: true,
     pattern: {
-      value: /[^@]+@[^.]+\..+/,
+      value: /^[^@]+@[^.]+\..+$/,
       message: 'Please enter a valid email address',
     },
   }}
@@ -505,7 +592,7 @@ That is definitely not the end-all-be-all for email address validation, but pret
 />
 ```
 
-<img src="https://user-images.githubusercontent.com/300/80259139-bd92e500-8639-11ea-99d5-be278dc67afc.png" />
+<img src="https://user-images.githubusercontent.com/300/146105001-96b76f12-e011-46c3-a490-7dd51b872498.png" />
 
 You may have noticed that trying to submit a form with validation errors outputs nothing to the console—it's not actually submitting. That's a good thing! Fix the errors and all is well.
 
@@ -530,4 +617,3 @@ Well, what do you think? Was it worth the hype? A couple of new components and y
 Redwood has one more trick up its sleeve when it comes to forms but we'll save that for when we're actually submitting one to the server.
 
 Having a contact form is great, but only if you actually get the contact somehow. Let's create a database table to hold the submitted data and create our first GraphQL mutation.
-

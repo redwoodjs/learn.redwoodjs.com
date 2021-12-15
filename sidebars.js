@@ -12,7 +12,7 @@ module.exports = {
       'tutorial/cells',
       'tutorial/side-quest-how-redwood-works-with-data',
       'tutorial/routing-params',
-      'tutorial/everyones-favorite-thing-to-build-forms',
+      'tutorial/building-a-form',
       'tutorial/saving-data',
       'tutorial/administration',
       'tutorial/authentication',
