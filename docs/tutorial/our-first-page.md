@@ -64,6 +64,28 @@ li {
   display: inline-block;
   margin: 0 1rem 0 0 ;
 }
+
+h1 > a {
+  text-decoration: none;
+  color: black;
+}
+
+button, input, label, textarea {
+  display: block;
+  outline: none;
+}
+
+label {
+  margin-top: 1rem;
+}
+
+.error {
+  color: red;
+}
+
+input.error, textarea.error {
+  border: 1px solid red;
+}
 ```
 
 These styles will switch to whatever your OS's system font is, put a little margin between things, and just generally clean things up. Feel free to tweak it to your liking (or ignore these styles completely and stick with the browser default) but keep in mind that the following screenshots are made against this base stylesheet so your experience may vary.
