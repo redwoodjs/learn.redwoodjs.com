@@ -86,6 +86,23 @@ label {
 input.error, textarea.error {
   border: 1px solid red;
 }
+
+.form-error {
+  color: red;
+  background-color: lavenderblush;
+  padding: 1rem;
+  display: inline-block;
+}
+
+.form-error ul {
+  list-style-type: disc;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.form-error li {
+  display: list-item;
+}
 ```
 
 These styles will switch to whatever your OS's system font is, put a little margin between things, and just generally clean things up. Feel free to tweak it to your liking (or ignore these styles completely and stick with the browser default) but keep in mind that the following screenshots are made against this base stylesheet so your experience may vary.
