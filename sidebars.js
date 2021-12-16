@@ -14,7 +14,6 @@ module.exports = {
       'tutorial/routing-params',
       'tutorial/building-a-form',
       'tutorial/saving-data',
-      'tutorial/administration',
       'tutorial/authentication',
       'tutorial/deployment',
       'tutorial/wrapping-up',
