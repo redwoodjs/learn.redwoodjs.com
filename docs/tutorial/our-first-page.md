@@ -53,55 +53,52 @@ Previous versions of this tutorial had you build everything without any styling,
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-
 ul {
   list-style-type: none;
   margin: 1rem 0;
   padding: 0;
 }
-
 li {
   display: inline-block;
   margin: 0 1rem 0 0 ;
 }
-
 h1 > a {
   text-decoration: none;
   color: black;
 }
-
 button, input, label, textarea {
   display: block;
   outline: none;
 }
-
 label {
   margin-top: 1rem;
 }
-
 .error {
   color: red;
 }
-
 input.error, textarea.error {
   border: 1px solid red;
 }
-
 .form-error {
   color: red;
   background-color: lavenderblush;
   padding: 1rem;
   display: inline-block;
 }
-
 .form-error ul {
   list-style-type: disc;
   margin: 1rem;
   padding: 1rem;
 }
-
 .form-error li {
   display: list-item;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-between button {
+  display: inline;
 }
 ```
 
