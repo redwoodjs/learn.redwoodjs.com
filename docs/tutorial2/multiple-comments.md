@@ -96,25 +96,21 @@ Storybook refreshes and we've got comments! We've got the same issue here where 
 
 The gap between the two comments *is* a concern for this component, since it's responsible for drawing multiple comments and their layout. So let's fix that in **CommentsCell**:
 
-```javascript {5,7,9,11}
+```javascript {5,10}
 // web/src/components/CommentsCell/CommentsCell.js
 
 export const Success = ({ comments }) => {
   return (
-    <div className="-mt-8">
+    <div className="space-y">
 
       {comments.map((comment) => (
-        <div key={comment.id} className="mt-8">
-          <Comment comment={comment} />
-        </div>
+        <Comment key={comment.id} comment={comment} />
       ))}
     </div>  )
 }
 ```
 
-We had to move the `key` prop to the surrounding `<div>`. We then gave each comment a top margin and removed an equal top margin from the entire container to set it back to zero.
-
-> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *its own* display? If you add a bottom margin, that's one component influencing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
+Again, instead of adding margins to the Comment component itself we work with the parent component: in this case we're telling it to add a space between elements. Remember: each component should be responsible for its own display.
 
 Let's add a margin around the story itself, similar to what we did in the Comment story:
 
@@ -123,14 +119,14 @@ Let's add a margin around the story itself, similar to what we did in the Commen
 
 export const success = () => {
   return Success ? (
-    <div className="m-8 mt-16">
+    <div className="m-4">
 
       <Success {...standard()} />
     </div>  ) : null
 }
 ```
 
-> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin (-2rem). Those two collapse and essentially cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which after subtracting 2rem leaves us with 2rem, which is what we wanted to start with!
+> Because we've been careful about styling our CommentsCell component we can always add margins around it without incurring into [margin collapsing](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). That's one less thing we need to worry about!
 
 ![image](https://user-images.githubusercontent.com/300/95800481-4cf58880-0cac-11eb-9457-ff3f1f0d34b8.png)
 
