@@ -35,4 +35,6 @@ git add .
 git commit -m 'First commit'
 ```
 
-[Git](https://git-scm.com/) is another of those concepts we assume you know, but you can complete the tutorial without it. Even if you've never used it, you can go ahead and follow any `git` commands you see and you'll end up with nice snapshots of your codebase as you're working. But, if you don't know or care about git, you can safely ignore them.
+[git](https://git-scm.com/) is another of those concepts we assume you know, but you *can* complete the tutorial without it. Well, almost: you won't be able to deploy! At the end we'll be deploying to a provider that requires your codebase to be hosted in either [GitHub](https://github.com) or [GitLab](https://gitlab.com).
+
+If you're not worried about deployment for now, you can go ahead and complete the tutorial without using `git` at all.
