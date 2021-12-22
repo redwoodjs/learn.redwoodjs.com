@@ -9,6 +9,8 @@ Let's add a new database table. Open up `api/db/schema.prisma` and add a Contact
 ```javascript
 // api/db/schema.prisma
 
+// ...
+
 model Contact {
   id        Int @id @default(autoincrement())
   name      String
@@ -176,6 +178,7 @@ const CREATE_CONTACT = gql`
     }
   }
 `
+// ...
 ```
 
 We reference the `createContact` mutation we defined in the Contacts SDL passing it an `input` object which will contain the actual name, email and message fields.
@@ -195,6 +198,8 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
+// ...
+
 const ContactPage = () => {
   const [create] = useMutation(CREATE_CONTACT)
 
@@ -204,6 +209,8 @@ const ContactPage = () => {
 
   return (...)
 }
+
+// ...
 ```
 
 `create` is a function that invokes the mutation and takes an object with a `variables` key, containing another object with an `input` key. As an example, we could call it like:
@@ -227,6 +234,8 @@ Now we can update the `onSubmit` function to invoke the mutation with the data i
 ```javascript {7}
 // web/src/pages/ContactPage/ContactPage.js
 
+// ...
+
 const ContactPage = () => {
   const [create] = useMutation(CREATE_CONTACT)
 
@@ -237,6 +246,8 @@ const ContactPage = () => {
 
   return (...)
 }
+
+// ...
 ```
 
 Try filling out the form and submitting—you should have a new Contact in the database! You can verify that with the GraphQL Playground if you were so inclined:
@@ -262,6 +273,8 @@ The `useMutation` hook returns a couple more elements along with the function to
 ```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
 
+// ...
+
 const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT)
 
@@ -272,6 +285,8 @@ const ContactPage = () => {
 
   return (...)
 }
+
+// ...
 ```
 
 Now we know if the database call is still in progress by looking at `loading`. An easy fix for our multiple submit issue would be to disable the submit button if the response is still in progress. We can set the `disabled` attribute on the "Save" button to the value of `loading`:
@@ -514,12 +529,16 @@ Now we can call `reset()` on `formMethods` after we call `toast()`:
 ```javascript {6}
 // web/src/pages/ContactPage/ContactPage.js
 
+// ...
+
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
   onCompleted: () => {
     toast.success('Thank you for your submission!')
     formMethods.reset()
   },
 })
+
+// ...
 ```
 
 <img alt="Screenshot of Contact form with toast success message" src="https://user-images.githubusercontent.com/300/112360362-7a008b00-8c8f-11eb-8649-76d00be920b7.png"/>
@@ -628,7 +647,11 @@ That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [
 > You may have noticed that the onBlur form config stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `config` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
 >
 > ```javascript
-> const formMethods = useForm({ mode: 'onBlur' })
+> // web/src/pages/ContactPage/ContactPage.js
+>
+> const ContactPage = () => {
+>  const formMethods = useForm({ mode: 'onBlur' })
+>   //...
 > ```
 
 The public site is looking pretty good. How about the administrative features that let us create and edit posts? We should move them to some kind of admin section and put them behind a login so that random users poking around at URLs can't create ads for discount pharmaceuticals.
