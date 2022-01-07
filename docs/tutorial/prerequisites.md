@@ -13,11 +13,6 @@ Redwood is composed of several popular libraries to make full-stack web developm
 
 Now, you *can* work through this tutorial without knowing much of anything about these technologies, but you may find yourself getting lost in terminology that we don't stop and take the time to explain. Knowing these technologies helps you see the lines between Redwood and the stock implementations of these technologies. You can try to learn them all at once, but it will be harder to determine where one ends and another begins, which makes it more difficult to find help once you're past the tutorial and want to dive deeper into one technology or another.
 
-> **Windows:** Recommended Development Setup
-> JavaScript development on Windows has specific requirements in addition to Yarn and npm. Follow our simple setup guide:
->
-> - [Recommended Windows Development Setup](https://redwoodjs.com/cookbook/windows-development-setup)
-
 ### Redwood Versions
 
 You will need to be on v1.0 or greater of Redwood to complete the tutorial. If this is your first time using Redwood then no worries: the latest version will be installed automatically when you create your app skeleton!
@@ -58,3 +53,9 @@ Please do upgrade accordingly. Then proceed to the Redwood installation when you
 > - `nvm` is a great tool for managing multiple versions of Node on one system. It takes a bit more effort to set up and learn, however. Follow the [nvm installation instructions](https://github.com/nvm-sh/nvm#installing-and-updating). (Windows users should go to [nvm-windows](https://github.com/coreybutler/nvm-windows/releases)). For **Mac** users with Homebrew installed, you can alternatively use it to [install `nvm`](https://formulae.brew.sh/formula/nvm).
 >
 > If you're confused about which of the two current Node versions to use, we recommend using the most recent LTS, which is currently [v16.x](https://nodejs.org/download/release/latest-gallium/.
+
+> **Windows:** Recommended Development Setup
+>
+> JavaScript development on Windows has specific requirements in addition to Yarn and npm. Follow our simple setup guide:
+>
+> - [Recommended Windows Development Setup](https://redwoodjs.com/cookbook/windows-development-setup)
