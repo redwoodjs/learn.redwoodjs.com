@@ -4,7 +4,7 @@ title: "Layouts"
 sidebar_label: "Layouts"
 ---
 
-One way to solve the `<header>` dilemma would be to create a `<Header>` component and include it in both `HomePage` and `AboutPage`. That works, but is there a better solution? Ideally there should only be one reference to the `<header>` anywhere in our code.
+One way to solve the duplication of the `<header>` would be to create a `<Header>` component and include it in both `HomePage` and `AboutPage`. That works, but is there a better solution? Ideally there should only be one reference to the `<header>` anywhere in our code.
 
 When you look at these two pages what do they really care about? They have some content they want to display. They really shouldn't have to care what comes before (like a `<header>`) or after (like a `<footer>`). That's where layouts come in: they wrap a page in a component that then renders the page as its child. The layout can contain any content that's outside of the page itself. Conceptually, the final rendered document will be structured something like:
 
@@ -91,7 +91,9 @@ const HomePage = () => {
 export default HomePage
 ```
 
-`children` is where the magic will happen. Any page content given to the layout will be rendered here. And now the pages are back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead). To actually render our layout we'll need to make a change to our routes files. We'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`. Unlike pages, we do actually need an `import` statement for layouts:
+In `BlogLayout.js`, `children` is where the magic will happen. Any page content given to the layout will be rendered here. And now the pages are back to focusing on the content they care about (we can remove the import for `Link` and `routes` from `HomePage` since those are in the Layout instead).
+
+To actually render our layout we'll need to make a change to our routes files. We'll wrap `HomePage` and `AboutPage` with the `BlogLayout`, using a `<Set>`. Unlike pages, we do actually need an `import` statement for layouts:
 
 ```javascript {3,4,9-12}
 // web/src/Routes.js
@@ -118,7 +120,7 @@ export default Routes
 >
 > Notice that the import statement uses `src/layouts/BlogLayout` and not `../src/layouts/BlogLayout` or `./src/layouts/BlogLayout`. Being able to use just `src` is a convenience feature provided by Redwood: `src` is an alias to the `src` path in the current workspace. So if you're working in `web` then `src` points to `web/src` and in `api` it points to `api/src`.
 
-Back to the browser and you should see...nothing different. But that's good, it means our layout is working.
+Back to the browser (you may need to manually refresh) and you should see...nothing different. But that's good, it means our layout is working!
 
 > **Why are things named the way they are?**
 >
@@ -189,3 +191,7 @@ export default AboutPage
 ```
 
 ![image](https://user-images.githubusercontent.com/300/145901020-1c33bb74-78f9-415e-a8c8-c8873bd6630f.png)
+
+Now we're getting somehere! We removed all of that duplication and our header content (logo and navigation) are all in place.
+
+Everything we've done so far has been on the web side, which is all in the browser. Let's start getting the backend involved and see what all the hoopla is about GraphQL, Prisma and databases.

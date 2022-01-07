@@ -16,7 +16,7 @@ Notice that we didn't specify a route path this time. If you leave it off the `r
 >
 > As you add more pages to your app, you may start to worry that more and more code has to be downloaded by the client on any initial page load. Fear not! Redwood will automatically code-split on each Page, which means that initial page loads can be blazingly fast, and you can create as many Pages as you want without having to worry about impacting overall webpack bundle size. If, however, you do want specific Pages to be included in the main bundle, you can [override the default behavior](https://redwoodjs.com/docs/router.html#not-code-splitting).
 
-http://localhost:8910/about should show our new page:
+[http://localhost:8910/about](http://localhost:8910/about) should show our new page:
 
 ![About page](https://user-images.githubusercontent.com/300/145647906-56b02a6c-b92c-40c6-9d37-860584ffaa6b.png)
 
