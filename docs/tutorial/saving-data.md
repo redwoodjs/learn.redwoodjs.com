@@ -471,6 +471,8 @@ The `useMutation` hook returns a couple more elements along with the function to
 ```javascript {4}
 // web/src/pages/ContactPage/ContactPage.js
 
+// ...
+
 const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT)
 
@@ -481,6 +483,8 @@ const ContactPage = () => {
 
   return (...)
 }
+
+// ...
 ```
 
 Now we know if the database call is still in progress by looking at `loading`. An easy fix for our multiple submit issue would be to disable the submit button if the response is still in progress. We can set the `disabled` attribute on the "Save" button to the value of `loading`:
@@ -851,12 +855,16 @@ Now we can call `reset()` on `formMethods` after we call `toast()`:
 ```javascript {6}
 // web/src/pages/ContactPage/ContactPage.js
 
+// ...
+
 const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
   onCompleted: () => {
     toast.success('Thank you for your submission!')
     formMethods.reset()
   },
 })
+
+// ...
 ```
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
@@ -963,7 +971,11 @@ That's it! [React Hook Form](https://react-hook-form.com/) provides a bunch of [
 > You may have noticed that the onBlur form config stopped working once you started calling `useForm()` yourself. That's because Redwood calls `useForm()` behind the scenes and automatically passes it the `config` prop that you gave to `<Form>`. Redwood is no longer calling `useForm()` for you so if you need some options passed you need to do it manually:
 >
 > ```javascript
-> const formMethods = useForm({ mode: 'onBlur' })
+> // web/src/pages/ContactPage/ContactPage.js
+>
+> const ContactPage = () => {
+>  const formMethods = useForm({ mode: 'onBlur' })
+>   //...
 > ```
 
 The public site is looking pretty good. How about the administrative features that let us create and edit posts? We should move them to some kind of admin section and put them behind a login so that random users poking around at URLs can't create ads for discount pharmaceuticals.

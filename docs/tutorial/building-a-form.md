@@ -58,7 +58,7 @@ export default BlogLayout
 
 And then use the `BlogLayout` for the `ContactPage` by making sure its wrapped by the same `<Set>` as the other pages in the routes file:
 
-```javascript{15}
+```javascript{16}
 // web/src/Routes.js
 
 import BlogLayout from 'src/layouts/BlogLayout'
@@ -73,8 +73,8 @@ const Routes = () => {
         <Route path="/posts" page={PostPostsPage} name="posts" />
       </Set>
       <Set wrap={BlogLayout}>
-        <Route path="/contact" page={ContactPage} name="contact" />
         <Route path="/article/{id:Int}" page={ArticlePage} name="article" />
+        <Route path="/contact" page={ContactPage} name="contact" />
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
       </Set>
