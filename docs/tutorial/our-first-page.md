@@ -12,7 +12,7 @@ yarn redwood generate page home /
 
 The command above does four things:
 
-- Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument after `page` and pascalcases it, then appends "Page" to construct your new page component. So "home" becomes "HomePage".
+- Creates `web/src/pages/HomePage/HomePage.js`. Redwood takes the name you specified as the first argument after `page` and [PascalCases](https://techterms.com/definition/pascalcase) it, then appends "Page" to construct your new page component. So "home" becomes "HomePage".
 - Creates a test file to go along with this new page component at `web/src/pages/HomePage/HomePage.test.js` with a single, passing test. You _do_ write tests for your components, _don't you??_
 - Creates a Storybook file for this component at `web/src/pages/HomePage/HomePage.stories.js`. Storybook is a wonderful tool for efficiently developing and organizing UI components. (If you want to take a peek ahead, we learn about Storybook in [Part 2 of the tutorial](/docs/tutorial2/introduction-to-storybook)).
 - Adds a `<Route>` in `web/src/Routes.js` that maps the path `/` to the new _HomePage_ page.
@@ -23,7 +23,7 @@ The command above does four things:
 
 In case you didn't notice, this page is already live (your browser automatically reloaded):
 
-![Default HomePage render](https://user-images.githubusercontent.com/300/145497167-6344e9e6-8ac1-4960-a10e-f826a72febd7.png)
+![Default HomePage render](https://user-images.githubusercontent.com/300/148600239-6a147031-74bb-43e8-b4ef-776b4e2a2cc5.png)
 
 It's not pretty, but it's a start! Open the page in your editor, change some text and save. Your browser should reload with your new text.
 
@@ -31,8 +31,21 @@ It's not pretty, but it's a start! Open the page in your editor, change some tex
 
 Open up `web/src/Routes.js` and take a look at the route that was created:
 
-```html
-<Route path="/" page={HomePage} name="home" />
+```jsx{8}
+// web/src/Routes.js
+
+import { Router, Route } from '@redwoodjs/router'
+
+const Routes = () => {
+  return (
+    <Router>
+      <Route path="/" page={HomePage} name="home" />
+      <Route notfound page={NotFoundPage} />
+    </Router>
+  )
+}
+
+export default Routes
 ```
 
 Try changing the route to something like:
@@ -104,4 +117,6 @@ input.error, textarea.error {
 
 These styles will switch to whatever your OS's system font is, put a little margin between things, and just generally clean things up. Feel free to tweak it to your liking (or ignore these styles completely and stick with the browser default) but keep in mind that the following screenshots are made against this base stylesheet so your experience may vary.
 
-![Default homepage with custom styles](https://user-images.githubusercontent.com/300/145497167-6344e9e6-8ac1-4960-a10e-f826a72febd7.png)
+![Default homepage with custom styles](https://user-images.githubusercontent.com/300/148600516-f8e048aa-451f-46f0-9749-078d63fe7b07.png)
+
+Looking better already!
