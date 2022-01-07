@@ -192,6 +192,6 @@ export default AboutPage
 
 ![image](https://user-images.githubusercontent.com/300/145901020-1c33bb74-78f9-415e-a8c8-c8873bd6630f.png)
 
-Now we're getting somehere! We removed all of that duplication and our header content (logo and navigation) are all in place.
+Now we're getting somehere! We removed all of that duplication and our header content (logo and navigation) are all in one place.
 
 Everything we've done so far has been on the web side, which is all in the browser. Let's start getting the backend involved and see what all the hoopla is about GraphQL, Prisma and databases.
