@@ -13,7 +13,7 @@ For the purposes of our tutorial we're going to get our blog posts from a databa
 We need to decide what data we'll need for a blog post. We'll expand on this at some point, but at a minimum we'll want to start with:
 
 - `id` the unique identifier for this blog post (all of our database tables will have one of these)
-- `title` something click-baity like "Top 10 Javascript Framework Named After Trees—You Won't Believe Number 4!"
+- `title` something click-baity like "Top 10 Javascript Frameworks Named After Trees—You Won't Believe Number 4!"
 - `body` the actual content of the blog post
 - `createdAt` a timestamp of when this record was created in the database
 
@@ -61,7 +61,7 @@ This says that we want a table called `Post` and it should have:
 
 ### Migrations
 
-That was simple. Now we'll want to snapshot this as a migration:
+Now we'll want to snapshot the schema changes as a migration:
 
 ```bash
 yarn rw prisma migrate dev
@@ -89,7 +89,11 @@ A database is a pretty abstract thing: where's the data? What's it look like? Ho
 yarn rw prisma studio
 ```
 
-A new browser should open to http://localhost:5555 and now you can view and manipulate data in the database directly!
+A new browser should open to [http://localhost:5555](http://localhost:5555) and now you can view and manipulate data in the database directly!
+
+![image](https://user-images.githubusercontent.com/300/148606893-8d899ce7-4996-4f5e-a7f5-7c8c8483860c.png)
+
+Click on "Post" and you'll see an empty database table. Let's have our app start putting some posts in there!
 
 ### Creating a Post Editor
 
@@ -101,7 +105,7 @@ Let's generate everything we need to perform all the CRUD (Create, Retrieve, Upd
 yarn rw g scaffold post
 ```
 
-Let's point the browser to `http://localhost:8910/posts` and see what we have:
+Let's point the browser to [http://localhost:8910/posts](http://localhost:8910/posts) and see what we have:
 
 <img src="https://user-images.githubusercontent.com/300/73027952-53c03080-3de9-11ea-8f5b-d62a3676bbef.png" />
 
@@ -129,8 +133,6 @@ So, Redwood just created all the pages, components and services necessary to per
 
 Here's what happened when we ran that `yarn rw g scaffold post` command:
 
-- Added an _SDL_ file to define several GraphQL queries and mutations in `api/src/graphql/posts.sdl.js`
-- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma client calls to get data in and out of the database
 - Created several _pages_ in `web/src/pages/Post`:
   - `EditPostPage` for editing a post
   - `NewPostPage` for creating a new post
@@ -147,6 +149,12 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
   - `Post` displays a single post
   - `PostForm` the actual form used by both the New and Edit components
   - `Posts` displays the table of all posts
+- Added an _SDL_ file to define several GraphQL queries and mutations in `api/src/graphql/posts.sdl.js`
+- Added a _services_ file in `api/src/services/posts/posts.js` that makes the Prisma client calls to get data in and out of the database
+
+Pages and components/cells are nicely contained in `Post` directories to keep them organized while the layout is at the top level since there's only one of them.
+
+Whew! That may seem like a lot of stuff but we wanted to follow best-practices and separate out common functionality into individual components, just like you'd do in a real app. Sure we could have crammed all of this functionality into a single component, but we wanted these scaffolds to set an example of good development habits: we have to practice what we preach!
 
 > **Generator Naming Conventions**
 >
@@ -157,24 +165,24 @@ Here's what happened when we ran that `yarn rw g scaffold post` command:
 > - Services filenames are always plural.
 > - The methods in the services will be singular or plural depending on if they are expected to return multiple posts or a single post (`posts` vs. `createPost`).
 > - SDL filenames are plural.
-> - Pages that come with the scaffolds are plural or singular depending on whether they deal with many or one post. When using the `page` generator it will stick with whatever name you give the command.
+> - Pages that come with the scaffolds are plural or singular depending on whether they deal with many or one post. When using the `page` generator it will stick with whatever name you give on the command line.
 > - Layouts use the name you give them on the command line.
 > - Components and cells, like pages, will be plural or singular depending on context when created by the scaffold generator, otherwise they'll use the given name on the command line.
-> - Routes are plural.
+> - Route names for scaffolded pages are singular or plural, the same as the pages they're routing to, otherwise they are identical the name of the page you generated.
 >
-> Also note that it's the database table name part that's singular or plural, not the whole word. So it's `PostsCell`, not `PostCells`.
+> Also note that it's the model name part that's singular or plural, not the whole word. So it's `PostsCell` and `PostsPage`, not `PostCells` or `PostPages`.
 >
-> You don't have to follow this convention once you start creating your own parts but we recommend doing so. The Ruby on Rails community has come to love this nomenclature even though many people complained about it when first exposed to it!
+> You don't have to follow this convention once you start creating your own parts but we recommend doing so. The Ruby on Rails community has come to love this nomenclature even though many people complained when first exposed to it!
 
-### Creating a Homepage
+### Creating a Blog Homepage
 
-We can start replacing these pages one by one as we get designs, or maybe move them to an admin section of our site and build our own display pages from scratch. The public facing site won't let viewers create, edit or delete posts. What _can_ they do?
+We could start replacing these pages one by one as we settle on a look and feel for our blog, but do we need to? The public facing site won't let viewers create, edit or delete posts, so there's no reason to re-create the wheel or update these pages with a look and feel that matches the public facing site. Why don't we keep these as our admin pages and create new ones for the public facing site.
+
+Let's think about what the general public can do and that will inform what pages we need to build:
 
 1. View a list of posts (without links to edit/delete)
 2. View a single post
 
-Since we'll probably want a way to create and edit posts going forward let's keep the scaffolded pages as they are and create new ones for these two items.
-
-We already have `HomePage` so we won't need to create that. We want to display a list of posts to the user so we'll need to add that logic. We need to get the content from the database and we don't want the user to just see a blank screen in the meantime (depending on network conditions, server location, etc), so we'll want to show some kind of loading message or animation. And if there's an error retrieving the data we should handle that as well. And what about when we open source this blog engine and someone puts it live without any content in the database? It'd be nice if there was some kind of blank slate message.
+Starting with #1, we already have a `HomePage` which would be a logical place to view the list of posts, so let's just add the posts to the existing page. We need to get the content from the database and we don't want the user to just see a blank screen in the meantime (depending on network conditions, server location, etc), so we'll want to show some kind of loading message or animation. And if there's an error retrieving the data we should handle that as well. And what about when we open source this blog engine and someone puts it live without any content in the database? It'd be nice if there was some kind of blank slate message until their first post is created.
 
 Oh boy, our first page with data and we already have to worry about loading states, errors, and blank slates...or do we?
