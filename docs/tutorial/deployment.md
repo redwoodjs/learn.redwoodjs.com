@@ -4,142 +4,89 @@ title: "Deployment"
 sidebar_label: "Deployment"
 ---
 
-The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy in the JS ecosystem. Several providers now offer ridiculously simple deployment, in many cases by simply commiting code to your `main` branch and pushing up to GitHub (or other supported provider). Three deployment/hosting providers that Redwood supports out of the box are:
+The whole reason we started building Redwood was to make full-stack web apps easier to build and deploy on the Jamstack. While technically we already deployed in the previous section, it doesn't actually work yet. Let's fix that.
 
-* [Netlify](https://netlify.com)
-* [Vercel](https://vercel.com)
-* [Render](https://render.com)
+### The Database
 
-In this section we're going to deploy to Render since it's the only one that supports a SQLite database! Otherwise we would need to switch over to Postgres in local development and use that going forward. This process is less than ideal at the moment, so we're going avoid it for the purposes of getting up and running quickly.
+We'll need a database somewhere on the internet to store our data. We've been using SQLite locally, but that's a file-based store meant for single-user. SQLite isn't really suited for the kind of connection and concurrency requirements a production website will require. For this part of this tutorial, we will use Postgres. (Prisma currently supports SQLite, Postgres and MySQL.) Don't worry if you aren't familiar with Postgres, Prisma will do all the heavy lifting. We just need to get a database available to the outside world so it can be accessed by our app.
 
-> **Can I use SQLite forever?**
->
-> SQLite has a [documentation page](https://www.sqlite.org/whentouse.html) that discusses the long-term/high-performance use of SQLite in production environments. But to quote that doc:
->
-> "SQLite works great as the database engine for most low to medium traffic websites (which is to say, most websites)...Generally speaking, any site that gets fewer than 100K hits/day should work fine with SQLite.
->
-> Our blog will probably not be hitting these traffic numbers for at least a couple of weeks, so we should be safe for now. :)
+First we'll let Prisma know that we intend to use Postgres instead of SQLite. Update the `provider` entry in `schema.prisma`:
 
-## Redwood Setup
-
-One more Redwood command will create a couple of files that Render needs to deploy our app properly:
-
-```bash
-yarn rw setup deploy render --database sqlite
+```javascript
+provider = "postgresql"
 ```
 
-You'll find a couple of generated files:
-
-* */render.yaml* - contains config options for Render
-* */api/src/functions/healthz.js* - a serverless function that Render will ping periodically to make sure our site is still up and running
-
-That's it for Redwood setup! Make sure these latest changes are committed to git and pushed up to your GitHub or GitLab account.
-
-## Render Setup
-
-Head over to [Render's signup page](https://dashboard.render.com/register) and create your account. Using GitHub or GitLab will get you started even quicker. Now head to your Render dashboard, and select New Blueprint from the list of available services:
-
-![image](https://user-images.githubusercontent.com/300/146836976-027311a9-7811-45a2-b191-0dff1b48cade.png)
-
-If you haven't already, you'll be asked to link your GitHub/GitLab account, and then be presented with a list of your available repos. Select the repo we've been working on, whatever you ended up naming it, in this case `example-blog`:
-
-![image](https://user-images.githubusercontent.com/300/146837734-ccbea910-8551-408a-b466-35ed8de36396.png)
-
-The last screen asks for a Service Group name (use `example-blog` if you want) and Render verifies that we want to deploy from the `main` branch and lists the services that it will create: one for web and one for api:
-
-![image](https://user-images.githubusercontent.com/300/146841166-3e552bdb-978f-466d-aacb-99abb66d4a8d.png)
-
-Click **Apply** and then you should see some loading spinners as the services are created. Our site won't quite be live yet—there's one more step we need to do.
-
-Now we just have to let Render know how to connect the web and api (so that GraphQL calls made from the web side end up being sent to the api side). Go back to the [Render Dashboard](https://dashboard.render.com/) and click on the `example-blog-api` service to view its settings. At the top, copy the URL:
-
-![image](https://user-images.githubusercontent.com/300/146839410-832348dc-b6a8-4d89-a6d6-b45a2846c6da.png)
-
-Back to the [Dashboard](https://dashboard.render.com/), now click on the `example-blog-web` service and then on the Redirects/Rewrites tab. In the first entry, where the Source is `/.redwood/functions/*` change the destination to the URL we just copied, with `*` appened on the end, for example: `https://example-blog-api.onrender.com/*`:
-
-![image](https://user-images.githubusercontent.com/300/146839552-5d0b75d3-523b-4201-84bd-285f91b58fd5.png)
-
-Be sure to click **Save Changes** and, while you're there, copy the URL at the top:
-
-![image](https://user-images.githubusercontent.com/300/147162488-c2069866-ea72-47c5-b9cd-5d758a7e7818.png)
-
-That's the public URL for our site! Now we just need to wait for the api side to finish deploying and we should be good to go.
-
-> **My api build failed!**
+> **!!! Extremely Important Notice You Should Read !!!**
 >
-> We've received reports of this happening from time-to-time on folks' very first deploy. If this happens to you, go to the api's detail page and click the **Manual Deploy** button at the upper right and select "Deploy Latest Commit" to try again. It's usually good to go on a second deploy.
+> Prisma only supports one database provider at a time, and since we can't use SQLite in production and *must* switch to Postgres or MySQL, that means we need to use the same database on our local development system after making this change. See our [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup) guide to get you started.
 
-## It's Alive!
+There are several hosting providers where you can quickly start up a Postgres instance:
 
-Head to the URL that you copied from the web side service and the site should come up!
+- [Railway](https://railway.app/)
+- [Heroku](https://www.heroku.com/postgres)
+- [Digital Ocean](https://www.digitalocean.com/products/managed-databases)
+- [AWS](https://aws.amazon.com/rds/postgresql/)
 
-![image](https://user-images.githubusercontent.com/300/146846128-9530ea46-5a32-4ea2-8317-e2590f7d044f.png)
+We're going to go with Railway for now because it's a) free and b) ridiculously easy to get started, by far the easiest we've found. You don't even need to create a login! The only limitation is that if you *don't* create an account, your database will be removed after seven days. But unless you *really* procrastinate that should be plenty of time to get through the rest of the tutorial!
 
-You won't have any blog posts (we only created those on our local machine) or a user, but you can set those back up now. Go to `/signup` and create your account. Once you're logged in you can go to the Posts admin page and start adding posts.
+Head over to Railway and click **Get Started**:
 
-## Security
+![image](https://user-images.githubusercontent.com/300/107562787-1fa2e380-6b95-11eb-90ba-02fea7925a05.png)
 
-We don't want just anyone to come along and sign up to create posts for our blog, so we need to prevent new signups going forward. One way to do this would be to comment out the `SignupPage` route so that a browser can no longer request it:
+Now just follow the prompts. First, Cmd+k/Ctrl+k (depending on your OS):
 
-```javascript {11}
-// web/src/Routes.js
+![image](https://user-images.githubusercontent.com/300/107562945-495c0a80-6b95-11eb-9ba8-a294669d6cb4.png)
 
-import { Private, Router, Route, Set } from '@redwoodjs/router'
-import PostsLayout from 'src/layouts/PostsLayout'
-import BlogLayout from 'src/layouts/BlogLayout'
+And now pick **Provision PostgreSQL**:
 
-const Routes = () => {
-  return (
-    <Router>
-      <Route path="/login" page={LoginPage} name="login" />
-      {/* <Route path="/signup" page={SignupPage} name="signup" /> */}
-      <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
-      <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
-      <Private unauthenticated="home">
-        <Set wrap={PostsLayout}>
-          <Route path="/admin/posts/new" page={PostNewPostPage} name="newPost" />
-          <Route path="/admin/posts/{id:Int}/edit" page={PostEditPostPage} name="editPost" />
-          <Route path="/admin/posts/{id:Int}" page={PostPostPage} name="post" />
-          <Route path="/admin/posts" page={PostPostsPage} name="posts" />
-        </Set>
-      </Private>
-      <Set wrap={BlogLayout}>
-        <Route path="/contact" page={ContactPage} name="contact" />
-        <Route path="/article/{id:Int}" page={ArticlePage} name="article" />
-        <Route path="/about" page={AboutPage} name="about" />
-        <Route path="/" page={HomePage} name="home" />
-      </Set>
-      <Route notfound page={NotFoundPage} />
-    </Router>
-  )
-}
+![image](https://user-images.githubusercontent.com/300/107562989-5c6eda80-6b95-11eb-944e-34b0ad49f4ea.png)
 
-export default Routes
-```
+And believe it or not, we're done! Now we just need the connection URL. Click on **PostgreSQL** at the left, and then the **Connect** tab. Copy the Database URL snippet, the one that starts with `postgresql://`:
 
-And remove the link to signup from `LoginPage`. But, if someone were clever, they could still create a user using the auth function that was created along with dbAuth. To prevent that we should throw an error in the signup handler instead of creating a user:
+![image](https://user-images.githubusercontent.com/300/107562577-da7eb180-6b94-11eb-8731-e86a1c7127af.png)
 
-```javascript {7}
-// api/src/functions/auth.js
+That's it for the database setup! Now to let Netlify know about it.
 
-// ...snip...
+### Netlify
 
-const signupOptions = {
-  handler: () => {
-    throw new Error()
-  },
-}
+Go back to the main site page in Netlify and then to **Site settings** at the top, and then **Build & Deploy** > **Environment**. Click **Edit Variables** and this is where we'll paste the database connection URI we got from Railway (note the **Key** is "DATABASE_URL"). After pasting the value, append `?connection_limit=1` to the end. The URI will have the following format: `postgres://<user>:<pass>@<url>/<db>?connection_limit=1`.
 
-// ...snip...
-```
+![Adding ENV var](https://user-images.githubusercontent.com/300/83188236-3e834780-a0e4-11ea-8cfa-790c2e335a92.png)
 
-Now the signup auth endpoint will return a `400 Bad Request` and not even leak any information as to why it's returning that. A hacker doesn't deserve that common courtesy!
+> **Connection limit**
+>
+> When configuring a database, you'll want to append `?connection_limit=1` to the URI. This is [recommended by Prisma](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/deployment#recommended-connection-limit) when working with relational databases in a Serverless context.
 
-Now, you could now commit and push up your changes, but if you do, a word of caution:
+Make sure to click the **Save** button. Now go over to the **Deploys** tab in the top nav and open the **Trigger deploy** dropdown on the right, then finally choose **Deploy site**:
 
-> On the free plan, *Render does not offer persistent data storage*, which means the user and posts you added to your site will be wiped out each time you deploy.
+![Trigger deploy](https://user-images.githubusercontent.com/300/83187760-835aae80-a0e3-11ea-9733-ff54969bba1f.png)
 
-There are two things you can do:
+With a little luck (and SCIENCE) it will complete successfully! You can click the **Preview** button at the top of the deploy log page, or go back and click the URL of your Netlify site towards the top:
 
-1. Upgrade to Render's **Starter** plan, which allows you to persist a disk between deploys
-2. Switch to a Postgres database, which Render provides for free for 90 days. However, you'll need to make this change in your local development environment as well and [installPostgres locally](https://redwoodjs.com/docs/local-postgres-setup.html#windows-and-other-platforms). Once you convert over, you'll need to [delete and recreate your migrations](https://redwoodjs.com/docs/local-postgres-setup.html#migrate-from-sqlite-to-postgres).
+![Netlify URL](https://user-images.githubusercontent.com/300/83187909-bef57880-a0e3-11ea-97dc-e557248acd3a.png)
+
+Did it work? If you see "Empty" under the About and Contact links then it did! Yay! You're seeing "Empty" because you don't have any posts in your brand new production database so head to `/admin/posts` and create a couple, then go back to the homepage to see them.
+
+> If you view a deploy via the **Preview** button notice that the URL contains a hash of the latest commit. Netlify will create one of these for every push to `main` but will only ever show this exact commit, so if you deploy again and refresh you won't see any changes. The real URL for your site (the one you get from your site's homepage in Netlify) will always show the latest successful deploy. See [Branch Deploys](#branch-deploys) below for more info.
+
+If the deploy failed, check the log output in Netlify and see if you can make sense of the error. If the deploy was successful but the site doesn't come up, try opening the web inspector and look for errors. Are you sure you pasted the entire Postgres connection string correctly? If you're really, really stuck head over to the [Redwood Community](https://community.redwoodjs.com) and ask for help.
+
+### Branch Deploys
+
+Another neat feature of Netlify is _Branch Deploys_. When you create a branch and push it up to your repo, Netlify will build that branch at a unique URL so that you can test your changes, leaving the main site alone. Once your branch is merged to `main` then a deploy at your main site will run and your changes will show to the world. To enable Branch Deploys go to **Site settings** > **Build & deploy** > **Continuous Deployment** and under the **Deploy contexts** section click **Edit settings** and change **Branch deploys** to "All". You can also enable _Deploy previews_ which will create them for any pull requests against your repo.
+
+![Netlify settings screenshot](https://user-images.githubusercontent.com/30793/90886476-c1016780-e3b2-11ea-851a-3014257484fd.png)
+
+> You also have the ability to "lock" the `main` branch so that deploys do not automatically occur on every push—you need to manually tell Netlify to deploy the latest, either by going to the site or using the [Netlify CLI](https://cli.netlify.com/).
+
+### Database Concerns
+
+#### Connections
+
+In this tutorial, your serverless functions will be connecting directly to the Postgres database. Because Postgres has a limited number of concurrent connections it will accept, this does not scale—imagine a flood of traffic to your site which causes a 100x increase in the number of serverless function calls. Netlify (and behind the scenes, AWS) will happily spin up 100+ serverless Lambda instances to handle the traffic. The problem is that each one will open it's own connection to your database, potentially exhausting the number of available connections. The proper solution is to put a connection pooling service in front of Postgres and connect to that from your lambda functions. To learn how to do that, see the [Connection Pooling](https://redwoodjs.com/docs/connection-pooling) guide.
+
+#### Security
+
+Your database will need to be open to the world because you never know what IP address a serverless function will have when it runs. You could potentially get the CIDR block for ALL IP addresses that your hosting provider has and only allow connections from that list, but those ranges usually change over time and keeping them in sync is not trivial. As long as you keep your DB username/password secure you should be safe, but we understand this is not the ideal solution.
+
+As this form of full-stack Jamstack gains more prominence we're counting on database providers to provide more robust, secure solutions that address these issues. Our team is working closely with several of them and will hopefully have good news to share in the near future!
