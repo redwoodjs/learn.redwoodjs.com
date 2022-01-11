@@ -270,7 +270,7 @@ Let's address these issues.
 
 The `useMutation` hook returns a couple more elements along with the function to invoke it. We can destructure these as the second element in the array that's returned. The two we care about are `loading` and `error`:
 
-```javascript {4}
+```javascript {6}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
