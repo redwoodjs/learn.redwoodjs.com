@@ -51,7 +51,7 @@ model Comment {
   id        Int      @id @default(autoincrement())
   name      String
   body      String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   createdAt DateTime @default(now())
 }
@@ -59,7 +59,7 @@ model Comment {
 
 Most of these lines look very similar to what we've already seen, but this is the first instance of a [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) between two models. `Comment` gets two entries:
 
-* `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`
+* `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`. Passing `Cascade` as the optional `onDelete` parameter tells Prisma that when it deletes any `Post`, it should also delete all `Comment`s associated with that `Post`
 * `postId` is just a regular `Int` column which contains the `id` of the `Post` that this comment is referencing
 
 This gives us a classic database model:
