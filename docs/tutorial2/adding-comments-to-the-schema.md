@@ -253,8 +253,8 @@ export const deleteComment = ({ id }) => {
 // api/src/graphql/comments.sdl.js
 
 type Mutation {
-  createComment(input: CreateCommentInput!): Comment!
-  deleteComment(id: Int!): Comment!
+  createComment(input: CreateCommentInput!): Comment! @skipAuth
+  deleteComment(id: Int!): Comment! @requireAuth
 }
 ```
 
