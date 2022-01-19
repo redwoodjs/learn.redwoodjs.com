@@ -249,7 +249,7 @@ export const deleteComment = ({ id }) => {
 }
 ```
 
-Since we only want owners of the blog to be able to delete comments, we'll use `@requireAuth`.
+Since we only want owners of the blog to be able to delete comments, we'll use `@requireAuth`:
 
 ```graphql {5}
 // api/src/graphql/comments.sdl.js
