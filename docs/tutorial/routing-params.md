@@ -65,7 +65,7 @@ Cool, cool, cool. Now we need to construct a link that has the ID of a post in i
 <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
 ```
 
-For routes with route parameters, the named route function expects an object where you specify a value for each parameter. If you click on the link now, it will indeed take you to `/blog-post/1` (or `/blog-post/2`, etc, depending on the ID of the post).
+For routes with route parameters, the named route function expects an object where you specify a value for each parameter. If you click on the link now, it will take you to `/blog-post/1` (or `/blog-post/2`, etc, depending on the ID of the post). As the BlogPostPage boilerplate references the blog post route without a parameter in a link, we have to remove the link for the page to display.
 
 ### Using the Param
 
