@@ -4,7 +4,9 @@ title: "Cells"
 sidebar_label: "Cells"
 ---
 
-The features we listed on the last page (loading state, error messaging, blank slate text) are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](https://redwoodjs.com/docs/cells).)
+The features we listed at the end of the last page (loading state, error messaging, blank slate text) are common in most web apps. We wanted to see if there was something we could do to make developers' lives easier when it comes to adding them to a typical component. We think we've come up with something to help. We call them _Cells_. Cells provide a simpler and more declarative approach to data fetching. ([Read the full documentation about Cells](https://redwoodjs.com/docs/cells).)
+
+In addition to these states, cells are also responsible for their own data fetching. This means that rather than fetching data in some parent component and then passing props down to the child components that need them, a cell is completely self-contained and fetches and displays its own data! Let's add one to our blog to get a feel for how they work.
 
 When you create a cell you export several specially named constants and then Redwood takes it from there. A typical cell may look something like:
 
@@ -57,7 +59,7 @@ Usually in a blog the homepage will display a list of recent posts. This list is
 
 > **Wait, don't we already have a home page?**
 >
-> We do, but remember that you generally want to use a *cell* when you need data from the database. A best practice for Redwood is to create a Page for each unique URL your app has, but that you fetch and display data in a Cell. So the existing HomePage will render this new cell as a child.
+> We do, but you will generally want to use a *cell* when you need data from the database. A best practice for Redwood is to create a Page for each unique URL your app has, but that you fetch and display data in Cells. So the existing HomePage will render this new cell as a child.
 
 As you'll see repeatedly going forward, Redwood has a generator for this feature! Let's call this the "Articles" cell, since "Posts" was already used by our scaffold generator, and although the names won't clash (the scaffold files were created in the `Post` directory), it will be easier to keep them straight in our heads if the names are fairly different from each other. We're going to be showing multiple things, so we'll use the plural version "Articles," rather than "Article":
 
@@ -110,9 +112,9 @@ export const Success = ({ articles }) => {
 >
 > Calling `yarn redwood g cell blogarticles` (without any indication that we're using two words) will generate a file at `web/src/components/BlogarticlesCell/BlogarticlesCell.js`.
 
-To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is called `articles`:
+To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is named `articles`:
 
-```javascript
+```javascript{5}
 // web/src/components/ArticlesCell/ArticlesCell.js
 
 export const QUERY = gql`
@@ -122,16 +124,6 @@ export const QUERY = gql`
     }
   }
 `
-
-export const Loading = () => <div>Loading...</div>
-
-export const Empty = () => <div>Empty</div>
-
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
-
-export const Success = ({ articles }) => {
-  return JSON.stringify(articles)
-}
 ```
 
 However, this is not a valid query name for our existing Posts SDL (`src/graphql/posts.sdl.js`) and Service (`src/services/posts/posts.js`). (To see where these files come from, go back to the [Creating a Post Editor section](./getting-dynamic#creating-a-post-editor) in the *Getting Dynamic* part.) Redwood names the query elements after the cell itself for convenience (more often than not you'll be creating a cell for a specific model), but in this case our cell name doesn't match our model name so we'll need to make some manual tweaks.
@@ -153,7 +145,9 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
 
 export const Success = ({ posts }) => {
   return (
@@ -171,11 +165,16 @@ Let's plug this cell into our `HomePage` and see what happens:
 ```javascript {3,7}
 // web/src/pages/HomePage/HomePage.js
 
+import { MetaTags } from '@redwoodjs/web'
+
 import ArticlesCell from 'src/components/ArticlesCell'
 
 const HomePage = () => {
   return (
-    <ArticlesCell />
+    <>
+      <MetaTags title="Home" description="Home page" />
+      <ArticlesCell />
+    </>
   )
 }
 
@@ -223,7 +222,9 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
 
 export const Success = ({ articles }) => {
   return (
