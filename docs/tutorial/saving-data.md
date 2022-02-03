@@ -8,7 +8,7 @@ sidebar_label: "Saving Data"
 
 Let's add a new database table. Open up `api/db/schema.prisma` and add a Contact model after the Post model that's there now:
 
-```javascript{20-26}
+```javascript {20-26}
 // api/db/schema.prisma
 
 datasource db {

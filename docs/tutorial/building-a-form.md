@@ -58,7 +58,7 @@ export default BlogLayout
 
 And then use the `BlogLayout` for the `ContactPage` by making sure its wrapped by the same `<Set>` as the other pages in the routes file:
 
-```javascript{16}
+```javascript {16}
 // web/src/Routes.js
 
 import BlogLayout from 'src/layouts/BlogLayout'

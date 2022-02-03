@@ -40,7 +40,7 @@ If you click the link on the title of the blog post you should see the boilerpla
 
 But what we really need is to specify _which_ post we want to view on this page. It would be nice to be able to specify the ID of the post in the URL with something like `/article/1`. Let's tell the `<Route>` to expect another part of the URL, and when it does, give that part a name that we can reference later:
 
-```html
+```jsx
 // web/src/Routes.js
 
 <Route path="/article/{id}" page={ArticlePage} name="article" />
@@ -48,7 +48,7 @@ But what we really need is to specify _which_ post we want to view on this page.
 
 Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogLayout`.
 
-```javascript{11}
+```jsx {11}
 // web/src/Routes.js
 
 <Router>
@@ -117,7 +117,7 @@ yarn rw g cell Article
 
 And then we'll use that cell in `ArticlePage`:
 
-```javascript{4,11}
+```javascript {4,11}
 // web/src/pages/ArticlePage/ArticlePage.js
 
 import { MetaTags } from '@redwoodjs/web'

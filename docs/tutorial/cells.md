@@ -114,7 +114,7 @@ export const Success = ({ articles }) => {
 
 To get you off and running as quickly as possible the generator assumes you've got a root GraphQL query named the same thing as your cell and gives you the minimum query needed to get something out of the database. In this case the query is named `articles`:
 
-```javascript{5}
+```javascript {5}
 // web/src/components/ArticlesCell/ArticlesCell.js
 
 export const QUERY = gql`
