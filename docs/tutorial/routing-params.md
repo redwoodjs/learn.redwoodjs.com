@@ -109,7 +109,7 @@ export default ArticlePage
 
 ### Using the Param
 
-Ok, so the ID is in the URL. What do we need next in order to display a specific post? It sounds like we'll be doing some data retrieval from the database, which means we want a cell:
+Ok, so the ID is in the URL. What do we need next in order to display a specific post? It sounds like we'll be doing some data retrieval from the database, which means we want a cell. Note the singular `Article` here since we're only displaying one:
 
 ```bash
 yarn rw g cell Article
@@ -156,7 +156,9 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
 
 export const Success = ({ article }) => {
   return JSON.stringify(article)
@@ -165,14 +167,23 @@ export const Success = ({ article }) => {
 
 Okay, we're getting closer. Still, where will that `$id` come from? Redwood has another trick up its sleeve. Whenever you put a route param in a route, that param is automatically made available to the page that route renders. Which means we can update `ArticlePage` to look like this:
 
-```javascript {3,5}
+```javascript {6,11}
 // web/src/pages/ArticlePage/ArticlePage.js
+
+import { MetaTags } from '@redwoodjs/web'
+import ArticleCell from 'src/components/ArticleCell'
 
 const ArticlePage = ({ id }) => {
   return (
-    <ArticleCell id={id} />
+    <>
+      <MetaTags title="Article" description="Article page" />
+
+      <ArticleCell id={id} />
+    </>
   )
 }
+
+export default ArticlePage
 ```
 
 `id` already exists since we named our route param `{id}`. Thanks Redwood! But how does that `id` end up as the `$id` GraphQL parameter? If you've learned anything about Redwood by now, you should know it's going to take care of that for you. By default, any props you give to a cell will automatically be turned into variables and given to the query. "No way," you're saying. Way.
@@ -221,7 +232,7 @@ Voilà! Not only will this convert the `id` param to a number before passing it 
 
 ### Displaying a Blog Post
 
-Now let's display the actual post instead of just dumping the query result. We could copy the display from the articles on the homepage, but that's not very reusable! This is the perfect place for a good old fashioned component—define the display once and then reuse the component on the homepage (via `ArticlesCell`) and the article display page. Both `ArticlesCell` and `ArticleCell` will display our new component. Let's Redwood-up a component (I just invented that phrase):
+Now let's display the actual post instead of just dumping the query result. We could copy the display from the articles on the homepage, but that's not very reusable! This is the perfect place for a good old fashioned component—define the display once and then reuse the component on the homepage and the article display page. Both `ArticlesCell` and `ArticleCell` will display our new component. Let's Redwood-up a component (I just invented that phrase):
 
 ```bash
 yarn rw g component Article
@@ -258,10 +269,11 @@ const Article = ({ article }) => {
     <article>
       <header>
         <h2>
-          <Link to={routes.blogPost({ id: article.id })}>{article.title}</Link>
+          <Link to={routes.article({ id: article.id })}>{article.title}</Link>
         </h2>
       </header>
       <div>{article.body}</div>
+      <div>Posted at: {article.createdAt}</div>
     </article>
   )
 }
@@ -332,7 +344,7 @@ export const Success = ({ article }) => {
 }
 ```
 
-And there we go! We should be able to move back and forth between the homepage and the detail page.
+And there we go! We should be able to move back and forth between the homepage and the detail page. If you've only got one blog post then the homepage and single-article page will be identical! Head to the posts admin and create a couple more, won't you?
 
 ![Article page showing an article](https://user-images.githubusercontent.com/300/146101296-f1d43812-45df-4f1e-a3da-4f6a085bfc08.png)
 
