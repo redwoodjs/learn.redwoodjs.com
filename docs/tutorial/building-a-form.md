@@ -12,7 +12,7 @@ _Tolerate_ building them?
 
 We already have a form or two in our app; remember our posts scaffold? And those work pretty well! How hard can it be? (Hopefully you haven't sneaked a peek at that code—what's coming next will be much more impressive if you haven't.)
 
-Let's build the simplest form that still makes sense for our blog, a "contact us" form.
+Let's build the simplest form that still makes sense for our blog, a "Contact Us" form.
 
 ### The Page
 
@@ -61,6 +61,8 @@ And then use the `BlogLayout` for the `ContactPage` by making sure its wrapped b
 ```javascript {16}
 // web/src/Routes.js
 
+import { Router, Route, Set } from '@redwoodjs/router'
+import PostsLayout from 'src/layouts/PostsLayout'
 import BlogLayout from 'src/layouts/BlogLayout'
 
 const Routes = () => {
@@ -94,9 +96,9 @@ Forms in React are infamously annoying to work with. There are [Controlled Compo
 
 We think Redwood is a step or two in the right direction by not only freeing you from writing controlled component plumbing, but also dealing with validation and errors automatically. Let's see how it works.
 
-For now we won't be talking to the database in our Contact form so we won't create a cell. Let's create the form right on the page. Redwood forms start with the...wait for it...`<Form>` tag:
+We won't be pulling any data from the database on our Contact page so we won't create a cell. Let's create the form right in the page. Redwood forms start with the...wait for it...`<Form>` tag:
 
-```javascript {3,7}
+```javascript {4,11}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { MetaTags } from '@redwoodjs/web'
@@ -115,9 +117,9 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-Well that was anticlimactic. You can't even see it in the browser. Let's add a form field so we can at least see something. Redwood ships with several inputs and a plain text input box is `<TextField>`. We'll also give the field a `name` attribute so that once there are multiple inputs on this page we'll know which contains which data:
+Well that was anticlimactic. You can't even see it in the browser. Let's add a form field so we can at least see something. Redwood ships with several inputs and a plain text input box is the `<TextField>`. We'll also give the field a `name` attribute so that once there are multiple inputs on this page we'll know which contains which data:
 
-```javascript {3,8}
+```javascript {4,12}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { MetaTags } from '@redwoodjs/web'
@@ -142,7 +144,7 @@ export default ContactPage
 
 Something is showing! Still, pretty boring. How about adding a submit button?
 
-```javascript {3,9}
+```javascript {4,13}
 // web/src/pages/ContactPage/ContactPage.js
 
 import { MetaTags } from '@redwoodjs/web'
@@ -337,7 +339,7 @@ Introducing `<FieldError>` (don't forget to include it in the `import` statement
 
 import { MetaTags } from '@redwoodjs/web'
 import {
-  FieldError
+  FieldError,
   Form,
   TextField,
   TextAreaField,
@@ -555,6 +557,8 @@ export default ContactPage
 >
 > In addition to `className` and `errorClassName` you can also use `style` and `errorStyle`. Check out the [Form docs](https://redwoodjs.com/docs/form) for more details on error styling.
 
+And notice that if you fill in something in a field that's marked as an error, the error instantly goes away! This is great feedback for our users that they're doing what we want, and they don't have to wait to click the "Save" button again just to see if what they changed is now correct.
+
 ### Validating Input Format
 
 We should make sure the email field actually contains an email:
@@ -594,11 +598,9 @@ That is definitely not the end-all-be-all for email address validation, but pret
 
 <img src="https://user-images.githubusercontent.com/300/146105001-96b76f12-e011-46c3-a490-7dd51b872498.png" />
 
-You may have noticed that trying to submit a form with validation errors outputs nothing to the console—it's not actually submitting. That's a good thing! Fix the errors and all is well.
-
 > **Instant client-side field validation**
 >
-> When a validation error appears it will _disappear_ as soon as you fix the content of the field. You don't have to click "Submit" again to remove the error messages.
+> When a validation error appears it will _disappear_ as soon as you fix the content of the field. You don't have to click "Submit" again to remove the error messages. This is great feedback for users (and eagle-eyed QA testers) since they receive instant feedback what they changed is now correct.
 
 Finally, you know what would _really_ be nice? If the fields were validated as soon as the user leaves each one so they don't fill out the whole thing and submit just to see multiple errors appear. Let's do that:
 
