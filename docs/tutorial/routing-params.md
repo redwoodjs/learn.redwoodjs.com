@@ -98,7 +98,7 @@ const ArticlePage = () => {
       </p>
       <p>
         My default route is named <code>article</code>, link to me with `
-        --- <Link to={routes.article()}>Article</Link>`
+---     <Link to={routes.article()}>Article</Link>`
       </p>
     </>
   )
