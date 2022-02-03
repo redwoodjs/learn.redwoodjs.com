@@ -43,7 +43,7 @@ But what we really need is to specify _which_ post we want to view on this page.
 ```html
 // web/src/Routes.js
 
-<Route path="/article/{id}" page={ArticlePage} name="blogPost" />
+<Route path="/article/{id}" page={ArticlePage} name="article" />
 ```
 
 Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogLayout`.
@@ -72,10 +72,40 @@ Cool, cool, cool. Now we need to construct a link that has the ID of a post in i
 ```jsx
 // web/src/components/ArticlesCell/ArticlesCell.js
 
-<Link to={routes.article({ id: article.id })}>{article.title}</Link>
+<h2>
+  <Link to={routes.article({ id: article.id })}>{article.title}</Link>
+</h2>
 ```
 
 For routes with route parameters, the named route function expects an object where you specify a value for each parameter. If you click on the link now, it will indeed take you to `/article/1` (or `/article/2`, etc, depending on the ID of the post).
+
+You may have noticed that when trying to view the new single-article page that you're getting an error. This is because the boilerplate code included with the page when it was generated includes a link to the page itself—a link which now requires an `id`. Remove the link and your page should be working again:
+
+```diff
+// web/src/pages/ArticlePage.js
+
+import { Link, routes } from '@redwoodjs/router'
+import { MetaTags } from '@redwoodjs/web'
+
+const ArticlePage = () => {
+  return (
+    <>
+      <MetaTags title="Article" description="Article page" />
+
+      <h1>ArticlePage</h1>
+      <p>
+        Find me in <code>./web/src/pages/ArticlePage/ArticlePage.js</code>
+      </p>
+      <p>
+        My default route is named <code>article</code>, link to me with `
+        --- <Link to={routes.article()}>Article</Link>`
+      </p>
+    </>
+  )
+}
+
+export default ArticlePage
+```
 
 ### Using the Param
 
