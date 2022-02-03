@@ -48,8 +48,12 @@ But what we really need is to specify _which_ post we want to view on this page.
 
 Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever value is in this position in the path, let me reference it by the name inside the curly braces". And while we're in the routes file, lets move the route inside the `Set` with the `BlogLayout`.
 
-```jsx {11}
+```jsx {15}
 // web/src/Routes.js
+
+import { Router, Route, Set } from '@redwoodjs/router'
+import PostsLayout from 'src/layouts/PostsLayout'
+import BlogLayout from 'src/layouts/BlogLayout'
 
 <Router>
   <Set wrap={PostsLayout}>
@@ -65,6 +69,8 @@ Notice the `{id}`. Redwood calls these _route parameters_. They say "whatever va
   </Set>
   <Route notfound page={NotFoundPage} />
 </Router>
+
+export default Routes
 ```
 
 Cool, cool, cool. Now we need to construct a link that has the ID of a post in it:
