@@ -54,15 +54,15 @@ We can name this one something like "create contact".
 Now we'll create the GraphQL interface to access this table. We haven't used this `generate` command yet (although the `scaffold` command did use it behind the scenes):
 
 ```bash
-yarn rw g sdl contact
+yarn rw g sdl Contact
 ```
 
 Just like the `scaffold` command, this will create two new files under the `api` directory:
 
 1. `api/src/graphql/contacts.sdl.js`: defines the GraphQL schema in GraphQL's schema definition language
-2. `api/src/services/contacts/contacts.js`: contains your app's business logic.
+2. `api/src/services/contacts/contacts.js`: contains your app's business logic (also creates associated test files)
 
-If you remember our discussion in [how Redwood works with data](/docs/tutorial/side-quest-how-redwood-works-with-data) you'll remember that queries and mutations in an SDL file are automatically mapped to resolvers defined in a service, so when you generate an SDL file you'll get a service file as well, since one requires the other.
+If you remember our discussion in [how Redwood works with data](/docs/tutorial/side-quest-how-redwood-works-with-data) you'll recall that queries and mutations in an SDL file are automatically mapped to resolvers defined in a service, so when you generate an SDL file you'll get a service file as well, since one requires the other.
 
 Open up `api/src/graphql/contacts.sdl.js` and you'll see the `Contact`, `CreateContactInput` and `UpdateContactInput` types were already defined for us—the `generate sdl` command introspected the schema and created a `Contact` type containing each database field in the table, as well as a `Query` type with a single query `contacts` which returns an array of `Contact` types.
 
@@ -96,9 +96,9 @@ export const schema = gql`
 `
 ```
 
-The `@requireAuth` is a [schema directive](https://www.graphql-tools.com/docs/schema-directives) which says that in order to access this GraphQL query the user is required to be authenticated. We haven't added authentication yet, so this won't have any effect—anyone will be able to query it, logged in or not, because until you add authentication, the function behind `@requireAuth` always returns `true`.
+The `@requireAuth` string is a [schema directive](https://www.graphql-tools.com/docs/schema-directives) which says that in order to access this GraphQL query the user is required to be authenticated. We haven't added authentication yet, so this won't have any effect—anyone will be able to query it, logged in or not, because until you add authentication the function behind `@requireAuth` always returns `true`.
 
-What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explicitly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input, while maybe not pedantically the absolute **correct** way to create a GraphQL API, was a good compromise for optimal developer experience.
+What's `CreateContactInput` and `UpdateContactInput`? Redwood follows the GraphQL recommendation of using [Input Types](https://graphql.org/graphql-js/mutations-and-input-types/) in mutations rather than listing out each and every field that can be set. Any fields required in `schema.prisma` are also required in `CreateContactInput` (you can't create a valid record without them) but nothing is explicitly required in `UpdateContactInput`. This is because you could want to update only a single field, or two fields, or all fields. The alternative would be to create separate Input types for every permutation of fields you would want to update. We felt that only having one update input type was a good compromise for optimal developer experience.
 
 > Redwood assumes your code won't try to set a value on any field named `id` or `createdAt` so it left those out of the Input types, but if your database allowed either of those to be set manually you can update `CreateContactInput` or `UpdateContactInput` and add them.
 
@@ -109,6 +109,14 @@ Since all of the DB columns were required in the `schema.prisma` file they are m
 > GraphQL's SDL syntax requires an extra `!` when a field _is_ required. Remember: `schema.prisma` syntax requires an extra `?` character when a field is _not_ required.
 
 As described in [Side Quest: How Redwood Deals with Data](side-quest-how-redwood-works-with-data), there are no explicit resolvers defined in the SDL file. Redwood follows a simple naming convention: each field listed in the `Query` and `Mutation` types in the `sdl` file (`api/src/graphql/contacts.sdl.js`) maps to a function with the same name in the `services` file (`api/src/services/contacts/contacts.js`).
+
+So the default SDL that's created by the generators is effectively read-only: there is no way to create or update an existing record. Which means we'll need to add our own create functionality.
+
+> *Psssstttt* I'll let you in on a little secret: you can have Redwood create all the operators you need to perform CRUD (Create, Retrieve, Update, Delete) functions against your data automatically! But that wouldn't teach you anything, so we're doing it the hard way here. The next time you generate an SDL, try adding the `--crud` flag:
+>
+>    `yarn rw g sdl Contact --crud`
+>
+> Shhhhhhhhh...
 
 In this case we're creating a single `Mutation` that we'll call `createContact`. Add that to the end of the SDL file (before the closing backtick):
 
@@ -266,7 +274,7 @@ const ContactPage = () => {
 export default ContactPage
 ```
 
-We reference the `createContact` mutation we defined in the Contacts SDL passing it an `input` object which will contain the actual name, email and message fields.
+We reference the `createContact` mutation we defined in the Contacts SDL passing it an `input` object which will contain the actual name, email and message values.
 
 Next we'll call the `useMutation` hook provided by Redwood which will allow us to execute the mutation when we're ready (don't forget the `import` statement):
 
@@ -468,7 +476,7 @@ Let's address these issues.
 
 The `useMutation` hook returns a couple more elements along with the function to invoke it. We can destructure these as the second element in the array that's returned. The two we care about are `loading` and `error`:
 
-```javascript {4}
+```javascript {6}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
@@ -606,13 +614,13 @@ You can read the full documentation for Toast [here](https://redwoodjs.com/docs/
 
 Next we'll inform the user of any server errors. So far we've only notified the user of _client_ errors: a field was missing or formatted incorrectly. But if we have server-side constraints in place `<Form>` can't know about those, but we still need to let the user know something went wrong.
 
-We have email validation on the client, but any good developer knows [_never trust the client_](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Let's add the email validation on the API as well to be sure no bad data gets into our database, even if someone somehow bypassed our client-side validation.
+We have email validation on the client, but any developer worth their silicon knows [never trust the client](https://www.codebyamir.com/blog/never-trust-data-from-the-browser). Let's add the email validation into the api side as well to be sure no bad data gets into our database, even if someone somehow bypassed our client-side validation (l33t hackers do this all the time).
 
-> **No server-side validation?**
+> **No server-side validation for some fields?**
 >
-> Why don't we need server-side validation for the existence of name, email and message? Because the database is doing that for us. Remember the `String!` in our SDL definition? That adds a constraint in the database that the field cannot be `null`. If a `null` was to get all the way down to the database it would reject the insert/update and GraphQL would throw an error back to us on the client.
+> Why don't we need server-side validation for the existence of name, email and message? Because GraphQL is already doing that for us! You may remember the `String!` declaration in our SDL file for the `Contact` type: that adds a constraint that those fields cannot be `null` as soon as it arrives on the api side. If it is, GraphQL would reject the request and throw an error back to us on the client.
 >
-> There's no `Email!` datatype so we'll need to validate that on our own.
+> We've even got another layer of validation: because name, email and message were set as required in our schema.prisma file, the database itself will prevent any `null`s from being recorded. It's like if you decided to run out onto the field in the middle of a sporting even wearing your favorite [Redwood t-shirt](https://shop.redwoodjs.com/): even if you somehow made it past the security guard (GraphQL), once you get out there you're going to have to deal with actual professional athletes (the database). They've spent their whole life training to run faster and pick up heavier things than you. You won't make it very far if they decide to stop you!
 
 We talked about business logic belonging in our services files and this is a perfect example. Let's add a `validate` function to our `contacts` service:
 
@@ -647,7 +655,7 @@ So when `createContact` is called it will first validate the inputs and only if 
 
 We already capture any existing error in the `error` constant that we got from `useMutation`, so we _could_ manually display an error box on the page somewhere containing those errors, maybe at the top of the form (you can put this in your contact form, but we're about to change it to something even better):
 
-```jsx {4-9}
+```jsx {2-7}
 <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
   {error && (
     <div style={{ color: 'red' }}>
@@ -657,19 +665,6 @@ We already capture any existing error in the `error` constant that we got from `
   )}
   // ...
 ```
-
-> If you need to handle your errors manually, you can do this:
->
-> ```jsx {3-8}
-> const onSubmit = async (data) => {
->   try {
->     await create({ variables: { input: data } })
->     console.log(data)
->   } catch (error) {
->     console.log(error)
->   }
-> }
-> ```
 
 To get a server error to fire, let's remove the email format validation so that the client-side error isn't shown:
 
@@ -738,7 +733,7 @@ const ContactPage = () => {
       <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }} error={error}>
         <FormError
           error={error}
-          wrapperClass="form-error"
+          wrapperClassName="form-error"
         />
 
         <Label name="name" errorClassName="error">
@@ -817,10 +812,19 @@ Redwood includes a hook called `useForm()` (from React Hook Form) which is norma
 
 First we'll import `useForm`:
 
-```javascript
+```javascript {11}
 // web/src/pages/ContactPage/ContactPage.js
 
-import { useForm } from '@redwoodjs/forms'
+import {
+  FieldError,
+  Form,
+  FormError,
+  Label,
+  TextField,
+  TextAreaField,
+  Submit,
+  useForm,
+} from '@redwoodjs/forms'
 ```
 
 And now call it inside of our component:
@@ -852,7 +856,7 @@ return (
 
 Now we can call `reset()` on `formMethods` after we call `toast()`:
 
-```javascript {6}
+```javascript {8}
 // web/src/pages/ContactPage/ContactPage.js
 
 // ...
@@ -868,6 +872,8 @@ const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
 ```
 
 > You can put the email validation back into the `<TextField>` now, but you should leave the server validation in place, just in case.
+
+Here's the entire page:
 
 ```javascript
 // web/src/pages/ContactPage/ContactPage.js
