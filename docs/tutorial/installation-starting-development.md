@@ -17,7 +17,7 @@ cd redwoodblog
 yarn redwood dev
 ```
 
-A browser should automatically open to http://localhost:8910 and you will see the Redwood welcome page:
+A browser should automatically open to [http://localhost:8910](http://localhost:8910) and you will see the Redwood welcome page:
 
 ![Redwood Welcome Page](https://user-images.githubusercontent.com/300/145314717-431cdb7a-1c45-4aca-9bbc-74df4f05cc3b.png)
 

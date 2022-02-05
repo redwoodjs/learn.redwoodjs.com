@@ -197,7 +197,7 @@ export default Routes
 
 We wrap the routes we want to be private (that is, only accessible when logged in) in the `<Private>` component, and tell our app where to send them if they are unauthenticated. In this case they should go to the `home` route.
 
-Try going back to http://localhost:8910/admin/posts now and—yikes!
+Try going back to [http://localhost:8910/admin/posts](http://localhost:8910/admin/posts) now and—yikes!
 
 ![Homepage showing user does not have permission to view](https://user-images.githubusercontent.com/300/146463430-f7bc7fc9-a966-4149-9cb6-382d89d9d636.png)
 
@@ -319,7 +319,7 @@ dbAuth defaults to the generic "Username" for the first field, but in our case t
 
 ![image](https://user-images.githubusercontent.com/300/146464870-cb859f8b-175f-4170-8da4-5286facd1fe5.png)
 
-And after clicking "Signup" you should end up back on the homepage, where everything looks the same! Yay? But now try going to http://localhost:8910/admin/posts:
+And after clicking "Signup" you should end up back on the homepage, where everything looks the same! Yay? But now try going to [http://localhost:8910/admin/posts](http://localhost:8910/admin/posts):
 
 ![Posts admin](https://user-images.githubusercontent.com/300/146465485-c169a4b8-f398-47ec-8412-4fc15a666976.png)
 
