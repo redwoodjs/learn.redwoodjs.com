@@ -14,4 +14,4 @@ Oh, and while we're at it we'll introduce Role-based Access Control (RBAC), whic
 
 Why "Redwood's Revenge"? Because all great sequels have "Revenge" in their title. But also this tutorial is focused more on ourselves, the codebase in general, and making our jobs easier. Part 1 of the tutorial was about getting up and running quickly and getting an app out the door for users to start using. Part 2 is about helping us, the developers, build new features quicker and making sure the code we wrote keeps working as intended. And as the old saying goes: the best revenge is living well.
 
-> Part 1 of the tutorial was built against v1.0 of RedwoodJS. Part 2 is in the midst of being updated to match, so you may see subtle differences if you pick up where Part 1 left off.
+> This tutorial assumes you are using at least v1.0 of RedwoodJS.
