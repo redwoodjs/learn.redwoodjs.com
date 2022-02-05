@@ -107,6 +107,11 @@ html[data-theme='dark'] code {
   text-decoration: underline;
 }
 
+.markdown img {
+  border: 1px solid #dddddd;
+  border-radius: var(--ifm-global-radius);
+}
+
 blockquote {
   font-size: 90%;
   color: #682712;

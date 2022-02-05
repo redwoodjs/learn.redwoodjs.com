@@ -10,7 +10,7 @@ Let's see what this Storybook thing is all about. Run this command to start up t
 yarn rw storybook
 ```
 
-After some compiling you should get a message saying that Storybook has started and it's available at http://localhost:7910
+After some compiling you should get a message saying that Storybook has started and it's available at [http://localhost:7910](http://localhost:7910)
 
 ![image](https://user-images.githubusercontent.com/300/95522673-8f078d00-0981-11eb-9551-0a211c726802.png)
 

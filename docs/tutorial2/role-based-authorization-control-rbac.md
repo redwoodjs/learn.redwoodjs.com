@@ -53,7 +53,7 @@ Edit your original user to have the role "admin":
 
 Be sure to accept the invite for your new user and set a password so that you can actually log in as them (if you haven't deployed yet you'll need to copy the `invite_token` from the URL and use it on your local dev web server, as described [here](../tutorial/authentication#accepting-invites)).
 
-If all went well, you should be able to log in as either user with no change in the functionality between them—both can access http://localhost:8910/admin/posts Log in as your moderator user and go there now so we can verify that we get booted out once we add some authorization rules.
+If all went well, you should be able to log in as either user with no change in the functionality between them—both can access [http://localhost:8910/admin/posts](http://localhost:8910/admin/posts) Log in as your moderator user and go there now so we can verify that we get booted out once we add some authorization rules.
 
 ### Roles in Routes
 
