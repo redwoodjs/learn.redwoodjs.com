@@ -20,7 +20,7 @@ The test was looking for the full text of the blog post, but remember that in **
 
 Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test, so no matter what we decide on testing in this code there will be someone out there to tell us we're doing it wrong. As just one example, the simplest test would be to just copy what's output and use that for the text in the test:
 
-```javascript {7-8}
+```javascript {7-12}
 // web/src/components/BlogPostsCell.test.js
 
 test('Success renders successfully', async () => {
@@ -28,7 +28,11 @@ test('Success renders successfully', async () => {
   render(<Success posts={posts} />)
 
   expect(screen.getByText(posts[0].title)).toBeInTheDocument()
-  expect(screen.getByText("Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...")).toBeInTheDocument()
+  expect(
+    screen.getByText(
+      'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
+    )
+  ).toBeInTheDocument()
 })
 ```
 
@@ -193,7 +197,7 @@ In this case let's just test that the output matches an exact string. You could 
 
 We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that checks for the summary version being rendered:
 
-```javascript {6-17,21,23-24,27-37}
+```javascript {6-11,15,17-18,21-30}
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen } from '@redwoodjs/testing'
@@ -202,13 +206,7 @@ import BlogPost from './BlogPost'
 const POST = {
   id: 1,
   title: 'First post',
-  body: `Neutra tacos hot chicken prism raw denim, put a bird on it
-         enamel pin post-ironic vape cred DIY. Street art next level
-         umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la
-         croix mixtape echo park four loko semiotics kitsch forage
-         chambray. Semiotics salvia selfies jianbing hella shaman.
-         Letterpress helvetica vaporware cronut, shaman butcher YOLO
-         poke fixie hoodie gentrify woke heirloom.`,
+  body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
   createdAt: new Date().toISOString(),
 }
 
@@ -226,8 +224,7 @@ describe('BlogPost', () => {
     expect(screen.getByText(POST.title)).toBeInTheDocument()
     expect(
       screen.getByText(
-        'Neutra tacos hot chicken prism raw denim, put a bird \
-        on it enamel pin post-ironic vape cred DIY. Str...'
+        'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
       )
     ).toBeInTheDocument()
   })

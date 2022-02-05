@@ -249,12 +249,14 @@ export const deleteComment = ({ id }) => {
 }
 ```
 
+Since we only want owners of the blog to be able to delete comments, we'll use `@requireAuth`:
+
 ```graphql {5}
 // api/src/graphql/comments.sdl.js
 
 type Mutation {
-  createComment(input: CreateCommentInput!): Comment!
-  deleteComment(id: Int!): Comment!
+  createComment(input: CreateCommentInput!): Comment! @skipAuth
+  deleteComment(id: Int!): Comment! @requireAuth
 }
 ```
 
