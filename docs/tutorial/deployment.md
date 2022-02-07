@@ -53,7 +53,11 @@ provider = "postgres"
 
 ### Recreate Migrations
 
-We will need to re-create our database migrations in a Postgres-compatible format. First, we need to tell Prisma where our new database lives so that it can access it from our dev environment. Open up `.env.defaults` and change the `DATABASE_URL` var to be the URL you copied from Railway, and save.
+We will need to re-create our database migrations in a Postgres-compatible format. First, we need to tell Prisma where our new database lives so that it can access it from our dev environment. Open up `.env` and uncomment the `DATABASE_URL` var and update it to be the URL you copied from Railway, and save.
+
+> Note that `.env` is not checked into git by default, and should not be checked in under any circumstances! This file will be used to contain any secrets that your codebase needs (like database URLs and API keys) that should never been seen publicly. If you were to check this file in your repo, and your repo was public, anyone on the internet can see your secret stuff!
+>
+> The `.env.defaults` file is meant for other environment variables (like non-sensative config options for libraries, log levels, etc.) that are safe to be seen by the public and is meant to be checked into your repo and shared with other devs.
 
 Next, delete the `api/db/migrations` folder completely.
 
