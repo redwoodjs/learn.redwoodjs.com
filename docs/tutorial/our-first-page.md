@@ -60,7 +60,7 @@ Change the route path back to `/` before continuing!
 
 ### Simple Styles
 
-Previous versions of this tutorial had you build everything without any styling, so we could really focus on the code, but let's face it: an unstyled site is pretty ugly. Let's add a really simple stylesheet that will just make things a *little* easier on the eyes as we build out the site. Paste the follwing into `web/src/index.css`:
+Previous versions of this tutorial had you build everything without any styling, so we could really focus on the code, but let's face it: an unstyled site is pretty ugly. Let's add a really simple stylesheet that will just make things a *little* easier on the eyes as we build out the site. Paste the following into `web/src/index.css`:
 
 ```css
 body {
