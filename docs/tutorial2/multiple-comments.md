@@ -193,20 +193,20 @@ Okay, comment display is looking good! However, you may have noticed that if you
 
 ![image](https://user-images.githubusercontent.com/300/153480635-58ada8e8-ed5b-41b6-875b-501a07a36d9a.png)
 
-Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
+Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! We'll be rectifing this soon. But this demonstrates another huge benefit of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
 
 ### Testing
 
-We added two components, `Comment` and `CommentsCell`, and edited another, `Article`, so what tests should we add?
+We added a component, `CommentsCell`, and edited another, `Article`, so what do we test, and where?
 
 #### Testing Comments
 
-The actual `Comment` component does most of the work so there's no need to test all of that functionality in `CommentsCell`. What things does `CommentsCell` do that make it unique?
+The actual `Comment` component does most of the work so there's no need to test all of that functionality again in `CommentsCell`: our `Comment` tests cover that just fine. What things does `CommentsCell` do that make it unique?
 
 * Has a loading message
 * Has an error message
 * Has a failure message
-* When it renders successfully, it outputs as many comments as were returned by the `QUERY` (*what* was rendered we'll leave to the `Comment` tests)
+* When it renders successfully, it outputs as many comments as were returned by the `QUERY` (*what* is rendered we'll leave to the `Comment` tests)
 
 The default `CommentsCell.test.js` actually tests every state for us, albeit at an absolute minimum level—it make sure no errors are thrown:
 
@@ -242,7 +242,7 @@ describe('CommentsCell', () => {
 })
 ```
 
-And that's nothing to scoff at! As you've probably experienced, a React component usually either works 100% or throws an error. If it works, great! If it fails then the test fails too, which is exactly what we want to happen.
+And that's nothing to scoff at! As you've probably experienced, a React component usually either works 100% or blows up spectacularly. If it works, great! If it fails then the test fails too, which is exactly what we want to happen.
 
 But in this case we can do a little more to make sure `CommentsCell` is doing what we expect. Let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
 
