@@ -8,7 +8,7 @@ The whole reason we started building Redwood was to make full-stack web apps eas
 
 ### Git
 
-Remember at the start of the tutorial when we said that you didn't *really* need to use git if you didn't want to? Well, if you want to follow along with this deploy, you'll need to start using it now. Sorry! Commit your changes and push up to GitHub, GitLab or Bitbucket if you want to continue to follow along. Need a git primer? The most consise one we've seen is to simply create a new repo on GitHub. You'll be shown the list of commands necessary to get your local code commited and pushed up:
+Remember at the start of the tutorial when we said that you didn't *really* need to use git if you didn't want to? Well, if you want to follow along with this deploy, you'll need to start using it now. Sorry! Commit your changes and push up to GitHub, GitLab or Bitbucket if you want to continue to follow along. Need a git primer? The most concise one we've seen is to simply create a new repo on GitHub. You'll be shown the list of commands necessary to get your local code committed and pushed up:
 
 ![image](https://user-images.githubusercontent.com/300/152596271-7921c9dc-fe83-4827-b7e4-2740e826fb42.png)
 
@@ -53,7 +53,11 @@ provider = "postgres"
 
 ### Recreate Migrations
 
-We will need to re-create our database migrations in a Postgres-compatible format. First, we need to tell Prisma where our new database lives so that it can access it from our dev environment. Open up `.env.defaults` and change the `DATABASE_URL` var to be the URL you copied from Railway, and save.
+We will need to re-create our database migrations in a Postgres-compatible format. First, we need to tell Prisma where our new database lives so that it can access it from our dev environment. Open up `.env` and uncomment the `DATABASE_URL` var and update it to be the URL you copied from Railway, and save.
+
+> Note that `.env` is not checked into git by default, and should not be checked in under any circumstances! This file will be used to contain any secrets that your codebase needs (like database URLs and API keys) that should never been seen publicly. If you were to check this file in your repo, and your repo was public, anyone on the internet can see your secret stuff!
+>
+> The `.env.defaults` file is meant for other environment variables (like non-sensitive config options for libraries, log levels, etc.) that are safe to be seen by the public and is meant to be checked into your repo and shared with other devs.
 
 Next, delete the `api/db/migrations` folder completely.
 
@@ -135,7 +139,7 @@ As this form of full-stack Jamstack gains more prominence we're counting on data
 
 Speaking of security, you may have noticed a glaring security hole in our build: anyone can come along and sign up for a new account and start creating blog posts! That's not ideal. A quick and easy solution would be to remove the `signup` route after you've created your own account: now there's no signup page accessible and a normal human will give up. But what about devious hackers?
 
-dbAuth provides an API for signup and login that the client knows how to call, but if someone were crafty enough they could make their own API calls to that same endpoint and still create a new user even without the signup page! Ahhhh! We finally made it through this long (but fun!) tutorial, can't we just take a break and put our feet up?? Unfortunately, the war against bad actors is neverending.
+dbAuth provides an API for signup and login that the client knows how to call, but if someone were crafty enough they could make their own API calls to that same endpoint and still create a new user even without the signup page! Ahhhh! We finally made it through this long (but fun!) tutorial, can't we just take a break and put our feet up?? Unfortunately, the war against bad actors is never-ending.
 
 To close this hole, check out `api/src/functions.auth`, this is where the configuration for dbAuth lives. Take a gander at the `signupOptions` object, specifically the `handler()` function. This defines what to do with the user data that's submitted on the signup form. If you simply have this function return `false` instead of creating a user, we will have effectively shut the door on the API signup hack.
 

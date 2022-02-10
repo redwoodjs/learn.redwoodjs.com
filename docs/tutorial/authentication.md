@@ -46,7 +46,7 @@ Having the admin at a different path is great, but nothing is stopping someone f
 
 "Authentication" is a blanket term for all of the stuff that goes into making sure that a user, often identified with an email address and password, is allowed to access something. Authentication can be [famously fickle](https://www.rdegges.com/2017/authentication-still-sucks/) to do right both from a technical and developer-happiness standpoint.
 
-"Credientials" are the pieces of information a user provides to prove they are who they say they are: commonly a username (usually email) and password.
+"Credentials" are the pieces of information a user provides to prove they are who they say they are: commonly a username (usually email) and password.
 
 Redwood includes two authentication paths out of the box:
 
@@ -289,7 +289,7 @@ Cross your fingers and reload!
 
 ![image](https://user-images.githubusercontent.com/300/146463959-c59c8721-484f-45de-a663-e6ab3b2591dc.png)
 
-We're back in business! Once you add authentication into your app you'll probably run into several situations like this where you need to go back and forth, re-allowing access to some pages or queries that inadvertantly got locked down by default. Remember, Redwood is secure by default—we'd rather you accidentally expose too *little* of your app than too *much*!
+We're back in business! Once you add authentication into your app you'll probably run into several situations like this where you need to go back and forth, re-allowing access to some pages or queries that inadvertently got locked down by default. Remember, Redwood is secure by default—we'd rather you accidentally expose too *little* of your app than too *much*!
 
 Now that our pages are behind login, let's actually create a login page so that we can see them again.
 
@@ -297,7 +297,7 @@ Now that our pages are behind login, let's actually create a login page so that 
 >
 > Ahh, good eye. While posts don't currently expose any particularly secret information, what if we eventually add a field like `publishStatus` where you could mark a post as `draft` so that it doesn't show on the homepage. But, if you knew enough about GraphQL, you could easily request all posts in the database and be able to read all the drafts!
 >
-> It would be more future-proof to create a *new* endpoint for public display of posts, something like `publicPosts` and `publicPost` that will have built-in logic to only ever return a minimal amount of data and leave the default `posts` and `post` queries returning all the data for a post, something that only the admin will have access to. (Or do the opposite: keep `posts` and `post` as public and create new `adminPosts` and `adminPost` endpoints that can contain sensative information.)
+> It would be more future-proof to create a *new* endpoint for public display of posts, something like `publicPosts` and `publicPost` that will have built-in logic to only ever return a minimal amount of data and leave the default `posts` and `post` queries returning all the data for a post, something that only the admin will have access to. (Or do the opposite: keep `posts` and `post` as public and create new `adminPosts` and `adminPost` endpoints that can contain sensitive information.)
 
 #### The Login & Signup Pages
 

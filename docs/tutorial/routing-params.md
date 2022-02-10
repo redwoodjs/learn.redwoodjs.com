@@ -361,7 +361,7 @@ And there we go! We should be able to move back and forth between the homepage a
 To recap:
 
 1. We created a new page to show a single post (the "detail" page).
-2. We added a route to handle the `id` of the post and turn it into a route param, even coersing it into an integer.
+2. We added a route to handle the `id` of the post and turn it into a route param, even coercing it into an integer.
 3. We created a cell to fetch and display the post.
 4. Redwood made the world a better place by making that `id` available to us at several key junctions in our code and even turning it into a number automatically.
 5. We turned the actual post display into a standard React component and used it in both the homepage and new detail page.
