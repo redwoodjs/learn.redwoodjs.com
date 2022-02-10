@@ -36,7 +36,7 @@ test('Success renders successfully', async () => {
 })
 ```
 
-But the truncatation length could change later, so how do we encapsulate that in our test? Or should we? The number of characters is in the **BlogPost** component, which this component shouldn't know about. Even if we refactored the `truncate()` function into a shared place and imported it into both **BlogPost** and this test, the test will still be knowing too much about **BlogPost**—why should it know the internals of **BlogPost** and that it's making use of this `truncate()` function at all? It shouldn't!
+But the truncation length could change later, so how do we encapsulate that in our test? Or should we? The number of characters is in the **BlogPost** component, which this component shouldn't know about. Even if we refactored the `truncate()` function into a shared place and imported it into both **BlogPost** and this test, the test will still be knowing too much about **BlogPost**—why should it know the internals of **BlogPost** and that it's making use of this `truncate()` function at all? It shouldn't!
 
 Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing *something* to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
 
