@@ -25,9 +25,9 @@ yarn rw g component Comment
 
 Storybook should refresh and our "Generated" Comment story will be ready to go:
 
-![image](https://user-images.githubusercontent.com/300/95784041-e9596400-0c87-11eb-9b9f-016e0264e0e1.png)
+![image](https://user-images.githubusercontent.com/300/153475744-2e3151f9-b39c-4823-b2ef-539513cd4005.png)
 
-Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the **Comment** component to accept a `comment` object with those two properties:
+Let's think about what we want to ask users for and then display in a comment. How about just their name and the content of the comment itself? And we'll throw in the date/time it was created. Let's update the **Comment** component to accept a `comment` object with those three properties:
 
 ```javascript {3,6-8}
 // web/src/components/Comment/Comment.js
@@ -47,7 +47,7 @@ export default Comment
 
 Once you save that file and Storybook reloads you'll see it blow up:
 
-![image](https://user-images.githubusercontent.com/300/95784285-6684d900-0c88-11eb-9380-743079870147.png)
+![image](https://user-images.githubusercontent.com/300/153475904-8f53cb09-3798-4e5a-9b6a-1ff1df98f93f.png)
 
 We need to update the story to include that comment object and pass it as a prop:
 
@@ -71,11 +71,11 @@ export const generated = () => {
 export default { title: 'Components/Comment' }
 ```
 
-> Note that Datetimes will come from GraphQL in ISO8601 format so we need to return one in that format here.
+> Note that Datetimes will come from GraphQL in [ISO8601 format](https://en.wikipedia.org/wiki/ISO_8601#Times) so we need to return one in that format here.
 
 Storybook will reload and be much happier:
 
-![image](https://user-images.githubusercontent.com/300/95785006-ccbe2b80-0c89-11eb-8d3b-bdf5ad5a6d63.png)
+![image](https://user-images.githubusercontent.com/300/153476049-8ac31858-3014-47b5-807c-02b32d5a3ab0.png)
 
 Let's add a little bit of styling and date conversion to get this **Comment** component looking like a nice, completed design element:
 
@@ -105,39 +105,9 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-![image](https://user-images.githubusercontent.com/300/95786526-9afa9400-0c8c-11eb-9d75-27c996ca018a.png)
+![image](https://user-images.githubusercontent.com/300/153476305-017c6cf8-a2dd-4da0-a6ef-487d91a562df.png)
 
-It's tough to see our rounded corners, but rather than adding margin or padding to the component itself (which would add them everywhere we use the component) let's add a margin in the story so it only shows in Storybook:
-
-```javascript {7,15}
-// web/src/components/Comment/Comment.stories.js
-
-import Comment from './Comment'
-
-export const generated = () => {
-  return (
-    <div className="m-4">
-
-      <Comment
-        comment={{
-          name: 'Rob Cameron',
-          body: 'This is the first comment!',
-          createdAt: '2020-01-01T12:34:56Z',
-        }}
-      />
-    </div>  )
-}
-
-export default { title: 'Components/Comment' }
-```
-
-> A best practice to keep in mind when designing in HTML and CSS is to keep a visual element responsible for its own display only, and not assume what it will be contained within. In this case a Comment doesn't and shouldn't know where it will be displayed, so it shouldn't add any design influence *outside* of its container (like forcing a margin around itself).
-
-Now we can see our roundedness quite easily in Storybook:
-
-![image](https://user-images.githubusercontent.com/300/95786006-aac5a880-0c8b-11eb-86d5-105a3b929347.png)
-
-> If you haven't used TailwindCSS before just know that the `m` in the className is short for "margin" and the `4` refers to four "units" of margin. By default one unit is 0.25rem. So "m-4" is equivalent to `margin: 1rem`.
+Our component looks great! Now let's verify that it does what we want it to do with a test.
 
 ### Testing
 
@@ -170,7 +140,6 @@ describe('Comment', () => {
     expect(dateExpect).toHaveAttribute('datetime', comment.createdAt)
   })
 })
-
 ```
 
 Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for a blog post's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preserve that ability!
@@ -178,4 +147,3 @@ Here we're testing for both elements of the output `createdAt` timestamp: the ac
 > **What happens if we change the formatted output of the timestamp? Wouldn't we have to change the test?**
 >
 > Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with **Comment**.
-
