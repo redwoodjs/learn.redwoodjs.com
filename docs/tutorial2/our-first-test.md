@@ -6,6 +6,8 @@ sidebar_label: "Our First Test"
 
 So if Storybook is the first phase of creating/updating a component, phase two must be confirming the functionality with a test. Let's add a test for our new summary feature.
 
+If you've never done any kind of testing before this may be a little hard to follow. We've got a great document [all about testing](https://redwoodjs.com/docs/testing) (including some philosophy, for those so inclined) if you want a good overview of testing in general. We even build a super-simple test runner from scratch in plain Javascript to take some of the mystery out of how this all works!
+
 First let's run the existing suite to see if we broke anything:
 
 ```bash
@@ -14,9 +16,9 @@ yarn rw test
 
 Well that didn't take long! Can you guess what we broke?
 
-![image](https://user-images.githubusercontent.com/300/96655765-1b576f80-12f3-11eb-9e92-0024c19703cc.png)
+![image](https://user-images.githubusercontent.com/300/153312402-dd7f08bc-e23d-4acc-8202-cdfc9798a911.png)
 
-The test was looking for the full text of the blog post, but remember that in **BlogPostsCell** we had **BlogPost** only display the *summary* of the post. This test is looking for the full text match, which is no longer present on the page.
+The test was looking for the full text of the blog post, but remember that in `ArticlesCell` we had `Article` only display the *summary* of the post. This test is looking for the full text match, which is no longer present on the page.
 
 Let's update the test so that it checks for the expected behavior instead. There are entire books written on the best way to test, so no matter what we decide on testing in this code there will be someone out there to tell us we're doing it wrong. As just one example, the simplest test would be to just copy what's output and use that for the text in the test:
 
@@ -36,7 +38,7 @@ test('Success renders successfully', async () => {
 })
 ```
 
-But the truncatation length could change later, so how do we encapsulate that in our test? Or should we? The number of characters is in the **BlogPost** component, which this component shouldn't know about. Even if we refactored the `truncate()` function into a shared place and imported it into both **BlogPost** and this test, the test will still be knowing too much about **BlogPost**—why should it know the internals of **BlogPost** and that it's making use of this `truncate()` function at all? It shouldn't!
+But the truncatation length could change later, so how do we encapsulate that in our test? Or should we? The number of characters to truncate to is hardcoded in the `Article` component, which this component shouldn't really care about about: it should be up to the page that's presenting the article to determine much or how little to show (based on space concerns, design constraints, etc.) don't you think? Even if we refactored the `truncate()` function into a shared place and imported it into both `Article` and this test, the test will still be knowing too much about `Article`—why should it have detailed knowledge of the internals of `Article` and that it's making use of this `truncate()` function at all? It shouldn't! One theory of testing says that the thing you're testing should be a black box: you can't see inside of it, all you can test is what data comes out when you send certain data in.
 
 Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing *something* to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
 
@@ -44,89 +46,100 @@ Let's compromise—by virtue of the fact that this functionality has a prop call
 2. But, at least the first couple of words of the post *are* present
 3. The text that is shown ends in "..."
 
-This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text would be present, and we should probably update the `truncate()` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you to add in your free time. ;)
+This gives us a buffer if we decide to truncate to something like 25 words, or even if we go up to a couple of hundred. What it *doesn't* encompass, however, is the case where the body of the blog post is shorter than the truncate limit. In that case the full text *would* be present, and we should probably update the `truncate()` function to not add the `...` in that case. We'll leave adding that functionality and test case up to you to add in your free time. ;)
 
 ### Adding the Test
 
 Okay, let's do this:
 
-```javascript {27-34}
-// web/src/components/BlogPostsCell.test.js
+```javascript {30-38}
+// web/src/components/ArticlesCell.test.js
 
 import { render, screen } from '@redwoodjs/testing'
-import { Loading, Empty, Failure, Success } from './BlogPostsCell'
-import { standard } from './BlogPostsCell.mock'
+import { Loading, Empty, Failure, Success } from './ArticlesCell'
+import { standard } from './ArticlesCell.mock'
 
-describe('BlogPostsCell', () => {
+describe('ArticlesCell', () => {
   test('Loading renders successfully', () => {
-    render(<Loading />)
-    expect(screen.getByText('Loading...')).toBeInTheDocument()
+    expect(() => {
+      render(<Loading />)
+    }).not.toThrow()
   })
 
   test('Empty renders successfully', async () => {
-    render(<Empty />)
-    expect(screen.getByText('Empty')).toBeInTheDocument()
+    expect(() => {
+      render(<Empty />)
+    }).not.toThrow()
   })
 
   test('Failure renders successfully', async () => {
-    render(<Failure error={new Error('Oh no')} />)
-    expect(screen.getByText(/Oh no/i)).toBeInTheDocument()
+    expect(() => {
+      render(<Failure error={new Error('Oh no')} />)
+    }).not.toThrow()
   })
 
   test('Success renders successfully', async () => {
-    const posts = standard().posts
-    render(<Success posts={posts} />)
+    const articles = standard().articles
+    render(<Success articles={articles} />)
 
-    posts.forEach((post) => {
-      const truncatedBody = post.body.substring(0, 10)
-      const regex = new RegExp(`${truncatedBody}.*\.{3}`)
+    articles.forEach((article) => {
+      const truncatedBody = article.body.substring(0, 10)
+      const matchedBody = screen.getByText(truncatedBody, { exact: false })
+      const ellipsis = within(matchedBody).getByText('...', { exact: false })
 
-      expect(screen.getByText(post.title)).toBeInTheDocument()
-      expect(screen.queryByText(post.body)).not.toBeInTheDocument()
-      expect(screen.getByText(regex)).toBeInTheDocument()
+      expect(screen.getByText(article.title)).toBeInTheDocument()
+      expect(screen.queryByText(article.body)).not.toBeInTheDocument()
+      expect(matchedBody).toBeInTheDocument()
+      expect(ellipsis).toBeInTheDocument()
     })
   })
 })
 ```
 
-This loops through each post in our `standard()` mock and for each one:
-
-<div class="code-dl">
+This loops through each article in our `standard()` mock and for each one:
 
 ```javascript
-const truncatedBody = post.body.substring(0, 10)
+const truncatedBody = article.body.substring(0, 10)
 ```
 Create a variable `truncatedBody` containing the first 10 characters of the post body
 
 ```javascript
-const regex = new RegExp(`${truncatedBody}.*\.{3}`)
+const matchedBody = screen.getByText(truncatedBody, { exact: false })
 ```
-Create a regular expression which contains those 10 characters followed by any characters `.*` until it reaches three periods `\.{3}` (the ellipsis at the end of the truncated text)
+Search through the rendered HTML on the screen and find the HTML element that contains the truncated body (note the `{ exact: false }` here, as normally the exact text, and only that text, would need to be present, but in this case there's probably more than just the 10 characters)
 
 ```javascript
-expect(screen.getByText(post.title)).toBeInTheDocument()
+const ellipsis = within(matchedBody).getByText('...', { exact: false })
 ```
-Find the title in the page
+Within the HTML element that was found in the previous line, find `...`, again without an exact match
 
 ```javascript
-expect(screen.queryByText(post.body)).not.toBeInTheDocument()
+expect(screen.getByText(article.title)).toBeInTheDocument()
+```
+Find the title of the article in the page
+
+```javascript
+expect(screen.queryByText(article.body)).not.toBeInTheDocument()
 ```
 When trying to find the *full* text of the body, it should *not* be present
 
 ```javascript
-expect(screen.getByText(regex)).toBeInTheDocument()
+expect(matchedBody).toBeInTheDocument()
 ```
-Find the truncated-body-plus-ellipsis somewhere in the page
+Assert that the truncated text is present
 
-</div>
+```javascript
+expect(ellipsis).toBeInTheDocument()
+```
+Assert that the ellipsis is present
 
-As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite.
+As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite if you want to make sure nothing else broke. Remember to press `o` to go back to only testing changes again.
 
 > **What's the difference between `getByText()` and `queryByText()`?**
 >
 > `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null` and let you continue with your testing (and is one way to test that some text is *not* present on the page). You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
 
-To double check that we're testing what we think we're testing, open up `BlogPostsCell.js` and remove the `summary={true}` prop (or set it to `false`)—the test will fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document. Make sure to put the `summary={true}` back before we continue!
+To double check that we're testing what we think we're testing, open up `ArticlesCell.js` and remove the `summary={true}` prop (or set it to `false`) and the test should fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document! Also note the tests automatically ran, which is very handy. Make sure to put the `summary={true}` back before we continue.
 
 ### What's the Deal with Mocks?
 
@@ -138,7 +151,7 @@ Let's say our mock looks like this:
 
 ```javascript
 export const standard = () => ({
-  posts: [
+  articles: [
     {
       id: 1,
       title: 'First Post',
@@ -155,12 +168,12 @@ export const standard = () => ({
 })
 ```
 
-The first key in the object that's returned is named `posts`. That's also the name of the prop that's expected to be sent into **Success** in the cell:
+The first key in the object that's returned is named `articles`. That's also the name of the prop that's expected to be sent into **Success** in the cell:
 
 ```javascript {1}
-export const Success = ({ posts }) => {
+export const Success = ({ articles }) => {
   return (
-    {posts.map((post) => <BlogPost post={post} />)}
+    { articles.map((article) => <Article article={article} />) }
   )
 }
 ```
@@ -178,50 +191,63 @@ export const success = () => {
 export default { title: 'Cells/BlogPostsCell' }
 ```
 
+Some folks find this syntax a little *too* succinct and would rather see the `<Success>` component being invoked the same way it is in your actual code. If that sounds like you, skip the spread syntax and just call the `articles` property on `standard()` the old fashoined way:
+
+```javascript {5}
+import { Success } from './BlogPostsCell'
+import { standard } from './BlogPostsCell.mock'
+
+export const success = () => {
+  return Success ? <Success article={standard().article} /> : null
+}
+
+export default { title: 'Cells/BlogPostsCell' }
+```
+
 You can have as many mocks as you want, just import the names of the ones you need and send them in as props to your components.
 
-### Testing BlogPost
+### Testing Article
 
-Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the **BlogPost** component. We tested that **BlogPostsCell** requests that **BlogPost** return a summary, but what it means to render a summary is knowledge that only **BlogPost** contains.
+Our test suite is passing again but it's a trick! We never added a test for the actual `summary` functionality that we added to the `Article` component. We tested that `ArticlesCell` requests that `Article` return a summary, but what it means to render a summary is knowledge that only `Article` contains.
 
 When you get into the flow of building your app it can be very easy to overlook testing functionality like this. Wasn't it Winston Churchill who said "a thorough test suite requires eternal vigilance"? Techniques like [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (TDD) were established to help combat this tendency—write the test first, watch it fail, then write the code to make the test pass so that you know every line of real code you write is backed by a test. What we're doing is affectionately known as [Development Driven Testing](https://medium.com/table-xi/development-driven-testing-673d3959dac2). You'll probably settle somewhere in the middle but one maxim is always true—some tests are better than no tests.
 
-The summary functionality in **BlogPost** is pretty simple, but there are a couple of different ways we could test it:
+The summary functionality in `Article` is pretty simple, but there are a couple of different ways we could test it:
 
 * Export the `truncate()` function and test it directly
 * Test the final rendered state of the component
 
-In this case `truncate()` "belongs to" **BlogPost** and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text then that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate()` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
+In this case `truncate()` "belongs to" `Article` and the outside world really shouldn't need to worry about it or know that it exists. If we came to a point in development where another component needed to truncate text then that would be a perfect time to move this function to a shared location and import it into both components that need it. `truncate()` could then have its own dedicated test. But for now let's keep our separation of concerns and test the one thing that's "public" about this component—the result of the render.
 
 In this case let's just test that the output matches an exact string. You could spin yourself in circles trying to refactor the code to make it absolutely bulletproof to code changes breaking the tests, but will you ever actually need that level of flexibility? It's always a trade-off!
 
 We'll move the sample post data to a constant and then use it in both the existing test (which tests that not passing the `summary` prop at all results in the full body being rendered) and our new test that checks for the summary version being rendered:
 
 ```javascript {6-11,15,17-18,21-30}
-// web/src/components/BlogPost/BlogPost.test.js
+// web/src/components/Article/Article.test.js
 
 import { render, screen } from '@redwoodjs/testing'
-import BlogPost from './BlogPost'
+import Article from './Article'
 
-const POST = {
+const ARTICLE = {
   id: 1,
   title: 'First post',
   body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
   createdAt: new Date().toISOString(),
 }
 
-describe('BlogPost', () => {
+describe('Article', () => {
   it('renders a blog post', () => {
-    render(<BlogPost post={POST} />)
+    render(<Article post={ARTICLE} />)
 
-    expect(screen.getByText(POST.title)).toBeInTheDocument()
-    expect(screen.getByText(POST.body)).toBeInTheDocument()
+    expect(screen.getByText(ARTICLE.title)).toBeInTheDocument()
+    expect(screen.getByText(ARTICLE.body)).toBeInTheDocument()
   })
 
   it('renders a summary of a blog post', () => {
-    render(<BlogPost post={POST} summary={true} />)
+    render(<Article post={ARTICLE} summary={true} />)
 
-    expect(screen.getByText(POST.title)).toBeInTheDocument()
+    expect(screen.getByText(ARTICLE.title)).toBeInTheDocument()
     expect(
       screen.getByText(
         'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
@@ -231,9 +257,8 @@ describe('BlogPost', () => {
 })
 ```
 
-Saving that change should run the tests and we'll see that our suite is still happy.
+Saving that change should run the tests and we'll see that our suite is still happy!
 
 ### One Last Thing
 
-Remember we set the `summary` prop to default to `false` if it doesn't exist, which is tested by the first test case. However, we don't have a test that checks what happens if `false` is set explicitly. Feel free to add that now if you want Complete Coverage&trade;!
-
+Remember we set the `summary` prop to default to `false` if it doesn't exist, which is tested by the first test case (passing no `summary` prop at all). However, we don't have a test that checks what happens if `false` is set explicitly. Feel free to add that now if you want [100% Code Coverage](https://www.functionize.com/blog/the-myth-of-100-code-coverage)!
