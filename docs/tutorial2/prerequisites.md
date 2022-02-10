@@ -67,4 +67,6 @@ Since we just started the suite, and we haven't changed any files yet, it may no
 
 If you started with your own repo from Part 1 you may see some failures here. (Another reason to start with the [example repo](#using-the-example-repo)!)
 
+To switch back to the default mode where test are **o**nly run for changed files, press `o` now (or quit and restart `yarn rw test`).
+
 More on testing later, but for now just know that this is always what we want to aim for—all green in that left column. In fact best practices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
