@@ -20,7 +20,7 @@ If you've been through the first part of the tutorial, you can pick up where you
 If you want to use the same CSS classes we use in the following examples you'll need to add Tailwind to your repo:
 
 ```bash
-yarn rw setup tailwind
+yarn rw setup tailwindcss
 ```
 
 However, none of the screenshots below will come anywhere close to what you're seeing (except for those isolated components you build in Storybook) so you may want to just start with the example repo below.
