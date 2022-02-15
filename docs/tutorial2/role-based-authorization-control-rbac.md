@@ -14,7 +14,7 @@ Enter role-based access control, thankfully shortened to the common phrase **RBA
 
 We've got a User model so let's add a `roles` property to that:
 
-```javascript {}
+```javascript {11}
 // api/db/schema.prisma
 
 model User {
@@ -46,7 +46,7 @@ What does this mean? We made `role` a required field. But, we have a user in the
 
 For now let's have two roles, `admin` and `moderator`. `admin` can create/edit/delete blog posts and `moderator` can only remove comments. Of those two `moderator` is the safer default since it's more restrictive:
 
-```javascript {}
+```javascript {11}
 // api/db/schema.prisma
 
 model User {
@@ -71,7 +71,7 @@ And you can name it something like "add roles to user".
 
 If we log in and try to go the posts admin page at [http://localhost:8910/admin/posts](http://localhost:8910/admin/posts) everything works the same as it used to: we're not actually checking for the existence of any roles yet so that makes sense. In reality we'd only want users with the `admin` role to have access to the admin pages, but our existing user just became a `moderator` because of our default role. This is a great opportunity to actually setup a role check and see if we lose access to the admin!
 
-Before we do that, we'll need to make sure that the web side has access to the roles on `currentUser`. Take a look at `api/src/lib/auth.js`. Remember when we had to add `email` to list of fields being included? We need to add `roles` as well:
+Before we do that, we'll need to make sure that the web side has access to the roles on `currentUser`. Take a look at `api/src/lib/auth.js`. Remember when we had to add `email` to the list of fields being included in Part 1? We need to add `roles` as well:
 
 ```javascript {6}
 // api/src/lib/auth.js
@@ -86,7 +86,7 @@ export const getCurrentUser = async (session) => {
 
 ### Restricting Access via Routes
 
-The easiest way to prevent access to an entire URL is via the Routes. The `<Private>` component takes a prop `role` in which you can give a list of only those role(s) that should have access:
+The easiest way to prevent access to an entire URL is via the Router. The `<Private>` component takes a prop `role` in which you can give a list of only those role(s) that should have access:
 
 ```javascript {3}
 // web/src/Routes.js
@@ -111,10 +111,17 @@ Let's use the Redwood console again to quickly update our admin user to actually
 yarn rw c
 ```
 
-And then we can update our user with a single command:
+> You can use the `c` shortcut instead of `console`
+
+Now we can update our user with a single command:
 
 ```bash
 > db.user.update({ where: { id: 1 } }, data: { roles: 'admin' } })
+```
+
+Which should return the new content of the user:
+
+```bash
 {
   id: 1,
   name: null,
@@ -133,7 +140,7 @@ Now head back to [http://localhost:8910/admin/posts](http://localhost:8910/admin
 
 ### Add a Moderator
 
-Let's create a new user that will represent the comment moderator. You can use a completely different email address (if you have one), but if not you can use **The Plus Trick** to create a new, unique email address that is actually the same as your original email address!
+Let's create a new user that will represent the comment moderator. Since this is in development you can just make up an email address, but if you needed to this in a real system that verified email addresses you could use **The Plus Trick** to create a new, unique email address that is actually the same as your original email address!
 
 > The Plus Trick is a very handy feature of the email standard known as a "boxname", the idea being that you may have other incoming boxes besides one just named "Inbox" and by adding `+something` to your email address you can specify which box the mail should be sorted into. They don't appear to be in common use these days, but they are ridiculously helpful for us developers when we're constantly needing new email addresses for testing: it gives us an infinite number of *valid* email addresses—they all come to your regular inbox!
 >
@@ -206,15 +213,15 @@ const Comment = ({ comment }) => {
 export default Comment
 ```
 
-So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`:
-
 ![image](https://user-images.githubusercontent.com/300/101229168-c75edb00-3653-11eb-85f0-6eb61af7d4e6.png)
 
-What should we put in place of the TODO? A GraphQL mutation that deletes a comment, of course. Thanks to our forward-thinking earlier we already have a `deleteComment()` service function and GraphQL mutation.
+So if the user has the "moderator" role, render the delete button. If you log out and back in as the admin, or if you log out completely, you'll see the delete button go away. When logged out (that is, `currentUser === null`) `hasRole()` will always return `false`.
+
+What should we put in place of the `// TODO` note we left ourselves? A GraphQL mutation that deletes a comment, of course. Thanks to our forward-thinking earlier we already have a `deleteComment()` service function and GraphQL mutation ready to go.
 
 And due to the nice encapsulation of our **Comment** component we can make all the required web-site changes in this one component:
 
-```javascript {4-5,13-19,23-30,33-35}
+```javascript {4-5,23-30,33-37}
 // web/src/components/Comment/Comment.js
 
 import { useAuth } from '@redwoodjs/auth'
@@ -424,6 +431,8 @@ describe('Comment', () => {
 })
 ```
 
+We moved the default `comment` object to a constant and then used that in all tests. We also needed to add `waitFor()` since the `hasRole()` check in the Comment itself actually executes some GraphQL calls behind the scenes to figure out who the user is. The test suite actually makes mocked GraphQL calls, but they're still asynchronous and need to be waited for. If you don't wait, then `currentUser` will be `null` when the test starts, and Jest will be happy with that result. But we won't—we need to wait for the actual value from the GraphQL call.
+
 Before the test suite will work we'll need to stop and re-start the test server: when adding a field to the database (`roles` on `User` in this case) we need to restart the test runner so that it can apply the schema changes to our test database. So press `q` or `Ctrl-C` in your test runner if it's still running, then:
 
 ```bash
@@ -431,8 +440,6 @@ yarn rw test
 ```
 
 The suite should automatically run the tests for `Comment` and `CommentCell` at the very least, and maybe a few more if you haven't committed your code to git in a while.
-
-We moved the default `comment` object to a constant and then used that in all tests. We also needed to add `waitFor()` since the `hasRole()` check in the Comment itself actually executes some GraphQL calls behind the scenes to figure out who the user is. The test suite actually makes mocked GraphQL calls, but they're still asynchronous and need to be waited for. If you don't wait, then `currentUser` will be `null` when the test starts, and Jest will be happy with that result. But we won't—we need to wait for the actual value from the GraphQL call.
 
 > This isn't the most robust test that's ever been written: what if the sample text of the comment itself had the word "Delete" in it? Whoops! But you get the idea—find some meaningful difference in each possible render state of a component and write a test that verifies its presence (or lack of presence).
 >
@@ -485,7 +492,7 @@ Remember: never trust the client! We need to lock down the backend to be sure th
 
 Recall in Part 1 of the tutorial we used a [directive](https://redwoodjs.com/docs/directives) `@requireAuth` to be sure that someone was logged in before allowing them to access a given GraphQL query or mutation. It turns out that `@requireAuth` can take an optional `roles` argument:
 
-```javascript {4,9}
+```javascript {29}
 export const schema = gql`
   type Comment {
     id: Int!
@@ -514,7 +521,7 @@ export const schema = gql`
 
   type Mutation {
     createComment(input: CreateCommentInput!): Comment! @skipAuth
-    deleteComment(id: Int!): Comment! @requireAuth(roles: ["moderator"])
+    deleteComment(id: Int!): Comment! @requireAuth(roles: "moderator")
   }
 `
 ```
@@ -541,7 +548,7 @@ export const deleteComment = ({ id }) => {
 
 We'll need a test to go along with that functionality. How do we test `requireAuth()`? The api side also has a `mockCurrentUser()` function which behaves the same as the one on the web side:
 
-```javascript {3,5,7-17}
+```javascript {3,5,35-71}
 // api/src/services/comments/comments.test.js
 
 import { comments, createComment, deleteComment } from './comments'
