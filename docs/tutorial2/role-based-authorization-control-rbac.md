@@ -483,7 +483,45 @@ We don't do anything with the actual post data in our tests, so there's no need 
 
 Remember: never trust the client! We need to lock down the backend to be sure that someone can't discover our `deleteComment` GraphQL resource and start deleing comments willy nilly.
 
-Recall in Part 1 of the tutorial we used a function `requireAuth()` to be sure that someone was logged in before allowing them to take action on the server. It turns out that `requireAuth()` takes an optional `roles` key:
+Recall in Part 1 of the tutorial we used a [directive](https://redwoodjs.com/docs/directives) `@requireAuth` to be sure that someone was logged in before allowing them to access a given GraphQL query or mutation. It turns out that `@requireAuth` can take an optional `roles` argument:
+
+```javascript {4,9}
+export const schema = gql`
+  type Comment {
+    id: Int!
+    name: String!
+    body: String!
+    post: Post!
+    postId: Int!
+    createdAt: DateTime!
+  }
+
+  type Query {
+    comments(postId: Int!): [Comment!]! @skipAuth
+  }
+
+  input CreateCommentInput {
+    name: String!
+    body: String!
+    postId: Int!
+  }
+
+  input UpdateCommentInput {
+    name: String
+    body: String
+    postId: Int
+  }
+
+  type Mutation {
+    createComment(input: CreateCommentInput!): Comment! @skipAuth
+    deleteComment(id: Int!): Comment! @requireAuth(roles: ["moderator"])
+  }
+`
+```
+
+Now a raw GraphQL query to the `deleteComment` mutation will result in an error if the user isn't logged in as a moderator.
+
+This check only prevents access to `deleteComment` via GraphQL. What if you're calling one service from another? If we wanted the same protection within the service itself, we could call `requireAuth` directly:
 
 ```javascript {4,9}
 // api/src/services/comments/comments.js
@@ -503,39 +541,94 @@ export const deleteComment = ({ id }) => {
 
 We'll need a test to go along with that functionality. How do we test `requireAuth()`? The api side also has a `mockCurrentUser()` function which behaves the same as the one on the web side:
 
-```javascript {3,7-17}
+```javascript {3,5,7-17}
 // api/src/services/comments/comments.test.js
 
 import { comments, createComment, deleteComment } from './comments'
+import { db } from 'api/src/lib/db'
+import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
-// ...
+describe('comments', () => {
+  scenario(
+    'returns all comments for a single post from the database',
+    async (scenario) => {
+      const result = await comments({ postId: scenario.comment.jane.postId })
+      const post = await db.post.findUnique({
+        where: { id: scenario.comment.jane.postId },
+        include: { comments: true },
+      })
+      expect(result.length).toEqual(post.comments.length)
+    }
+  )
 
-scenario('deletes a comment', async (scenario) => {
-  mockCurrentUser({ roles: ['moderator'] })
+  scenario('postOnly', 'creates a new comment', async (scenario) => {
+    const comment = await createComment({
+      input: {
+        name: 'Billy Bob',
+        body: 'What is your favorite tree bark?',
+        postId: scenario.post.bark.id,
+      },
+    })
 
-  const comment = await deleteComment({
-    id: scenario.comment.jane.id,
+    expect(comment.name).toEqual('Billy Bob')
+    expect(comment.body).toEqual('What is your favorite tree bark?')
+    expect(comment.postId).toEqual(scenario.post.bark.id)
+    expect(comment.createdAt).not.toEqual(null)
   })
-  expect(comment.id).toEqual(scenario.comment.jane.id)
 
-  const result = await comments({ postId: scenario.comment.jane.id })
-  expect(result.length).toEqual(0)
+  scenario('allows a moderator to delete a comment', async (scenario) => {
+    mockCurrentUser({ roles: ['moderator'] })
+
+    const comment = await deleteComment({
+      id: scenario.comment.jane.id,
+    })
+    expect(comment.id).toEqual(scenario.comment.jane.id)
+
+    const result = await comments({ postId: scenario.comment.jane.id })
+    expect(result.length).toEqual(0)
+  })
+
+  scenario(
+    'does not allow a non-moderator to delete a comment',
+    async (scenario) => {
+      mockCurrentUser({ roles: 'user' })
+
+      expect(() =>
+        deleteComment({
+          id: scenario.comment.jane.id,
+        })
+      ).toThrow(ForbiddenError)
+    }
+  )
+
+  scenario(
+    'does not allow a logged out user to delete a comment',
+    async (scenario) => {
+      mockCurrentUser(null)
+
+      expect(() =>
+        deleteComment({
+          id: scenario.comment.jane.id,
+        })
+      ).toThrow(AuthenticationError)
+    }
+  )
 })
-
 ```
 
-Our first expectation here checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sure that the comment was actually removed from the database: trying to find a comment with that `id` now returns an empty array.
+Our first scenario checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sure that the comment was actually removed from the database: trying to find a comment with that `id` now returns an empty array. If this was the only test we had it could lull us into a false sense of security—what if the user had a differnet role, or wasn't logged in at all?
+
+We aren't testing those cases here, so we add two more tests: one for if the user has a role other than "moderator" and one if the user isn't logged in at all. These two cases also raise different errors, so it's nice to see that codified here.
 
 ### Last Word on Roles
 
 Having a role like "admin" implies that they can do everything...shouldn't they be able to delete comments as well? Right you are! There are two things we can do here:
 
-1. Add "admin" to the list of roles in the `hasRole()` and `requireAuth()` function calls
-2. In addition to "admin", also give the "moderator" role to those users in Netlify Identity
+1. Add "admin" to the list of roles in the `hasRole()` checks in components, `@requireAuth` directive, and `requireAuth()` check in services
+2. Don't make any changes in the code, just give the user in the database additional roles—so admins will also have the "moderator" role in addition to "admin"
 
-By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it feels better to add "admin" to `hasRole()` and `requireAuth()`.
+By virtue of the name "admin" it really feels like someone should only have that one single roll and be able to do everything. So in this case it might feel better to add "admin" to `hasRole()` and `requireAuth()`.
 
-But if you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicitly give them the "moderator" role in addition to "author."
+But, if you wanted to be more fine-grained with your roles then maybe the "admin" role should really be called "author". That way it makes it clear they only author posts, and if you want someone to be able to do both actions you can explicitly give them the "moderator" role in addition to "author."
 
-Managing roles can be a tricky thing to get right. Spend a little time up front thinking about how they'll interact and how much duplication you're willing to accept in your role-based function calls on the site. If you see yourself constantly adding multiple roles to `hasRole()` that may be an indication that it's time to add a single, new role that includes those abilities and remove that duplication in your code.
-
+Managing roles can be a tricky thing to get right. Spend a little time up front thinking about how they'll interact and how much duplication you're willing to accept in your role-based function calls on the site. If you see yourself constantly adding multiple roles to `hasRole()` and `requireAuth()` that may be an indication that it's time to add a single, new role that includes those abilities and remove that duplication in your code.
