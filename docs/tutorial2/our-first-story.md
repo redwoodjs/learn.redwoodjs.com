@@ -40,25 +40,25 @@ We'll pass an additional `summary` prop to the component to let it know if it sh
 Now in the Storybook story let's create a `summary` story that uses the `Article` component the same way that `generated` does, but adds the new `summary` prop. We'll take the content of the sample post and put that in a constant that both stories will use. We'll also rename `generated` to `full` to make it clear what's different between the two:
 
 ```javascript {5-9,11-13,15-17}
-// web/components/BlogPost/BlogPost.stories.js
+// web/components/Article/Article.stories.js
 
-import BlogPost from './BlogPost'
+import Article from './Article'
 
-const POST = {
+const ARTICLE = {
   id: 1,
   title: 'First Post',
   body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
 }
 
 export const full = () => {
-  return <BlogPost post={POST} />
+  return <Article article={ARTICLE} />
 }
 
 export const summary = () => {
-  return <BlogPost post={POST} summary={true} />
+  return <Article article={ARTICLE} summary={true} />
 }
 
-export default { title: 'Components/BlogPost' }
+export default { title: 'Components/Article' }
 ```
 
 As soon as you save the change the stories Storybook should refresh and show the updates:
@@ -67,15 +67,15 @@ As soon as you save the change the stories Storybook should refresh and show the
 
 ### Displaying the Summary
 
-Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the **Article** component though, that's in the **ArticlesCell**. We'll add the `summary` prop and then check the result in Storybook:
+Great! Now to complete the picture let's use the summary in our home page display of blog posts. The actual Home page isn't what references the `Article` component though, that's in the `ArticlesCell`. We'll add the `summary` prop and then check the result in Storybook:
 
 ```javascript {26}
-// web/src/components/BlogPostsCell/BlogPostsCell.js
+// web/src/components/ArticlesCell/ArticlesCell.js
 
 import Article from 'src/components/Article'
 
 export const QUERY = gql`
-  query BlogPostsQuery {
+  query ArticlesQuery {
     articles: posts {
       id
       title

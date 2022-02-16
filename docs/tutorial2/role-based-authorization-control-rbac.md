@@ -42,7 +42,7 @@ But that will fail with an error:
 • Step 0 Added the required column `role` to the `User` table without a default value. There are 1 rows in this table, it is not possible to execute this step.
 ```
 
-What does this mean? We made `role` a required field. But, we have a user in the database already (`1 rows in this table`). If we add that column to the database, it would have to be `null` for existing users since we didn't define a default. Let's create a default value so that not only can we apply this migration, but we're sure that any new users being created have some minimal level of permissions and we don't have to add even more code to check whether they have a role at all, let alone what it is.
+What does this mean? We made `roles` a required field. But, we have a user in the database already (`1 rows in this table`). If we add that column to the database, it would have to be `null` for existing users since we didn't define a default. Let's create a default value so that not only can we apply this migration, but we're sure that any new users being created have some minimal level of permissions and we don't have to add even more code to check whether they have a role at all, let alone what it is.
 
 For now let's have two roles, `admin` and `moderator`. `admin` can create/edit/delete blog posts and `moderator` can only remove comments. Of those two `moderator` is the safer default since it's more restrictive:
 
@@ -221,7 +221,7 @@ What should we put in place of the `// TODO` note we left ourselves? A GraphQL m
 
 And due to the nice encapsulation of our **Comment** component we can make all the required web-site changes in this one component:
 
-```javascript {4-5,23-30,33-37}
+```javascript {4-5,7-13,23-30,33-37}
 // web/src/components/Comment/Comment.js
 
 import { useAuth } from '@redwoodjs/auth'
@@ -329,6 +329,7 @@ export const defaultView = () => {
           name: 'Rob Cameron',
           body: 'This is the first comment!',
           createdAt: '2020-01-01T12:34:56Z',
+          postId: 1
         }}
       />
     </div>
@@ -343,6 +344,7 @@ export const moderatorView = () => {
           name: 'Rob Cameron',
           body: 'This is the first comment!',
           createdAt: '2020-01-01T12:34:56Z',
+          postId: 1
         }}
       />
     </div>
@@ -369,6 +371,7 @@ export const moderatorView = () => {
           name: 'Rob Cameron',
           body: 'This is the first comment!',
           createdAt: '2020-01-01T12:34:56Z',
+          postId: 1
         }}
       />
     </div>
@@ -390,7 +393,7 @@ Check out **Comment** in Storybook and you should see two stories for Comment, o
 
 We can use the same `mockCurrentUser()` function in our Jest tests as well. Let's check that the word "Delete" is present in the component's output when the user is a moderator, and that it's not present if the user has any other role (or no role):
 
-```javascript {3,6-10,24-37}
+```javascript {3,6-10,14,16-17,21,24-37}
 // web/src/components/Comment/Comment.test.js
 
 import { render, screen, waitFor } from '@redwoodjs/testing'
@@ -431,7 +434,7 @@ describe('Comment', () => {
 })
 ```
 
-We moved the default `comment` object to a constant and then used that in all tests. We also needed to add `waitFor()` since the `hasRole()` check in the Comment itself actually executes some GraphQL calls behind the scenes to figure out who the user is. The test suite actually makes mocked GraphQL calls, but they're still asynchronous and need to be waited for. If you don't wait, then `currentUser` will be `null` when the test starts, and Jest will be happy with that result. But we won't—we need to wait for the actual value from the GraphQL call.
+We moved the default `comment` object to a constant `COMMENT` and then used that in all tests. We also needed to add `waitFor()` since the `hasRole()` check in the Comment itself actually executes some GraphQL calls behind the scenes to figure out who the user is. The test suite makes mocked GraphQL calls, but they're still asynchronous and need to be waited for. If you don't wait, then `currentUser` will be `null` when the test starts, and Jest will be happy with that result. But we won't—we need to wait for the actual value from the GraphQL call.
 
 Before the test suite will work we'll need to stop and re-start the test server: when adding a field to the database (`roles` on `User` in this case) we need to restart the test runner so that it can apply the schema changes to our test database. So press `q` or `Ctrl-C` in your test runner if it's still running, then:
 
@@ -623,7 +626,7 @@ describe('comments', () => {
 })
 ```
 
-Our first scenario checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation make sure that the comment was actually removed from the database: trying to find a comment with that `id` now returns an empty array. If this was the only test we had it could lull us into a false sense of security—what if the user had a differnet role, or wasn't logged in at all?
+Our first scenario checks that we get the deleted comment back from a call to `deleteComment()`. The second expectation makes sure that the comment was actually removed from the database: trying to find a comment with that `id` now returns an empty array. If this was the only test we had it could lull us into a false sense of security—what if the user had a differnet role, or wasn't logged in at all?
 
 We aren't testing those cases here, so we add two more tests: one for if the user has a role other than "moderator" and one if the user isn't logged in at all. These two cases also raise different errors, so it's nice to see that codified here.
 

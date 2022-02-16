@@ -490,6 +490,18 @@ We'll test that all the fields we give to the `createComment()` function are act
 >
 >   "`user[3]` paid for `product[0]` using their `cards[2]` credit card?
 >
-> If you said the second one, remember: you're not writing your code for the computer, you're writing it for other humans! It's the compiler's job to make code uderstandable to a computer, it's our job to make code understandable to our fellow developers.
+> If you said the second one, remember: you're not writing your code for the computer, you're writing it for other humans! It's the compiler's job to make code understandable to a computer, it's our job to make code understandable to our fellow developers.
 
 Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
+
+> **Mocks vs. Scenarios**
+>
+> Mocks are used on the web site and scenarios are used on the api side. It might be helpful to remember that "mock" is a synonym for "fake", as in this-is-fake-data-not-really-in-the-database (so that we can create stories and tests in isolation without the api side getting involved). Whereas a scenario is real data in the database, it's just pre-set to some known state that we can rely on.
+>
+> Maybe a [mnemonic](https://www.mnemonicgenerator.com/?words=M%20W%20S%20A) would help? **M**ocks **W**eb **S**cenarios **A**PI:
+>
+> * Mothers Worshipped Slimy Aprons
+> * Minesweepers Wrecked Subliminal Attorneys
+> * Masked Widows Squeezed Apricots
+>
+> Maybe not...

@@ -362,7 +362,7 @@ const CommentForm = ({ postId }) => {
 
 Now when we create a comment it appears right away! It might be hard to tell because it's at the bottom of the comments list (which is a fine position if you want to read comments in chronological order, oldest to newest). Let's pop up a little notification that the comment was successful to let the user know their contribution was successful in case they don't realize it was added to the end of the page.
 
-We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. Redwood includes [react-hot-toast](https://react-hot-toast.com/) for showing popup notificaitons, so let's use that to thank the user for their comment. We'll remove the form with just a couple of CSS classes:
+We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. Redwood includes [react-hot-toast](https://react-hot-toast.com/) for showing popup notifications, so let's use that to thank the user for their comment. We'll remove the form with just a couple of CSS classes:
 
 ```javascript {12,14,28,30-33,42}
 // web/src/components/CommentForm/CommentForm.js
@@ -817,7 +817,7 @@ Now if you try refreshing the real site in dev mode you'll see an error where th
 
 And yep, it's complaining about `postId` not being present—exactly what we want!
 
-That completes the backend updates, now we just need to tell `CommentsCell to pass through the `postId` to the GraphQL query it makes.
+That completes the backend updates, now we just need to tell `CommentsCell` to pass through the `postId` to the GraphQL query it makes.
 
 #### Updating the Cell
 
@@ -881,7 +881,7 @@ However, you may have noticed that now when you post a comment it no longer appe
 
 Okay this is the last fix, promise!
 
-```javascript {7}
+```javascript {8}
 // web/src/components/CommentForm/CommentForm.js
 
 const [createComment, { loading, error }] = useMutation(CREATE, {

@@ -111,7 +111,7 @@ Our component looks great! Now let's verify that it does what we want it to do w
 
 ### Testing
 
-We don't want Santa to skip our house for being naughty developers so let's test our **Comment** component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
+We don't want Santa to skip our house so let's test our **Comment** component. We could test that the author's name and the body of the comment appear, as well as the date it was posted.
 
 The default test that comes with a generated component just makes sure that no errors are thrown, which is the least we could ask of our components!
 
@@ -142,8 +142,8 @@ describe('Comment', () => {
 })
 ```
 
-Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for a blog post's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preserve that ability!
+Here we're testing for both elements of the output `createdAt` timestamp: the actual text that's output (similar to how we tested for an article's truncated body) but also that the element that wraps that text is a `<time>` tag and that it contains a `datetime` attribute with the raw value of `comment.createdAt`. This might seem like overkill but the point of the `datetime` attribute is to provide a machine-readable timestamp that the browser could (theoretically) hook into and do stuff with. This makes sure that we preserve that ability.
 
 > **What happens if we change the formatted output of the timestamp? Wouldn't we have to change the test?**
 >
-> Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the Comment component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with **Comment**.
+> Yes, just like we'd have to change the truncation text if we changed the length of the truncation. One alternative approach to testing for the formatted output could be to move the date formatting formula into a function that you can export from the `Comment` component. Then you can import that in your test and use it to check the formatted output. Now if you change the formula the test keeps passing because it's sharing the function with `Comment`.

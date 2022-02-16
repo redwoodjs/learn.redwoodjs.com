@@ -102,7 +102,7 @@ Storybook refreshes and we've got comments! It's a little hard to distinguish be
 
 ![image](https://user-images.githubusercontent.com/300/153478670-14c32c29-6d1d-491b-bc2b-b033557a6d84.png)
 
-Since `CommentsCell` is the one responsible for drawing multiple comments, it makes sense that it should be "in charge" of how they're displayed, including the gab betweetn them. Let's add a style to do that in `CommentsCell`:
+Since `CommentsCell` is the one responsible for drawing multiple comments, it makes sense that it should be "in charge" of how they're displayed, including the gap between them. Let's add a style to do that in `CommentsCell`:
 
 ```javascript {5,9}
 // web/src/components/CommentsCell/CommentsCell.js
@@ -155,7 +155,7 @@ If we are *not* showing the summary, then we'll show the comments. Take a look a
 
 > **Shouldn't the CommentsCell cause an actual GraphQL request? How does this work?**
 >
-> Redwood has added some functionality around Storybook so if you're testing a component that itself isn't a Cell (like the `Article` component) but that renders a cell (like `CommentsCell`), then it will mock the GraphQL and use the `standard` mock that goes along with that Cell. Pretty cool, huh?
+> Redwood has added some functionality around Storybook so that if you're testing a component that itself isn't a Cell (like the `Article` component) but that renders a cell (like `CommentsCell`), then it will mock the GraphQL and use the `standard` mock that goes along with that Cell. Pretty cool, huh?
 
 Adding the comments to the article display has exposed another design issue: the comments are sitting right up underneath the article text:
 
@@ -193,7 +193,7 @@ Okay, comment display is looking good! However, you may have noticed that if you
 
 ![image](https://user-images.githubusercontent.com/300/153480635-58ada8e8-ed5b-41b6-875b-501a07a36d9a.png)
 
-Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! We'll be rectifing this soon. But this demonstrates another huge benefit of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
+Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! We'll be rectifying this soon. But this demonstrates another huge benefit of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
 
 ### Testing
 
