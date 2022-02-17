@@ -38,7 +38,7 @@ test('Success renders successfully', async () => {
 })
 ```
 
-But the truncatation length could change later, so how do we encapsulate that in our test? Or should we? The number of characters to truncate to is hardcoded in the `Article` component, which this component shouldn't really care about about: it should be up to the page that's presenting the article to determine much or how little to show (based on space concerns, design constraints, etc.) don't you think? Even if we refactored the `truncate()` function into a shared place and imported it into both `Article` and this test, the test will still be knowing too much about `Article`—why should it have detailed knowledge of the internals of `Article` and that it's making use of this `truncate()` function at all? It shouldn't! One theory of testing says that the thing you're testing should be a black box: you can't see inside of it, all you can test is what data comes out when you send certain data in.
+But the truncation length could change later, so how do we encapsulate that in our test? Or should we? The number of characters to truncate to is hardcoded in the `Article` component, which this component shouldn't really care about about: it should be up to the page that's presenting the article to determine much or how little to show (based on space concerns, design constraints, etc.) don't you think? Even if we refactored the `truncate()` function into a shared place and imported it into both `Article` and this test, the test will still be knowing too much about `Article`—why should it have detailed knowledge of the internals of `Article` and that it's making use of this `truncate()` function at all? It shouldn't! One theory of testing says that the thing you're testing should be a black box: you can't see inside of it, all you can test is what data comes out when you send certain data in.
 
 Let's compromise—by virtue of the fact that this functionality has a prop called "summary" we can guess that it's doing *something* to shorten the text. So what if we test three things that we can make reasonable assumptions about right now:
 
@@ -133,17 +133,21 @@ expect(ellipsis).toBeInTheDocument()
 ```
 Assert that the ellipsis is present
 
-As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite if you want to make sure nothing else broke. Remember to press `o` to go back to only testing changes again.
+As soon as you saved that test file the test should have run and passed! Press `a` to run the whole suite if you want to make sure nothing else broke. Remember to press `o` to go back to only testing changes again. (There's nothing wrong with running the full test suite each time, but it will take longer than only testing the things that have changed since the last time you committed your code.)
 
 > **What's the difference between `getByText()` and `queryByText()`?**
 >
 > `getByText()` will throw an error if the text isn't found in the document, whereas `queryByText()` will  return `null` and let you continue with your testing (and is one way to test that some text is *not* present on the page). You can read more about these in the [DOM Testing Library Queries](https://testing-library.com/docs/dom-testing-library/api-queries) docs.
 
-To double check that we're testing what we think we're testing, open up `ArticlesCell.js` and remove the `summary={true}` prop (or set it to `false`) and the test should fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document! Also note the tests automatically ran, which is very handy. Make sure to put the `summary={true}` back before we continue.
+To double check that we're testing what we think we're testing, open up `ArticlesCell.js` and remove the `summary={true}` prop (or set it to `false`) and the test should fail: now the full body of the post *is* on the page and `expect(screen.queryByText(post.body)).not.toBeInTheDocument()` *is* in the document! Make sure to put the `summary={true}` back before we continue.
 
 ### What's the Deal with Mocks?
 
 Mocks are used when you want to define the data that would normally be returned by GraphQL. In cells, a GraphQL call goes out (the query defined by **QUERY**) and returned to the **Success** component. We don't want to have to run the api-side server and have real data in the database just for Storybook or our tests, so Redwood intercepts those GraphQL calls and returns the data from the mock instead.
+
+> **If the server is being mocked, how do we test the api-side code?**
+>
+> We'll get to that next when we create a new feature for our blog from scratch!
 
 The names you give your mocks are then available in your tests and stories files. Just import the one you want to use (`standard` is imported for you in generated test files) and you can use the spread syntax to pass it through to your **Success** component.
 
@@ -191,7 +195,7 @@ export const success = () => {
 export default { title: 'Cells/BlogPostsCell' }
 ```
 
-Some folks find this syntax a little *too* succinct and would rather see the `<Success>` component being invoked the same way it is in your actual code. If that sounds like you, skip the spread syntax and just call the `articles` property on `standard()` the old fashoined way:
+Some folks find this syntax a little *too* succinct and would rather see the `<Success>` component being invoked the same way it is in their actual code. If that sounds like you, skip the spread syntax and just call the `articles` property on `standard()` the old fashoined way:
 
 ```javascript {5}
 import { Success } from './BlogPostsCell'

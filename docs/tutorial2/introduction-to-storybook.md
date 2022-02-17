@@ -16,9 +16,9 @@ After some compiling you should get a message saying that Storybook has started 
 
 If you poke around at the file tree on the left you'll see all of the components, cells, layouts and pages we created during the tutorial. Where did they come from? You may recall that every time we generated a new page/cell/component we actually created at least *three* files:
 
-* Article.js
-* Article.stories.js
-* Article.test.js
+* `Article.js`
+* `Article.stories.js`
+* `Article.test.js`
 
 > If you generated a cell then you also got a `.mock.js` file (more on those later).
 
@@ -64,7 +64,7 @@ You import the component you want to use and then all of the named exports in th
 
 ```bash
 Components
-└── BlogPost
+└── Article
     └── Generated
 ```
 

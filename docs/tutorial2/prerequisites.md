@@ -8,7 +8,7 @@ You'll need to be on at least a release candidate of Redwood v1.0 to make it thr
 
 We highly recommend going through the first tutorial or at least have built a slightly complex Redwood app on your own. You've hopefully got experience with:
 
-* Authorization
+* Authentication
 * Cells
 * GraphQL & SDLs
 * Services
@@ -20,7 +20,7 @@ If you've been through the first part of the tutorial, you can pick up where you
 If you want to use the same CSS classes we use in the following examples you'll need to add Tailwind to your repo:
 
 ```bash
-yarn rw setup tailwind
+yarn rw setup ui tailwindcss
 ```
 
 However, none of the screenshots below will come anywhere close to what you're seeing (except for those isolated components you build in Storybook) so you may want to just start with the [example repo](https://github.com/redwoodjs/redwood-tutorial). You'll also be missing out on a good starting test suite that we added to the example repo!
@@ -53,7 +53,7 @@ Your browser should open to a fresh new blog app:
 
 ![image](https://user-images.githubusercontent.com/300/101423176-54e93780-38ad-11eb-9230-ba8557764eb4.png)
 
-Let's run the test suite to make sure everything is working as expected (you can generally keep the dev server running and start this in a second terminal window):
+Let's run the test suite to make sure everything is working as expected (you can keep the dev server running and start this in a second terminal window):
 
 ```bash
 yarn rw test
@@ -65,8 +65,8 @@ Since we just started the suite, and we haven't changed any files yet, it may no
 
 ![image](https://user-images.githubusercontent.com/300/153299412-ba191f0b-27bf-4e56-8d23-fb462a4c69c9.png)
 
-If you started with your own repo from Part 1 you may see some failures here. (Another reason to start with the [example repo](#using-the-example-repo)!)
+If you started with your own repo from Part 1 you may see some failures here: we made a lot of changes to the pages, components and cells we generated, but didn't update the tests to reflect the changes we made. (Another reason to start with the [example repo](#using-the-example-repo)!)
 
 To switch back to the default mode where test are **o**nly run for changed files, press `o` now (or quit and restart `yarn rw test`).
 
-More on testing later, but for now just know that this is always what we want to aim for—all green in that left column. In fact best practices tell us you should not even commit any code unless the test suite passes locally. Not everyone adheres to this quite as strictly as others...*&lt;cough, cough&gt;*
+More on testing later, but for now just know that this is always what we want to aim for—all green in that left column. In fact best practices tell us you should not even commit any code to your repo unless the test suite passes locally. Not everyone adheres to this policy quite as strictly as others...*&lt;cough, cough&gt;*

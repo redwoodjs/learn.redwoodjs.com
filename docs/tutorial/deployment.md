@@ -8,7 +8,7 @@ The whole reason we started building Redwood was to make full-stack web apps eas
 
 ### Git
 
-Remember at the start of the tutorial when we said that you didn't *really* need to use git if you didn't want to? Well, if you want to follow along with this deploy, you'll need to start using it now. Sorry! Commit your changes and push up to GitHub, GitLab or Bitbucket if you want to continue to follow along. Need a git primer? The most consise one we've seen is to simply create a new repo on GitHub. You'll be shown the list of commands necessary to get your local code commited and pushed up:
+Remember at the start of the tutorial when we said that you didn't *really* need to use git if you didn't want to? Well, if you want to follow along with this deploy, you'll need to start using it now. Sorry! Commit your changes and push up to GitHub, GitLab or Bitbucket if you want to continue to follow along. Need a git primer? The most concise one we've seen is to simply create a new repo on GitHub. You'll be shown the list of commands necessary to get your local code committed and pushed up:
 
 ![image](https://user-images.githubusercontent.com/300/152596271-7921c9dc-fe83-4827-b7e4-2740e826fb42.png)
 
@@ -57,7 +57,7 @@ We will need to re-create our database migrations in a Postgres-compatible forma
 
 > Note that `.env` is not checked into git by default, and should not be checked in under any circumstances! This file will be used to contain any secrets that your codebase needs (like database URLs and API keys) that should never been seen publicly. If you were to check this file in your repo, and your repo was public, anyone on the internet can see your secret stuff!
 >
-> The `.env.defaults` file is meant for other environment variables (like non-sensative config options for libraries, log levels, etc.) that are safe to be seen by the public and is meant to be checked into your repo and shared with other devs.
+> The `.env.defaults` file is meant for other environment variables (like non-sensitive config options for libraries, log levels, etc.) that are safe to be seen by the public and is meant to be checked into your repo and shared with other devs.
 
 Next, delete the `api/db/migrations` folder completely.
 

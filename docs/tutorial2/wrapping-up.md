@@ -12,9 +12,9 @@ Will there be a Part 3 of the tutorial? It's a fact that the best things come in
 
 So until next time, a bit of wisdom to help combat that next bout of every developer's nemesis, imposter syndrome:
 
-<div class="font-serif italic font-light">
-"There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self." — Ernest Hemingway
-</div>
+> "There is nothing noble in being superior to your fellow man; true nobility is being superior to your former self."
+>
+> — Ernest Hemingway
 
 ### What's Next
 
@@ -22,7 +22,7 @@ Want to add some more features to your app? Check out some of our Cookbook recip
 
 ### Roadmap
 
-Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there. If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up. The release candidate for 1.0 is now available, with GA release expected in the first half of 2022!
+Check out our [Roadmap](https://redwoodjs.com/roadmap) to see where we're headed and how we're going to get there. If you're interested in helping with anything you see, just let us know over on the [RedwoodJS Forum](https://community.redwoodjs.com/) and we'll be happy to get you set up.
 
 ### Help Us!
 
@@ -33,4 +33,3 @@ What do you think of Redwood? Is it the Next Step for JS frameworks? What can it
 - [Join the community](https://community.redwoodjs.com)
 
 Thanks for following along. Now go out and build something amazing!
-

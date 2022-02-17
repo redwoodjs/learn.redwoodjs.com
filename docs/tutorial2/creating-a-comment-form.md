@@ -4,7 +4,7 @@ title: "Creating a Comment Form"
 sidebar_label: "Creating a Comment Form"
 ---
 
-Let's generate a form and then we'll build it out and integrate it via Storybook, then add some tests:
+Let's generate a component to house our new comment form, build it out and integrate it via Storybook, then add some tests:
 
 ```bash
 yarn rw g component CommentForm
@@ -17,6 +17,8 @@ yarn rw storybook
 ```
 
 You'll see that there's a **CommentForm** entry in Storybook now, ready for us to get started.
+
+![image](https://user-images.githubusercontent.com/300/153927943-648c62d2-b0c3-40f2-9bad-3aa81170d7c2.png)
 
 ### Storybook
 
@@ -72,27 +74,9 @@ const CommentForm = () => {
 export default CommentForm
 ```
 
+![image](https://user-images.githubusercontent.com/300/153928306-5e0979c6-2049-4039-87a2-284a4010283a.png)
+
 Note that the form and its inputs are set to 100% width. Again, the form shouldn't be dictating anything about its layout that its parent should be responsible for, like how wide the inputs are. Those should be determined by whatever contains it so that it looks good with the rest of the content on the page. So the form will be 100% wide and the parent (whoever that ends up being) will decide how wide it really is on the page.
-
-And let's add some margin around the whole component in Storybook so that the 100% width doesn't run into the Storybook frame:
-
-```javascript {7,9}
-// web/src/components/CommentForm/CommentForm.stories.js
-
-import CommentForm from './CommentForm'
-
-export const generated = () => {
-  return (
-    <div className="m-4">
-
-      <CommentForm />
-    </div>  )
-}
-
-export default { title: 'Components/CommentForm' }
-```
-
-![image](https://user-images.githubusercontent.com/300/100663134-b5ef9900-330a-11eb-8ba3-e9e4bfe89b84.png)
 
 You can even try submitting the form right in Storybook! If you leave "name" or "comment" blank then they should get focus when you try to submit, indicating that they are required. If you fill them both in and click **Submit** nothing happens because we haven't hooked up the submit yet. Let's do that now.
 
@@ -191,7 +175,7 @@ export const generated = () => {
     ctx.delay(1000)
 
     return {
-      comment: {
+      createComment: {
         id,
         name: variables.input.name,
         body: variables.input.body,
@@ -200,11 +184,7 @@ export const generated = () => {
     }
   })
 
-  return (
-    <div className="m-4">
-      <CommentForm />
-    </div>
-  )
+  return <CommentForm />
 }
 
 export default { title: 'Components/CommentForm' }
@@ -218,18 +198,18 @@ Try out the form now and the error should be gone. Also the **Submit** button sh
 
 ### Adding the Form to the Blog Post
 
-Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the **BlogPost** along with the **CommentsCell** component? If wherever we display a list of comments we'll also include the form to add a new one, that feels like it may as well just go into the **CommentsCell** component itself. However, this presents a problem:
+Right above the display of existing comments on a blog post is probably where our form should go. So should we add it to the `Article` component along with the `CommentsCell` component? If wherever we display a list of comments we'll also include the form to add a new one, that feels like it may as well just go into the `CommentsCell` component itself. However, this presents a problem:
 
-If we put the **CommentForm** in the **Success** component of **CommentsCell** then what happens when there are no comments yet? The **Empty** component renders, which doesn't include the form! So it becomes impossible to add the first comment.
+If we put the `CommentForm` in the `Success` component of `CommentsCell` then what happens when there are no comments yet? The `Empty` component renders, which doesn't include the form! So it becomes impossible to add the first comment.
 
-We could copy the **CommentForm** to the **Empty** component as well, but as soon as you find yourself duplicating code like this it can be a hint that you need to rethink something about your design.
+We could copy the `CommentForm` to the `Empty` component as well, but as soon as you find yourself duplicating code like this it can be a hint that you need to rethink something about your design.
 
-Maybe **CommentsCell** should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
+Maybe `CommentsCell` should really only be responsible for retrieving and displaying comments. Having it also accept user input seems outside of its primary concern.
 
-So let's use **BlogPost** as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments:
+So let's use `Article` as the cleaning house for where all these disparate parts are combined—the actual blog post, the form to add a new comment, and the list of comments (and a little margin between them):
 
 ```javascript {5,23-24,28}
-// web/src/components/BlogPost/BlogPost.js
+// web/src/components/Article/Article.js
 
 import { Link, routes } from '@redwoodjs/router'
 import CommentsCell from 'src/components/CommentsCell'
@@ -239,21 +219,21 @@ const truncate = (text, length) => {
   return text.substring(0, length) + '...'
 }
 
-const BlogPost = ({ post, summary = false }) => {
+const Article = ({ article, summary = false }) => {
   return (
-    <article className="mt-10">
+    <article>
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
-          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+          <Link to={routes.article({ id: article.id })}>{article.title}</Link>
         </h2>
       </header>
       <div className="mt-2 text-gray-900 font-light">
-        {summary ? truncate(post.body, 100) : post.body}
+        {summary ? truncate(article.body, 100) : article.body}
       </div>
       {!summary && (
-        <div className="mt-16">
+        <div className="mt-12">
           <CommentForm />
-          <div className="mt-24">
+          <div className="mt-12">
             <CommentsCell />
           </div>
         </div>
@@ -262,18 +242,20 @@ const BlogPost = ({ post, summary = false }) => {
   )
 }
 
-export default BlogPost
+export default Article
 ```
 
-That looks better!
+![image](https://user-images.githubusercontent.com/300/153929564-59bcafd6-f3a3-437e-86d9-b92753b7fe9b.png)
 
-![image](https://user-images.githubusercontent.com/300/100779113-c06a6b00-33bc-11eb-9112-0f7fc30a3f22.png)
+Looks great in Storybook, how about on the real site?
+
+![image](https://user-images.githubusercontent.com/300/153929680-a33e5332-2e02-423e-9ca5-4757ad8dbbb5.png)
 
 Now comes the ultimate test: creating a comment! LET'S DO IT:
 
-![image](https://user-images.githubusercontent.com/300/100806468-5d40fe80-33e5-11eb-89f7-e4b504078eff.png)
+![image](https://user-images.githubusercontent.com/300/153929833-f2a3e38d-c70e-4f64-ade1-4327a7f47193.png)
 
-When we created our data schema we said that a post belongs to a comment via the `postId` field. And that field is required, so the GraphQL server is rejecting the request because we're not including that field. We're only sending `name` and `body`. Luckily we have access to the ID of the post we're commenting on thanks to the `post` object that's being passed into **BlogPost** itself!
+What happened here? Notice towards the end of the error message: `Field "postId" of required type "Int!" was not provided`. When we created our data schema we said that a post belongs to a comment via the `postId` field. And that field is required, so the GraphQL server is rejecting the request because we're not including that field. We're only sending `name` and `body`. Luckily we have access to the ID of the post we're commenting on thanks to the `article` object that's being passed into `Article` itself!
 
 > **Why didn't the Storybook story we wrote earlier expose this problem?**
 >
@@ -281,28 +263,36 @@ When we created our data schema we said that a post belongs to a comment via the
 >
 > There's always a tradeoff when creating mock data—it greatly simplifies testing by not having to rely on the entire GraphQL stack, but that means if you want it to be as accurate as the real thing you basically need to *re-write the real thing in your mock*. In this case, leaving out the `postId` was a one-time fix so it's probably not worth going through the work of creating a story/mock/test that simulates what would happen if we left it off.
 >
-> But, if **CommentForm** ended up being a component that was re-used throughout your application, or the code itself will go through a lot of churn because other developers will constantly be making changes to it, it might be worth investing the time to make sure the interface (the props passed to it and the expected return) are exactly what you want them to be.
+> But, if `CommentForm` ended up being a component that was re-used throughout your application, or the code itself will go through a lot of churn because other developers will constantly be making changes to it, it might be worth investing the time to make sure the interface (the props passed to it and the expected return) are exactly what you want them to be.
 
-First let's pass the post's ID as a prop to **CommentForm**:
+First let's pass the post's ID as a prop to `CommentForm`:
 
-```javascript {16}
-// web/src/components/BlogPost/BlogPost.js
+```javascript {24}
+// web/src/components/Article/Article.js
 
-const BlogPost = ({ post, summary = false }) => {
+import { Link, routes } from '@redwoodjs/router'
+import CommentsCell from 'src/components/CommentsCell'
+import CommentForm from 'src/components/CommentForm'
+
+const truncate = (text, length) => {
+  return text.substring(0, length) + '...'
+}
+
+const Article = ({ article, summary = false }) => {
   return (
-    <article className="mt-10">
+    <article>
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
-          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+          <Link to={routes.article({ id: article.id })}>{article.title}</Link>
         </h2>
       </header>
       <div className="mt-2 text-gray-900 font-light">
-        {summary ? truncate(post.body, 100) : post.body}
+        {summary ? truncate(article.body, 100) : article.body}
       </div>
       {!summary && (
-        <div className="mt-16">
-          <CommentForm postId={post.id} />
-          <div className="mt-24">
+        <div className="mt-12">
+          <CommentForm postId={article.id} />
+          <div className="mt-12">
             <CommentsCell />
           </div>
         </div>
@@ -310,9 +300,12 @@ const BlogPost = ({ post, summary = false }) => {
     </article>
   )
 }
+
+export default Article
+
 ```
 
-And then we'll append that ID to the `input` object that's being passed to `createComment` in the **CommentForm**:
+And then we'll append that ID to the `input` object that's being passed to `createComment` in the `CommentForm`:
 
 ```javascript {3,7}
 // web/src/components/CommentForm/CommentForm.js
@@ -332,7 +325,7 @@ const CommentForm = ({ postId }) => {
 
 Now fill out the comment form and submit! And...nothing happened! Believe it or not that's actually an improvement in the situation—no more error! What if we reload the page?
 
-![image](https://user-images.githubusercontent.com/300/100950150-98fcc680-34c0-11eb-8808-944637b5ca1f.png)
+![image](https://user-images.githubusercontent.com/300/153930645-c5233fb5-ad7f-4a03-8707-3cd6164bb277.png)
 
 Yay! It would have been nicer if that comment appeared as soon as we submitted the comment, so maybe that's a half-yay? Also, the text boxes stayed filled with our name/messages which isn't ideal. But, we can fix both of those! One involves telling the GraphQL client (Apollo) that we created a new record and, if it would be so kind, to try the query again that gets the comments for this page, and we'll fix the other by just removing the form from the page completely when a new comment is submitted.
 
@@ -340,7 +333,7 @@ Yay! It would have been nicer if that comment appeared as soon as we submitted t
 
 Much has been written about the [complexities](https://medium.com/swlh/how-i-met-apollo-cache-ee804e6485e9) of [Apollo](https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980) [caching](https://levelup.gitconnected.com/basics-of-caching-data-in-graphql-7ce9489dac15), but for the sake of brevity (and sanity) we're going to do the easiest thing that works, and that's tell Apollo to just re-run the query that shows comments in the cell, known as "refetching."
 
-Along with the variables you pass to a mutation function (`createComment` in our case) there's an option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the **QUERY** export of **CommentsCell**. We'll import that at the top of **CommentForm** (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
+Along with the variables you pass to a mutation function (`createComment` in our case) there's an option named `refetchQueries` where you pass an array of queries that should be re-run because, presumably, the data you just mutated is reflected in the result of those queries. In our case there's a single query, the `QUERY` export of `CommentsCell`. We'll import that at the top of `CommentForm` (and rename so it's clear what it is to the rest of our code) and then pass it along to the `refetchQueries` option:
 
 ```javascript {12,17-19}
 // web/src/components/CommentForm/CommentForm.js
@@ -367,11 +360,11 @@ const CommentForm = ({ postId }) => {
 }
 ```
 
-Now when we create a comment it appears right away! It might be hard to tell because it's at the bottom of the comments list (which is a fine position if you want to read comments in chronological order, oldest to newest). Let's pop up a little notification that the comment was successful to let the user know their contribution was successful.
+Now when we create a comment it appears right away! It might be hard to tell because it's at the bottom of the comments list (which is a fine position if you want to read comments in chronological order, oldest to newest). Let's pop up a little notification that the comment was successful to let the user know their contribution was successful in case they don't realize it was added to the end of the page.
 
-We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. We'll remove the form and show the message with just a couple of CSS classes:
+We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. Redwood includes [react-hot-toast](https://react-hot-toast.com/) for showing popup notifications, so let's use that to thank the user for their comment. We'll remove the form with just a couple of CSS classes:
 
-```javascript {13,18,20-22,31,33-39,41}
+```javascript {12,14,28,30-33,42}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -383,16 +376,27 @@ import {
   Submit,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
 import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 import { useState } from 'react'
 
-// ...
+const CREATE = gql`
+  mutation CreateCommentMutation($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      id
+      name
+      body
+      createdAt
+    }
+  }
+`
 
 const CommentForm = ({ postId }) => {
   const [hasPosted, setHasPosted] = useState(false)
   const [createComment, { loading, error }] = useMutation(CREATE, {
     onCompleted: () => {
       setHasPosted(true)
+      toast.success('Thank you for your comment!')
     },
     refetchQueries: [{ query: CommentsQuery }],
   })
@@ -402,29 +406,136 @@ const CommentForm = ({ postId }) => {
   }
 
   return (
-    <div className="relative">
+    <div className={hasPosted ? 'hidden' : ''}>
       <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
-      <div
-        className={`${
-          hasPosted ? 'absolute' : 'hidden'
-        } flex items-center justify-center w-full h-full text-lg`}
-      >
-        <h4 className="text-green-500">Thank you for your comment!</h4>
-      </div>
-      <Form
-        className={`mt-4 w-full ${hasPosted ? 'invisible' : ''}`}
-        onSubmit={onSubmit}
-      >
-      //...
+      <Form className="mt-4 w-full" onSubmit={onSubmit}>
+        <FormError
+          error={error}
+          titleClassName="font-semibold"
+          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
+        />
+        <Label
+          name="name"
+          className="block text-xs font-semibold text-gray-500 uppercase"
+        >
+          Name
+        </Label>
+        <TextField
+          name="name"
+          className="block w-full p-1 border rounded text-sm "
+          validation={{ required: true }}
+        />
+
+        <Label
+          name="body"
+          className="block mt-4 text-xs font-semibold text-gray-500 uppercase"
+        >
+          Comment
+        </Label>
+        <TextAreaField
+          name="body"
+          className="block w-full p-1 border rounded h-24 text-sm"
+          validation={{ required: true }}
+        />
+
+        <Submit
+          disabled={loading}
+          className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
+        >
+          Submit
+        </Submit>
+      </Form>
+    </div>
+  )
+}
+
+export default CommentForm
 ```
 
-![image](https://user-images.githubusercontent.com/300/100949950-2d1a5e00-34c0-11eb-8c1c-3c9f925c6ecb.png)
+![image](https://user-images.githubusercontent.com/300/153932278-6e504b6b-9e8e-400e-98fb-8bfeefbe3812.png)
 
-We used `invisible` to just hide the form but have it still take up as much vertical space as it did before so that the comments don't suddenly jump up the page, which could be a little jarring.
+We used `hidden` to just hide the form and "Leave a comment" title completely from the page, but keeps the component itself mounted. But where's our "Thank you for your comment" notification? We still need to add the `Toaster` component (from react-host-toast) somewhere in our app so that the message can actually be displayed. We could just add it here, in `CommentForm`, but what if we want other code to be able to post notifications, even when `CommentForm` isn't mounted? Where's the one place we put UI elements that should be visible everywhere? The `BlogLayout`!
+
+```javascript {5,12}
+// web/src/layouts/BlogLayout/BlogLayout.js
+
+import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+import { Toaster } from '@redwoodjs/web/toast'
+
+const BlogLayout = ({ children }) => {
+  const { logOut, isAuthenticated, currentUser } = useAuth()
+
+  return (
+    <>
+      <Toaster />
+      <header className="relative flex justify-between items-center py-4 px-8 bg-blue-700 text-white">
+        <h1 className="text-5xl font-semibold tracking-tight">
+          <Link
+            className="text-blue-400 hover:text-blue-100 transition duration-100"
+            to={routes.home()}
+          >
+            Redwood Blog
+          </Link>
+        </h1>
+        <nav>
+          <ul className="relative flex items-center font-light">
+            <li>
+              <Link
+                className="py-2 px-4 hover:bg-blue-600 transition duration-100 rounded"
+                to={routes.about()}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="py-2 px-4 hover:bg-blue-600 transition duration-100 rounded"
+                to={routes.contact()}
+              >
+                Contact
+              </Link>
+            </li>
+            <li>
+              {isAuthenticated ? (
+                <div>
+                  <button type="button" onClick={logOut} className="py-2 px-4">
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link to={routes.login()} className="py-2 px-4">
+                  Login
+                </Link>
+              )}
+            </li>
+          </ul>
+          {isAuthenticated && (
+            <div className="absolute bottom-1 right-0 mr-12 text-xs text-blue-300">
+              {currentUser.email}
+            </div>
+          )}
+        </nav>
+      </header>
+      <main className="max-w-4xl mx-auto p-12 bg-white shadow rounded-b">
+        {children}
+      </main>
+    </>
+  )
+}
+
+export default BlogLayout
+```
+
+Now add a comment:
+
+![image](https://user-images.githubusercontent.com/300/153933162-079ac322-acde-4ea0-b43e-58b53fb85d98.png)
+
+### Almost Done?
 
 So it looks like we're just about done here! Try going back to the homepage and go to another blog post. Let's bask in the glory of our amazing coding abilities and—OH NO:
 
-![image](https://user-images.githubusercontent.com/300/100950583-7d45f000-34c1-11eb-8975-2c6f22c67843.png)
+![image](https://user-images.githubusercontent.com/300/153933665-83158870-8422-4da9-9809-7d3b51444a14.png)
 
 All posts have the same comments! **WHAT HAVE WE DONE??**
 
@@ -586,26 +697,94 @@ scenario('returns all comments', async (scenario) => {
 
 When the test suite runs everything will still pass. Javascript won't care if you're passing an argument all of a sudden (although if you were using Typescript you will actually get an error at this point!). In TDD you generally want to get your test to fail before adding code to the thing you're testing which will then cause the test to pass. What's something in this test that will be different once we're only returning *some* comments? How about the number of comments expected to be returned?
 
-Based on our current scenario, each comment will also get associated with its own, unique post. So of the two comments in our scenario, only one should be returned for a given `postId`:
+Let's take a look at the scenario we're using (remember, it's `standard()` by default):
 
-```javascript {5}
-// api/src/services/comments/comments.test.js
+```javascript
+// api/src/services/comments/comments.scenarios.js
 
-scenario('returns all comments from the database', async (scenario) => {
-  const result = await comments({ postId: scenario.comment.jane.postId })
-  expect(result.length).toEqual(1)
+export const standard = defineScenario({
+  comment: {
+    jane: {
+      data: {
+        name: 'Jane Doe',
+        body: 'I like trees',
+        post: {
+          create: {
+            title: 'Redwood Leaves',
+            body: 'The quick brown fox jumped over the lazy dog.',
+          },
+        },
+      },
+    },
+    john: {
+      data: {
+        name: 'John Doe',
+        body: 'Hug a tree today',
+        post: {
+          create: {
+            title: 'Root Systems',
+            body: 'The five boxing wizards jump quickly.',
+          },
+        },
+      },
+    },
+  },
 })
 ```
 
-Now it should fail! Before we get it passing again, let's also change the name of the test to reflect what it's actually testing:
+Each scenario here is associated with its own post, so rather than counting all the comments in the database (like the test does now) let's only count the number of comments attached to the single post we're getting commnents for (we're passing the postId into the `comments()` call now). Let's see what it looks like in test form:
 
-```javascript {3}
+```javascript {4,9-13}
 // api/src/services/comments/comments.test.js
 
-scenario('returns all comments for a single post from the database', async (scenario) => {
-  const result = await comments({ postId: scenario.comment.jane.postId })
-  expect(result.length).toEqual(1)
+import { comments, createComment } from './comments'
+import { db } from 'api/src/lib/db'
+
+describe('comments', () => {
+  scenario('returns all comments', async (scenario) => {
+    const result = await comments({ postId: scenario.comment.jane.postId })
+    const post = await db.post.findUnique({
+      where: { id: scenario.comment.jane.postId },
+      include: { comments: true },
+    })
+    expect(result.length).toEqual(post.comments.length)
+  })
+
+  // ...
 })
+```
+
+So we're first getting the result from the services, all the comments for a given `postId`. Then we pull the *actual* post from the database and include its comments. Then we expect that the number of comments returned from the service is the same as the number of comments actually attached to the post in the database. Now the test fails and you can see why in the output:
+
+```bash
+ FAIL   api  api/src/services/comments/comments.test.js
+  • comments › returns all comments
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: 1
+    Received: 2
+```
+
+So we expected to receive 1 (from `post.comments.length`), but we actually got 2 (from `result.length`).
+
+Before we get it passing again, let's also change the name of the test to reflect what it's actually testing:
+
+```javascript {3,4}
+// api/src/services/comments/comments.test.js
+
+scenario(
+  'returns all comments for a single post from the database',
+  async (scenario) => {
+    const result = await comments({ postId: scenario.comment.jane.postId })
+    const post = await db.post.findUnique({
+      where: { id: scenario.comment.jane.postId },
+      include: { comments: true },
+    })
+    expect(result.length).toEqual(post.comments.length)
+  }
+)
+
 ```
 
 Okay, open up the actual `comments.js` service and we'll update it to accept the `postId` argument and use it as an option to `findMany()`:
@@ -622,7 +801,7 @@ Save that and the test should pass again!
 
 #### Updating GraphQL
 
-Next we need to let GraphQL know that it should expect a `postId` to be passed for the `comments` query, and it's required (we don't currently have any view that allows you see all comments everywhere so we can ask that it always be present):
+Next we need to let GraphQL know that it should expect a `postId` to be passed for the `comments` query, and it's required (we don't currently have any view that allows you see all comments everywhere so we can ask that it always be present). Open up the `comments.sdl.js` file:
 
 ```javascript {4}
 // api/src/graphql/comments.sdl.js
@@ -634,37 +813,37 @@ type Query {
 
 Now if you try refreshing the real site in dev mode you'll see an error where the comments should be displayed:
 
-![image](https://user-images.githubusercontent.com/300/100953652-de70c200-34c7-11eb-90a5-55ca5d61d657.png)
+![image](https://user-images.githubusercontent.com/300/153936065-159eb06e-4c9e-43db-a07e-a4d17332276c.png)
 
-If you inspect that error in the web inspector you'll see that it's complaining about `postId` not being present—exactly what we want!
+And yep, it's complaining about `postId` not being present—exactly what we want!
 
-That completes the backend updates, now we just need to tell **CommentsCell** to pass through the `postId` to the GraphQL query it makes.
+That completes the backend updates, now we just need to tell `CommentsCell` to pass through the `postId` to the GraphQL query it makes.
 
 #### Updating the Cell
 
-First we'll need to get the `postId` to the cell itself. Remember when we added a `postId` prop to the **CommentForm** component so it knew which post to attach the new comment to? Let's do the same for **CommentsCell**.
+First we'll need to get the `postId` to the cell itself. Remember when we added a `postId` prop to the `CommentForm` component so it knew which post to attach the new comment to? Let's do the same for `CommentsCell`.
 
-Open up **BlogPost**:
+Open up `Article`:
 
 ```javascript {18}
-// web/src/components/BlogPost/BlogPost.js
+// web/src/components/Article/Article.js
 
-const BlogPost = ({ post, summary = false }) => {
+const Article = ({ article, summary = false }) => {
   return (
-    <article className="mt-10">
+    <article>
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
-          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+          <Link to={routes.article({ id: article.id })}>{article.title}</Link>
         </h2>
       </header>
       <div className="mt-2 text-gray-900 font-light">
-        {summary ? truncate(post.body, 100) : post.body}
+        {summary ? truncate(article.body, 100) : article.body}
       </div>
       {!summary && (
-        <div className="mt-16">
-          <CommentForm postId={post.id} />
-          <div className="mt-24">
-            <CommentsCell postId={post.id} />
+        <div className="mt-12">
+          <CommentForm postId={article.id} />
+          <div className="mt-12">
+            <CommentsCell postId={article.id} />
           </div>
         </div>
       )}
@@ -702,12 +881,13 @@ However, you may have noticed that now when you post a comment it no longer appe
 
 Okay this is the last fix, promise!
 
-```javascript {7}
+```javascript {8}
 // web/src/components/CommentForm/CommentForm.js
 
 const [createComment, { loading, error }] = useMutation(CREATE, {
   onCompleted: () => {
     setHasPosted(true)
+    toast.success('Thank you for your comment!')
   },
   refetchQueries: [{ query: CommentsQuery, variables: { postId } }],
 })
@@ -716,4 +896,3 @@ const [createComment, { loading, error }] = useMutation(CREATE, {
 There we go, comment engine complete! Our blog is totally perfect and there's absolutely nothing we could do to make it better.
 
 Or is there?
-
