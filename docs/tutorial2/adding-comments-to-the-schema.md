@@ -18,7 +18,7 @@ If you went through the first part of the tutorial you should be somewhat famili
 
 Let's do that now:
 
-```javascript {17,29-36}
+```javascript {17,39-46}
 // api/db/schema.prisma
 
 datasource db {
@@ -47,6 +47,16 @@ model Contact {
   createdAt DateTime @default(now())
 }
 
+model User {
+  id                  Int @id @default(autoincrement())
+  name                String?
+  email               String @unique
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+}
+
 model Comment {
   id        Int      @id @default(autoincrement())
   name      String
@@ -57,7 +67,7 @@ model Comment {
 }
 ```
 
-Most of these lines look very similar to what we've already seen, but this is the first instance of a [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) between two models. `Comment` gets two entries:
+Most of these lines look very similar to what we've already seen, but this is the first instance of a [relation](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations) between two models. `Comment` gets two entries to denote this relationship:
 
 * `post` which has a type of `Post` and a special `@relation` keyword that tells Prisma how to connect a `Comment` to a `Post`. In this case the field `postId` references the field `id` in `Post`
 * `postId` is just a regular `Int` column which contains the `id` of the `Post` that this comment is referencing
@@ -96,16 +106,16 @@ This one is easy enough: we'll create a new migration with a name and then run i
 yarn rw prisma migrate dev
 ```
 
-When prompted, give this one a name something like "create comments".
+When prompted, give this one a name something like "create comment".
 
-> You'll need to restart the test suite runner at this point if it's still running. Redwood creates a second, test database for you to run your tests against (it is at `.redwood/test.db` by default). The database migrations are run against that test database whenever the test suite is **started**, not while it's running, so you'll need to restart it to test against the new database structure.
+> You'll need to restart the test suite runner at this point if it's still running. You can do a Ctrl-C or just press `q`. Redwood creates a second, test database for you to run your tests against (it is at `.redwood/test.db` by default). The database migrations are run against that test database whenever the test suite is *started*, not while it's running, so you'll need to restart it to test against the new database structure.
 
 ### Creating the SDL and Service
 
 Next we'll create the SDL (that defines the GraphQL interface) and a service (to get the records out of the database) with a generator call:
 
 ```bash
-yarn rw g sdl comment
+yarn rw g sdl Comment
 ```
 
 That command will create both the SDL and the service. One change we'll need to make to the generated code is to allow access to anonymous users to view all comments. Change the `@requireAuth` directive to `@skipAuth` instead:
@@ -141,11 +151,11 @@ export const schema = gql`
 `
 ```
 
-Now if you take a look back in the browser you should see a different message than the GraphQL error we were seeing before:
+Now if you take a look back at the real app in the browser (not Storybook) you should see a different message than the GraphQL error we were seeing before:
 
 ![image](https://user-images.githubusercontent.com/300/101552505-d1405100-3967-11eb-883f-1227689e5f88.png)
 
-"Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the **CommentsCell** component to make that "Empty" message a little more friendly:
+"Empty" means the Cell rendered correctly! There just aren't any comments in the database yet. Let's update the `CommentsCell` component to make that "Empty" message a little more friendly:
 
 ```javascript {4}
 // web/src/components/CommentsCell/CommentsCell.js
@@ -155,18 +165,20 @@ export const Empty = () => {
 }
 ```
 
+![image](https://user-images.githubusercontent.com/300/153501827-87b9f931-ee68-4baf-9342-3a70b03d55e2.png)
+
 That's better. Let's update the test that covers the Empty component render as well:
 
 ```javascript {4-5}
 // web/src/components/CommentsCell/CommentsCell.test.js
 
-test('Empty renders a "no comments" message', () => {
+it('renders Empty successfully', async () => {
   render(<Empty />)
   expect(screen.getByText('No comments yet')).toBeInTheDocument()
 })
 ```
 
-Okay, let's focus on the service for bit. We'll need to add a function to let users create a new comment and we'll add a test that covers the new functionality.
+Okay, let's focus on the service for a bit. We'll need to add a function to let users create a new comment and we'll add a test that covers the new functionality.
 
 ### Building out the Service
 
@@ -175,12 +187,44 @@ By virtue of using the generator we've already got the function we need to selec
 ```javascript
 // api/src/services/comments/comments.js
 
+import { db } from 'src/lib/db'
+
 export const comments = () => {
   return db.comment.findMany()
 }
+
+export const comment = ({ id }) => {
+  return db.comment.findUnique({
+    where: { id },
+  })
+}
+
+export const Comment = {
+  post: (_obj, { root }) =>
+    db.comment.findUnique({ where: { id: root.id } }).post(),
+}
 ```
 
-> Have you noticed that something may be amiss? This function returns *all* comments, and all comments only. Could this come back to bite us?
+We've also got a function that returns only a single comment, as well as this `Comment` object at the end. That allows us to return nested post data for a comment through GraphQL using syntax like this (don't worry about adding this code to our app, this is just an example):
+
+```javascript
+query CommentsQuery {
+  comments {
+    id
+    name
+    body
+    createdAt
+    post {
+      id
+      title
+      body
+      createdAt
+    }
+  }
+}
+```
+
+> Have you noticed that something may be amiss? The `comments()` function returns *all* comments, and all comments only. Could this come back to bite us?
 >
 > Hmmm...
 
@@ -235,7 +279,7 @@ export const schema = gql`
 
 > The `CreateCommentInput` type was already created for us by the SDL generator.
 
-That's all we need to create a comment! But let's think for a moment: is there anything else we need to do with a comment? Let's make the decision that users won't be able to update an existing comment. And we don't need to select individual comments (remember earlier we talked about the possibility of each comment being responsible for its own API request and display, but we decided against it).
+That's all we need on the api-side to create a comment! But let's think for a moment: is there anything else we need to do with a comment? Let's make the decision that users won't be able to update an existing comment. And we don't need to select individual comments (remember earlier we talked about the possibility of each comment being responsible for its own API request and display, but we decided against it).
 
 What about deleting a comment? We won't let a user delete their own comment, but as owners of the blog we should be able to delete/moderate them. So we'll need a delete function and API endpoint as well. Let's add those:
 
@@ -274,10 +318,10 @@ If you open up `api/src/services/comments/comments.test.js` you'll see there's o
 import { comments } from './comments'
 
 describe('comments', () => {
-  scenario('returns a list of comments', async (scenario) => {
-    const list = await comments()
+  scenario('returns all comments', async (scenario) => {
+    const result = await comments()
 
-    expect(list.length).toEqual(Object.keys(scenario.comment).length)
+    expect(result.length).toEqual(Object.keys(scenario.comment).length)
   })
 })
 ```
@@ -290,7 +334,7 @@ What is this `scenario()` function? That's made available by Redwood that mostly
 >
 > However, the difference here is that in a service almost all of the logic you write will depend on moving data in and out of a database and it's much simpler to just let that code run and *really* access the database, rather than trying to mock and intercept each and every possible call that Prisma could make.
 >
-> Not to mention that Prisma itself is currently under heavy development and implementations could change at any time. Trying to keep pace with those changes and constantly keep mocks in sync would be a nightmare!
+> Not to mention that Prisma itself is currently under development and implementations could change at any time. Trying to keep pace with those changes and constantly keep mocks in sync would be a nightmare!
 >
 > That being said, if you really wanted to you could use Jest's [mocking utilities](https://jestjs.io/docs/en/mock-functions) and completely mock the Prisma interface abstract the database away completely. But don't say we didn't warn you!
 
@@ -328,7 +372,7 @@ The nested structure of a scenario is defined like this:
 * **comment**: the name of the model this data is for
   * **one, two**: a friendly name given to the scenario data which you can reference in your tests
     * **data**: contains the actual data that will be put in the database
-      * **name, message, post**: fields that correspond to the schema. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
+      * **name, body, post**: fields that correspond to the schema. In this case a **Comment** requires that it be related to a **Post**, so the scenario has a `post` key and values as well (using Prisma's [nested create syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#nested-writes))
     * **select, include**: optionally, to customize the object to `select` or `include` related fields [using Prisma's syntax](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#create-a-related-record)
 
 When you receive the `scenario` argument in your test, the `data` key gets unwrapped so that you can reference fields like `scenario.comment.one.name`.
@@ -337,7 +381,7 @@ When you receive the `scenario` argument in your test, the `data` key gets unwra
 >
 > When generating the service (and the test and scenarios) all we (Redwood) knows about your data is the types for each field as defined in `schema.prisma`, namely `String`, `Integer` or `DateTime`. So we add the simplest data possible that fulfills the type requirement by Prisma to get the data into the database. You should definitely replace this data with something that looks more like the real data your app will be expecting. In fact...
 
-Let's replace that scenario data with something more like what we expect to see in our app:
+Let's replace that scenario data with something more like the real data our app will be expecting:
 
 ```javascript {4-29}
 // api/src/services/comments/comments.scenarios.js
@@ -372,6 +416,8 @@ export const standard = defineScenario({
 })
 ```
 
+Note that we changed the names of the records from `one` and `two` to the names of the authors, `jane` and `john`. More on that later. Why didn't we include `id` or `createdAt` fields? We told Prisma, in `schema.prisma`, to assign defaults to these fields so they'll be set automatically when the records are created.
+
 The test created by the service generator simply checks to make sure the same number of records are returned so changing the content of the data here won't affect the test.
 
 #### Testing createComment()
@@ -405,10 +451,10 @@ Now we can pass the `postOnly` scenario name as the first argument to a new `sce
 import { comments, createComment } from './comments'
 
 describe('comments', () => {
-  scenario('returns a list of comments', async (scenario) => {
-    const list = await comments()
+  scenario('returns all comments', async (scenario) => {
+    const result = await comments()
 
-    expect(list.length).toEqual(Object.keys(scenario.comment).length)
+    expect(result.length).toEqual(Object.keys(scenario.comment).length)
   })
 
   scenario('postOnly', 'creates a new comment', async (scenario) => {
@@ -444,6 +490,18 @@ We'll test that all the fields we give to the `createComment()` function are act
 >
 >   "`user[3]` paid for `product[0]` using their `cards[2]` credit card?
 >
-> If you said the second one, then you probably hate kittens and sleep on broken glass.
+> If you said the second one, remember: you're not writing your code for the computer, you're writing it for other humans! It's the compiler's job to make code understandable to a computer, it's our job to make code understandable to our fellow developers.
 
 Okay, our comments service is feeling pretty solid now that we have our tests in place. The last step is add a form so that users can actually leave a comment on a blog post.
+
+> **Mocks vs. Scenarios**
+>
+> Mocks are used on the web site and scenarios are used on the api side. It might be helpful to remember that "mock" is a synonym for "fake", as in this-is-fake-data-not-really-in-the-database (so that we can create stories and tests in isolation without the api side getting involved). Whereas a scenario is real data in the database, it's just pre-set to some known state that we can rely on.
+>
+> Maybe a [mnemonic](https://www.mnemonicgenerator.com/?words=M%20W%20S%20A) would help? **M**ocks **W**eb **S**cenarios **A**PI:
+>
+> * Mothers Worshipped Slimy Aprons
+> * Minesweepers Wrecked Subliminal Attorneys
+> * Masked Widows Squeezed Apricots
+>
+> Maybe not...
