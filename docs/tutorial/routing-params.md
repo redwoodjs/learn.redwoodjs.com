@@ -213,7 +213,7 @@ What if you could request the conversion right in the route's path? Introducing 
 ```html
 // web/src/Routes.js
 
-<Route path="/article/{id:Int}" page={ArticlePage} name="blogPost" />
+<Route path="/article/{id:Int}" page={ArticlePage} name="article" />
 ```
 
 Voilà! Not only will this convert the `id` param to a number before passing it to your Page, it will prevent the route from matching unless the `id` path segment consists entirely of digits. If any non-digits are found, the router will keep trying other routes, eventually showing the `NotFoundPage` if no routes match.
