@@ -242,14 +242,14 @@ const ARTICLE = {
 
 describe('Article', () => {
   it('renders a blog post', () => {
-    render(<Article post={ARTICLE} />)
+    render(<Article article={ARTICLE} />)
 
     expect(screen.getByText(ARTICLE.title)).toBeInTheDocument()
     expect(screen.getByText(ARTICLE.body)).toBeInTheDocument()
   })
 
   it('renders a summary of a blog post', () => {
-    render(<Article post={ARTICLE} summary={true} />)
+    render(<Article article={ARTICLE} summary={true} />)
 
     expect(screen.getByText(ARTICLE.title)).toBeInTheDocument()
     expect(
