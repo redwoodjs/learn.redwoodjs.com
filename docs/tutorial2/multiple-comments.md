@@ -32,9 +32,15 @@ Let's generate a **CommentsCell**:
 yarn rw g cell Comments
 ```
 
-Storybook updates with a new **CommentsCell** under the **Cells** folder. Let's update the Success story to use the Comment component created earlier, and return all of the fields we'll need for the **Comment** to render:
+Storybook updates with a new **CommentsCell** under the **Cells** folder, and it's actually showing something:
 
-```javascript {3,9-11,24}
+![image](https://user-images.githubusercontent.com/300/153477642-0d5a15a5-f96f-485a-b8b0-dbc1c4515279.png)
+
+Where did that come from? Check out `CommentsCell.mock.js`: there's no Prisma model for a Comment yet, so Redwood took a guess that your model would at least contain an `id` field and just used that for the mock data.
+
+Let's update the `Success` component to use the `Comment` component created earlier, and add all of the fields we'll need for the **Comment** to render to the `QUERY`:
+
+```javascript {3,9-11,25-27}
 // web/src/components/CommentsCell/CommentsCell.js
 
 import Comment from 'src/components/Comment'
@@ -54,7 +60,9 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({ error }) => <div>Error: {error.message}</div>
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
 
 export const Success = ({ comments }) => {
   return comments.map((comment) => (
@@ -65,12 +73,12 @@ export const Success = ({ comments }) => {
 
 We're passing an additional `key` prop to make React happy when iterating over an array with `map`.
 
-If you check Storybook, you'll seen an error. We'll need to update the `mock.js` file that came along for the ride when we generated the Cell so that it returns an array instead of just a simple object with some sample data:
+If you check Storybook, you'll see that we do indeed render the `Comment` component three times, but there's no data to display. Let's update the mock with some sample data:
 
 ```javascript {4-17}
 // web/src/components/CommentsCell/CommentsCell.mock.js
 
-export const standard = (/* vars, { ctx, req } */) => ({
+export const standard = () => ({
   comments: [
     {
       id: 1,
@@ -90,54 +98,32 @@ export const standard = (/* vars, { ctx, req } */) => ({
 
 > What's this `standard` thing? Think of it as the standard, default mock if you don't do anything else. We would have loved to use the name "default" but that's already a reserved word in Javascript!
 
-Storybook refreshes and we've got comments! We've got the same issue here where it's hard to see our rounded corners and also the two separate comments are hard to distinguish because they're right next to each other:
+Storybook refreshes and we've got comments! It's a little hard to distinguish between the two separate comments because they're right next to each other:
 
-![image](https://user-images.githubusercontent.com/300/95799544-dce60300-0ca9-11eb-9520-a1aac4ec46e6.png)
+![image](https://user-images.githubusercontent.com/300/153478670-14c32c29-6d1d-491b-bc2b-b033557a6d84.png)
 
-The gap between the two comments *is* a concern for this component, since it's responsible for drawing multiple comments and their layout. So let's fix that in **CommentsCell**:
+Since `CommentsCell` is the one responsible for drawing multiple comments, it makes sense that it should be "in charge" of how they're displayed, including the gap between them. Let's add a style to do that in `CommentsCell`:
 
-```javascript {5,7,9,11}
+```javascript {5,9}
 // web/src/components/CommentsCell/CommentsCell.js
 
 export const Success = ({ comments }) => {
   return (
-    <div className="-mt-8">
-
+    <div className="space-y-8">
       {comments.map((comment) => (
-        <div key={comment.id} className="mt-8">
-          <Comment comment={comment} />
-        </div>
+        <Comment comment={comment} key={comment.id} />
       ))}
-    </div>  )
+    </div>
+  )
 }
 ```
 
-We had to move the `key` prop to the surrounding `<div>`. We then gave each comment a top margin and removed an equal top margin from the entire container to set it back to zero.
-
-> Why a top margin and not a bottom margin? Remember when we said a component should be responsible for *its own* display? If you add a bottom margin, that's one component influencing the one below it (which it shouldn't care about). Adding a *top* margin is this component moving *itself* down, which means it's again responsible for its own display.
-
-Let's add a margin around the story itself, similar to what we did in the Comment story:
-
-```javascript {5}
-// web/src/components/CommentsCell/CommentsCell.stories.js
-
-export const success = () => {
-  return Success ? (
-    <div className="m-8 mt-16">
-
-      <Success {...standard()} />
-    </div>  ) : null
-}
-```
-
-> Why both `m-8` and `mt-16`? One of the fun rules of CSS is that if a parent and child both have margins, but no border or padding between them, their `margin-top` and `margin-bottom` [collapses](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing). So even though the story container will have a margin of 8 (which equals 2rem) remember that the container for CommentsCell has a -8 margin (-2rem). Those two collapse and essentially cancel each other out to 0 top margin. Setting `mt-16` sets a 4rem margin, which after subtracting 2rem leaves us with 2rem, which is what we wanted to start with!
-
-![image](https://user-images.githubusercontent.com/300/95800481-4cf58880-0cac-11eb-9457-ff3f1f0d34b8.png)
+> `space-y-8` is a handy Tailwind class that puts a space *between* elements, but not above or below the entire stack (which is what would happen if you gave each `<Comment>` its own top/bottom margin).
 
 Looking good! Let's add our CommentsCell to the actual blog post display page:
 
 ```javascript {4,21}
-// web/src/components/BlogPost/BlogPost.js
+// web/src/components/Article/Article.js
 
 import { Link, routes } from '@redwoodjs/router'
 import CommentsCell from 'src/components/CommentsCell'
@@ -146,51 +132,36 @@ const truncate = (text, length) => {
   return text.substring(0, length) + '...'
 }
 
-const BlogPost = ({ post, summary = false }) => {
+const Article = ({ article, summary = false }) => {
   return (
-    <article className="mt-10">
+    <article>
       <header>
         <h2 className="text-xl text-blue-700 font-semibold">
-          <Link to={routes.blogPost({ id: post.id })}>{post.title}</Link>
+          <Link to={routes.article({ id: article.id })}>{article.title}</Link>
         </h2>
       </header>
       <div className="mt-2 text-gray-900 font-light">
-        {summary ? truncate(post.body, 100) : post.body}
+        {summary ? truncate(article.body, 100) : article.body}
       </div>
       {!summary && <CommentsCell />}
     </article>
   )
 }
 
-export default BlogPost
+export default Article
 ```
 
-If we are *not* showing the summary, then we'll show the comments. Take a look at the **Full** and **Summary** stories and you should see comments on one and not on the other.
+If we are *not* showing the summary, then we'll show the comments. Take a look at the **Full** and **Summary** stories in Storybook and you should see comments on one and not on the other.
 
 > **Shouldn't the CommentsCell cause an actual GraphQL request? How does this work?**
 >
-> Redwood has added some functionality around Storybook so if you're testing a component that itself isn't a Cell (like **BlogPost**) but that renders a cell (**CommentsCell**) that it needs to mock the GraphQL and use the `standard` mock that goes along with that Cell. Pretty cool, huh?
+> Redwood has added some functionality around Storybook so that if you're testing a component that itself isn't a Cell (like the `Article` component) but that renders a cell (like `CommentsCell`), then it will mock the GraphQL and use the `standard` mock that goes along with that Cell. Pretty cool, huh?
 
-Once again our component is bumping right up against the edges of the window. We've got two stories in this file and would have to manually add margins around both of them. Ugh. Luckily Storybook has a way to add styling to all stories using [decorators](https://storybook.js.org/docs/react/writing-stories/decorators). In the `default` export at the bottom of the story you can define a `decorators` key and the value is JSX that will wrap all the stories in the file automatically:
+Adding the comments to the article display has exposed another design issue: the comments are sitting right up underneath the article text:
 
-```javascript {5-7}
-// web/src/components/BlogPost/BlogPost.stories.js
+![image](https://user-images.githubusercontent.com/300/153480229-ea483d75-62bf-4b56-b248-10ca1597a7a8.png)
 
-export default {
-  title: 'Components/BlogPost',
-  decorators: [
-    (Story) => <div className="m-8"><Story /></div>
-  ]
-}
-```
-
-Save, and both the **Full** and **Summary** stories should have margins around them now.
-
-> For more extensive, global styling options, look into Storybook [theming](https://storybook.js.org/docs/react/configure/theming).
-
-![image](https://user-images.githubusercontent.com/300/96509066-5d5bb500-1210-11eb-8ddd-8786b7033cac.png)
-
-We could use a gap between the end of the blog post and the start of the comments to help separate the two:
+Let's add a gap between the two:
 
 ```javascript {15-17}
 // web/src/components/BlogPost/BlogPost.js
@@ -207,7 +178,7 @@ const BlogPost = ({ post, summary = false }) => {
         {summary ? truncate(post.body, 100) : post.body}
       </div>
       {!summary && (
-        <div className="mt-24">
+        <div className="mt-12">
           <CommentsCell />
         </div>
       )}
@@ -216,54 +187,54 @@ const BlogPost = ({ post, summary = false }) => {
 }
 ```
 
-![image](https://user-images.githubusercontent.com/300/100682809-bfd5c400-332b-11eb-98e0-d2d526c1aa58.png)
+![image](https://user-images.githubusercontent.com/300/153480489-a59f27e3-6d70-4548-9a1e-4036b6860444.png)
 
 Okay, comment display is looking good! However, you may have noticed that if you tried going to the actual site there's an error where the comments should be:
 
-![image](https://user-images.githubusercontent.com/300/101549636-e1096680-3962-11eb-83fe-930d4bc631df.png)
+![image](https://user-images.githubusercontent.com/300/153480635-58ada8e8-ed5b-41b6-875b-501a07a36d9a.png)
 
-Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! That's another neat part of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
+Why is that? Remember that we started with the `CommentsCell`, but never actually created a Comment model in `schema.prisma` or created an SDL and service! We'll be rectifying this soon. But this demonstrates another huge benefit of working with Storybook: you can build out UI functionality completely isolated from the api-side. In a team setting this is great because a web-side team can work on the UI while the api-side team can be building the backend end simultaneously and one doesn't have to wait for the other.
 
 ### Testing
 
-We added one component, **Comments**, and edited another, **BlogPost**, so we'll want to add tests in both.
+We added a component, `CommentsCell`, and edited another, `Article`, so what do we test, and where?
 
 #### Testing Comments
 
-The actual **Comment** component does most of the work so there's no need to test all of that functionality again. What things does **CommentsCell** do that make it unique?
+The actual `Comment` component does most of the work so there's no need to test all of that functionality again in `CommentsCell`: our `Comment` tests cover that just fine. What things does `CommentsCell` do that make it unique?
 
 * Has a loading message
 * Has an error message
 * Has a failure message
-* When it renders successfully, it outputs as many comments as were returned by the `QUERY`
+* When it renders successfully, it outputs as many comments as were returned by the `QUERY` (*what* is rendered we'll leave to the `Comment` tests)
 
 The default `CommentsCell.test.js` actually tests every state for us, albeit at an absolute minimum level—it make sure no errors are thrown:
 
 ```javascript
-import { render, screen } from '@redwoodjs/testing'
+import { render } from '@redwoodjs/testing/web'
 import { Loading, Empty, Failure, Success } from './CommentsCell'
 import { standard } from './CommentsCell.mock'
 
 describe('CommentsCell', () => {
-  test('Loading renders successfully', () => {
+  it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)
     }).not.toThrow()
   })
 
-  test('Empty renders successfully', async () => {
+  it('renders Empty successfully', async () => {
     expect(() => {
       render(<Empty />)
     }).not.toThrow()
   })
 
-  test('Failure renders successfully', async () => {
+  it('renders Failure successfully', async () => {
     expect(() => {
       render(<Failure error={new Error('Oh no')} />)
     }).not.toThrow()
   })
 
-  test('Success renders successfully', async () => {
+  it('renders Success successfully', async () => {
     expect(() => {
       render(<Success comments={standard().comments} />)
     }).not.toThrow()
@@ -271,54 +242,79 @@ describe('CommentsCell', () => {
 })
 ```
 
-And that's nothing to scoff at! As you've probably experienced, a React component usually either works 100% or throws an error. If it works, great! If it fails then the test fails too, which is exactly what we want to happen.
+And that's nothing to scoff at! As you've probably experienced, a React component usually either works 100% or blows up spectacularly. If it works, great! If it fails then the test fails too, which is exactly what we want to happen.
 
-But in this case we can do a little more to make sure **CommentsCell** is doing what we expect. Let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
+But in this case we can do a little more to make sure `CommentsCell` is doing what we expect. Let's update the `Success` test in `CommentsCell.test.js` to check that exactly the number of comments we passed in as a prop are rendered. How do we know a comment was rendered? How about if we check that each `comment.body` (the most important part of the comment) is present on the screen:
 
-```javascript {4-9}
+```javascript {3,27-32}
 // web/src/components/CommentsCell/CommentsCell.test.js
 
-test('Success renders successfully', async () => {
-  const comments = standard().comments
-  render(<Success comments={comments} />)
+import { render, screen } from '@redwoodjs/testing/web'
+import { Loading, Empty, Failure, Success } from './CommentsCell'
+import { standard } from './CommentsCell.mock'
 
-  comments.forEach((comment) => {
-    expect(screen.getByText(comment.body)).toBeInTheDocument()
+describe('CommentsCell', () => {
+  it('renders Loading successfully', () => {
+    expect(() => {
+      render(<Loading />)
+    }).not.toThrow()
+  })
+
+  it('renders Empty successfully', async () => {
+    expect(() => {
+      render(<Empty />)
+    }).not.toThrow()
+  })
+
+  it('renders Failure successfully', async () => {
+    expect(() => {
+      render(<Failure error={new Error('Oh no')} />)
+    }).not.toThrow()
+  })
+
+  it('renders Success successfully', async () => {
+    const comments = standard().comments
+    render(<Success comments={comments} />)
+
+    comments.forEach((comment) => {
+      expect(screen.getByText(comment.body)).toBeInTheDocument()
+    })
   })
 })
+
 ```
 
-We're looping through each `comment` from the mock, the same mock used by Storybook, so that even if we add more later, we're covered.
+We're looping through each `comment` from the mock, the same mock used by Storybook, so that even if we add more later, we're covered. You may find youself writing a test and saying "just test that there are 3 comments," which will work today, but months from now when you add more comments to the mock to try some different iterations in Storybook, that test will start failing. Avoid hardcoding data like this into your test when you can derive it from your mocked data!
 
-#### Testing BlogPost
+#### Testing Article
 
-The functionality we added to `<BlogPost>` says to show the comments for the post if we are *not* showing the summary. We've got a test for both the "full" and "summary" renders already. Generally you want your tests to be testing "one thing" so let's add two additional tests for our new functionality:
+The functionality we added to `Article` says to show the comments for the post if we are *not* showing the summary. We've got a test for both the "full" and "summary" renders already. Generally you want your tests to be testing "one thing" so let's add two additional tests for our new functionality:
 
-```javascript {3,5,22-30,42-50}
+```javascript {3,5,22-29,42-49}
 // web/src/components/BlogPost/BlogPost.test.js
 
 import { render, screen, waitFor } from '@redwoodjs/testing'
-import BlogPost from './BlogPost'
+import Article from './Article'
 import { standard } from 'src/components/CommentsCell/CommentsCell.mock'
 
-const POST = {
+const ARTICLE = {
   id: 1,
   title: 'First post',
   body: `Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Street art next level umami squid. Hammock hexagon glossier 8-bit banjo. Neutra la croix mixtape echo park four loko semiotics kitsch forage chambray. Semiotics salvia selfies jianbing hella shaman. Letterpress helvetica vaporware cronut, shaman butcher YOLO poke fixie hoodie gentrify woke heirloom.`,
   createdAt: new Date().toISOString(),
 }
 
-describe('BlogPost', () => {
+describe('Article', () => {
   it('renders a blog post', () => {
-    render(<BlogPost post={POST} />)
+    render(<Article article={ARTICLE} />)
 
-    expect(screen.getByText(POST.title)).toBeInTheDocument()
-    expect(screen.getByText(POST.body)).toBeInTheDocument()
+    expect(screen.getByText(ARTICLE.title)).toBeInTheDocument()
+    expect(screen.getByText(ARTICLE.body)).toBeInTheDocument()
   })
 
   it('renders comments when displaying a full blog post', async () => {
     const comment = standard().comments[0]
-    render(<BlogPost post={POST} />)
+    render(<Article article={ARTICLE} />)
 
     await waitFor(() =>
       expect(screen.getByText(comment.body)).toBeInTheDocument()
@@ -326,9 +322,9 @@ describe('BlogPost', () => {
   })
 
   it('renders a summary of a blog post', () => {
-    render(<BlogPost post={POST} summary={true} />)
+    render(<Article article={ARTICLE} summary={true} />)
 
-    expect(screen.getByText(POST.title)).toBeInTheDocument()
+    expect(screen.getByText(ARTICLE.title)).toBeInTheDocument()
     expect(
       screen.getByText(
         'Neutra tacos hot chicken prism raw denim, put a bird on it enamel pin post-ironic vape cred DIY. Str...'
@@ -338,7 +334,7 @@ describe('BlogPost', () => {
 
   it('does not render comments when displaying a summary', async () => {
     const comment = standard().comments[0]
-    render(<BlogPost post={POST} summary={true} />)
+    render(<Article article={ARTICLE} summary={true} />)
 
     await waitFor(() =>
       expect(screen.queryByText(comment.body)).not.toBeInTheDocument()
@@ -347,9 +343,10 @@ describe('BlogPost', () => {
 })
 ```
 
-We're introducing a new test function here, `waitFor()`, which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since **BlogPost** renders **CommentsCell** we need to wait for the `Success` component of **CommentsCell** to be rendered.
+Notice we're importing the mock from a completely different component—nothing wrong with that!
 
-> The summary version of **BlogPost** does *not* render the **CommentsCell**, but we should still wait. Why? If we did mistakenly start including **CommentsCell**, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the **Loading** component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
+We're introducing a new test function here, `waitFor()`, which will wait for things like GraphQL queries to finish running before checking for what's been rendered. Since `Article` renders `CommentsCell` we need to wait for the `Success` component of `CommentsCell` to be rendered.
+
+> The summary version of `Article` does *not* render the `CommentsCell`, but we should still wait. Why? If we did mistakenly start including `CommentsCell`, but didn't wait for the render, we would get a falsely passing test—indeed the text isn't on the page but that's because it's still showing the `Loading` component! If we had waited we would have seen the actual comment body get rendered, and the test would (correctly) fail.
 
 Okay we're finally ready to let users create their comments.
-
