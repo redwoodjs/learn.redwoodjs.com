@@ -162,7 +162,7 @@ export const Success = ({ posts }) => {
 
 Let's plug this cell into our `HomePage` and see what happens:
 
-```javascript {3,7}
+```javascript {5, 11}
 // web/src/pages/HomePage/HomePage.js
 
 import { MetaTags } from '@redwoodjs/web'
