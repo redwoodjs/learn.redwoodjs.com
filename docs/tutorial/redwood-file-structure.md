@@ -1,7 +1,7 @@
 ---
 id: redwood-file-structure
-title: "Redwood File Structure"
-sidebar_label: "Redwood File Structure"
+title: 'Redwood File Structure'
+sidebar_label: 'Redwood File Structure'
 ---
 
 Let's take a look at the files and directories that were created for us (config files have been excluded for now):
@@ -40,7 +40,9 @@ Let's take a look at the files and directories that were created for us (config 
                 └── NotFoundPage.js
 ```
 
-At the top level we have two directories, `api` and `web`. Redwood separates the backend (`api`) and frontend (`web`) concerns into their own paths in the codebase. ([Yarn refers to these as "workspaces"](https://yarnpkg.com/lang/en/docs/workspaces/). In Redwood, we refer to them as "sides.") When you add packages going forward you'll need to specify which workspace they should go in. For example (don't run these commands, we're just looking at the syntax):
+At the top level we have two directories, `api` and `web`. Redwood separates the backend (`api`) and frontend (`web`) concerns into their own paths in the codebase. ([Yarn refers to these as "workspaces"](https://yarnpkg.com/lang/en/docs/workspaces/). In Redwood, we refer to them as "sides.") When you add packages going forward you'll need to specify which workspace they should go in. For example:
+
+    (Don't run these commands, we're just looking at the syntax)
 
     yarn workspace web add marked
     yarn workspace api add better-fs
@@ -81,4 +83,3 @@ That's it for the backend.
   - `favicon.png` is the icon that goes in a browser tab when your page is open (apps start with the RedwoodJS logo).
   - `robots.txt` can be used to control what web indexers are [allowed to do](https://www.robotstxt.org/robotstxt.html).
   - `README.md` explains how, and when, to use the `public` folder for static assets. It also covers best practices for importing assets within components via Webpack. You can also [read this README.md file on GitHub](https://github.com/redwoodjs/create-redwood-app/tree/main/web/public).
-
