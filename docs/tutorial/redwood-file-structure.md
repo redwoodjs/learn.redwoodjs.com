@@ -52,7 +52,7 @@ Let's take a look at the files and directories that were created for us (config 
 At the top level we have three directories, `api`, `scripts` and `web`. Redwood separates the backend (`api`) and frontend (`web`) concerns into their own paths in the codebase. ([Yarn refers to these as "workspaces"](https://yarnpkg.com/lang/en/docs/workspaces/). In Redwood, we refer to them as "sides.") When you add packages going forward you'll need to specify which workspace they should go in. For example:
 
 ```bash
-"Don't run these commands, we're just looking at the syntax"
+#Don't run these commands, we're just looking at the syntax
 
 yarn workspace web add marked
 yarn workspace api add better-fs
