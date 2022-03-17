@@ -52,12 +52,13 @@ This gives us a buffer if we decide to truncate to something like 25 words, or e
 
 Okay, let's do this:
 
-```javascript {30-38}
+```javascript {31-39,6}
 // web/src/components/ArticlesCell.test.js
 
 import { render, screen } from '@redwoodjs/testing'
 import { Loading, Empty, Failure, Success } from './ArticlesCell'
 import { standard } from './ArticlesCell.mock'
+import { within } from '@testing-library/dom'
 
 describe('ArticlesCell', () => {
   test('Loading renders successfully', () => {
