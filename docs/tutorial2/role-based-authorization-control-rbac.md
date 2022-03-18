@@ -116,7 +116,7 @@ yarn rw c
 Now we can update our user with a single command:
 
 ```bash
-> db.user.update({ where: { id: 1 } }, data: { roles: 'admin' } })
+> db.user.update({ where: { id: 1 }, data: { roles: 'admin' } })
 ```
 
 Which should return the new content of the user:
