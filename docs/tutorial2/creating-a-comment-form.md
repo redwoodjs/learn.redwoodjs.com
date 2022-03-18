@@ -364,7 +364,7 @@ Now when we create a comment it appears right away! It might be hard to tell bec
 
 We'll make use of good old fashioned React state to keep track of whether a comment has been posted in the form yet or not. If so, let's remove the comment form completely and show a "Thanks for your comment" message. Redwood includes [react-hot-toast](https://react-hot-toast.com/) for showing popup notifications, so let's use that to thank the user for their comment. We'll remove the form with just a couple of CSS classes:
 
-```javascript {12,14,28,30-33,42}
+```javascript {12,14,28,30-33,42-44,81}
 // web/src/components/CommentForm/CommentForm.js
 
 import {
@@ -376,7 +376,7 @@ import {
   Submit,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 import { useState } from 'react'
 
@@ -406,46 +406,46 @@ const CommentForm = ({ postId }) => {
   }
 
   return (
-    <div className={hasPosted ? 'hidden' : ''}>
-      <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
-      <Form className="mt-4 w-full" onSubmit={onSubmit}>
-        <FormError
-          error={error}
-          titleClassName="font-semibold"
-          wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
-        />
-        <Label
-          name="name"
-          className="block text-xs font-semibold text-gray-500 uppercase"
-        >
-          Name
-        </Label>
-        <TextField
-          name="name"
-          className="block w-full p-1 border rounded text-sm "
-          validation={{ required: true }}
-        />
+    <>
+      <Toaster />
+      <div className={hasPosted ? 'hidden' : ''}>
+        <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
+        <Form className="mt-4 w-full" onSubmit={onSubmit}>
+          <FormError
+            error={error}
+            titleClassName="font-semibold"
+            wrapperClassName="bg-red-100 text-red-900 text-sm p-3 rounded"
+          />
+          <Label name="name" className="block text-sm text-gray-600 uppercase">
+            Name
+          </Label>
+          <TextField
+            name="name"
+            className="block w-full p-1 border rounded text-xs "
+            validation={{ required: true }}
+          />
 
-        <Label
-          name="body"
-          className="block mt-4 text-xs font-semibold text-gray-500 uppercase"
-        >
-          Comment
-        </Label>
-        <TextAreaField
-          name="body"
-          className="block w-full p-1 border rounded h-24 text-sm"
-          validation={{ required: true }}
-        />
+          <Label
+            name="body"
+            className="block mt-4 text-sm text-gray-600 uppercase"
+          >
+            Comment
+          </Label>
+          <TextAreaField
+            name="body"
+            className="block w-full p-1 border rounded h-24 text-xs"
+            validation={{ required: true }}
+          />
 
-        <Submit
-          disabled={loading}
-          className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
-        >
-          Submit
-        </Submit>
-      </Form>
-    </div>
+          <Submit
+            disabled={loading}
+            className="block mt-4 bg-blue-500 text-white text-xs font-semibold uppercase tracking-wide rounded px-3 py-2 disabled:opacity-50"
+          >
+            Submit
+          </Submit>
+        </Form>
+      </div>
+    </>
   )
 }
 
