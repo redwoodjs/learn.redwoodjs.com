@@ -1,3 +1,7 @@
+# THIS REPO IS NO LONGER MAINTAINED
+
+All documentation for Redwood now lives in the `/docs` directory in the main repo: https://github.com/redwoodjs/redwood That directory now contains this Docusaurus site with all documentation from redwoodjs.com.
+
 # learn.redwoodjs.com
 
 Deployment URL: https://learn.redwoodjs.com/
