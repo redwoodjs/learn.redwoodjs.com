@@ -1,0 +1,35 @@
+# Settings in the [build] context are global and are applied to
+# all contexts unless otherwise overridden by more specific contexts.
+[build]
+  publish = "build"
+  command = "yarn build"
+
+[[redirects]]
+  from = "/"
+  to = "https://redwoodjs.com/docs/index"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/index.html"
+  to = "https://redwoodjs.com/docs/index"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/docs/tutorial"
+  to = "https://redwoodjs.com/docs/tutorial/welcome-to-redwood"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/docs/tutorial2"
+  to = "https://redwoodjs.com/docs/tutorial/welcome-to-redwood-part-ii-redwoods-revenge"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "https://redwoodjs.com/:splat"
+  status = 301
+  force = true
