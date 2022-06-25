@@ -29,7 +29,7 @@ model User {
 }
 ```
 
-Next we'll (try) to migrate the database:
+Next we'll (try to) migrate the database:
 
 
 ```bash
